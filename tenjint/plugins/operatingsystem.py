@@ -87,7 +87,9 @@ class OperatingSystemBase(plugins.Plugin):
 
         return None
 
-    def vtop(self, vaddr, pid=None, dtb=None):
+    def vtop(self, vaddr, pid=None, dtb=None, kernel_address_space=False):
+        if kernel_address_space:
+            return self.session.kernel_address_space.vtop(vaddr)
         if pid is not None or dtb is not None:
             proc = self.process(pid=pid, dtb=dtb)
 
@@ -97,6 +99,9 @@ class OperatingSystemBase(plugins.Plugin):
             return proc.get_process_address_space().vtop(vaddr)
 
         return self.session.default_address_space.vtop(vaddr)
+
+    def get_symbol_address(self, symbol):
+        return self.session.address_resolver.get_address_by_name(symbol)
 
 class OperatingSystemWinX86_64(OperatingSystemBase):
     _abstract = False
