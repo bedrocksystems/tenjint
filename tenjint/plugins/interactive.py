@@ -20,25 +20,23 @@ from ..event import EventCallback
 class TenjintPrompts(Prompts):
     def in_prompt_tokens(self, cli=None):
         return [
-                    (Token.Name.Class, "i!"),
+                    (Token.Name.Class, "テ"),
                     (Token.Prompt, '> '),
                 ]
 
 class TenjintShell(InteractiveShellEmbed):
     banner = """
 ----------------------------------------------------------------------------
-                    | |           (_|_)     | |
-                    | |_ ___ _ __  _ _ _ __ | |_
-                    | __/ _ \ '_ \| | | '_ \| __|
-                    | ||  __/ | | | | | | | | |_
-                    \__\___|_| |_| |_|_| |_|\__|
-                                _/ |
-                                |__/
+                        __               _ _       __
+                       / /____  ____    (_|_)___  / /_
+                      / __/ _ \/ __ \  / / / __ \/ __/
+                     / /_/  __/ / / / / / / / / / /_
+                     \__/\___/_/ /_/_/ /_/_/ /_/\__/
+                                /___/
+
+                              テンジント
 
 For all your introspection needs.
-
-This program is free software; you can redistribute it and/or modify it under
-the terms of the XXX.
 ----------------------------------------------------------------------------
 
 """
