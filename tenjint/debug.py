@@ -2,7 +2,6 @@ import cProfile
 import io
 import pickle
 import pstats
-import six
 import sys
 import tblib.pickling_support
 import traceback
