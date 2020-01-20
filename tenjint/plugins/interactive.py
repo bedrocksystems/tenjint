@@ -19,13 +19,19 @@ from ..event import EventCallback
 
 class TenjintPrompts(Prompts):
     def in_prompt_tokens(self, cli=None):
-        return [
-                    (Token.Name.Class, "テ"),
-                    (Token.Prompt, '> '),
-                ]
+        if sys.stdout.encoding == "UTF-8":
+            return [
+                        (Token.Name.Class, "テ"),
+                        (Token.Prompt, '> '),
+                    ]
+        else:
+            return [
+                        (Token.Name.Class, "tenjint"),
+                        (Token.Prompt, '> '),
+                    ]
 
 class TenjintShell(InteractiveShellEmbed):
-    banner = """
+    utf8_banner = """
 ----------------------------------------------------------------------------
                         __               _ _       __
                        / /____  ____    (_|_)___  / /_
@@ -40,6 +46,24 @@ For all your introspection needs.
 ----------------------------------------------------------------------------
 
 """
+    banner = """
+----------------------------------------------------------------------------
+                        __               _ _       __
+                       / /____  ____    (_|_)___  / /_
+                      / __/ _ \/ __ \  / / / __ \/ __/
+                     / /_/  __/ / / / / / / / / / /_
+                     \__/\___/_/ /_/_/ /_/_/ /_/\__/
+                                /___/
+
+For all your introspection needs.
+----------------------------------------------------------------------------
+
+"""
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if sys.stdout.encoding == "UTF-8":
+            self.banner = self.utf8_banner
+
     def init_inspector(self):
         self.inspector = ipython_support.RekallObjectInspector()
 
