@@ -7,6 +7,9 @@ from rekall.session import InteractiveSession
 from rekall.plugins.addrspaces import tenjint
 from rekall.plugin import PluginError
 
+class SymbolResolutionError(Exception):
+    pass
+
 class OperatingSystemConfig(config.ConfigMixin):
     _config_options = [
         {
@@ -101,7 +104,10 @@ class OperatingSystemBase(plugins.Plugin):
         return self.session.default_address_space.vtop(vaddr)
 
     def get_symbol_address(self, symbol):
-        return self.session.address_resolver.get_address_by_name(symbol)
+        rv = self.session.address_resolver.get_address_by_name(symbol)
+        if rv == None:
+            raise SymbolResolutionError(rv.reason)
+        return rv
 
 class OperatingSystemWinX86_64(OperatingSystemBase):
     _abstract = False
