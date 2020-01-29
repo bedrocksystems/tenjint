@@ -1,3 +1,4 @@
+import struct
 
 from . import plugins
 from .. import api
@@ -44,6 +45,18 @@ class OperatingSystemBase(plugins.Plugin):
                 api.os = api.OsType.OS_LINUX
             else:
                 raise RuntimeError("Unable to determine guest OS type.")
+
+            rekall_arch_str = session.profile.metadata("arch")
+            if rekall_arch_str == "AMD64":
+                api.arch = api.Arch.X86_64
+            elif rekall_arch_str == "I386":
+                api.arch = api.Arch.X86
+            elif rekall_arch_str == "ARM":
+                api.arch = api.Arch.AARCH32
+            elif rekall_arch_str == "ARM64":
+                api.arch = api.Arch.AARCH64
+            else:
+                raise RuntimeError("Unexpected guest kernel architecture")
 
             try:
                 session.plugins.load_as().GetVirtualAddressSpace()
@@ -115,23 +128,51 @@ class OperatingSystemWinX86_64(OperatingSystemBase):
     arch = api.Arch.X86_64
     os = api.OsType.OS_WIN
 
-class OperatingSystemLinuxX86_64(OperatingSystemBase):
+class OperatingSystemLinux(OperatingSystemBase):
     _abstract = False
     name = "OperatingSystem"
-    arch = api.Arch.X86_64
     os = api.OsType.OS_LINUX
 
-    def current_process(self, cpu_num):
-        for task in self.session.plugins.pslist().filter_processes():
-            if task.dtb == self._vm.cpu(cpu_num).cr3:
-                return task
-        return None
+    def __init__(self):
+        self._per_cpu = None
+        self._per_cpu_current_task_offset = None
+        self._pointer_width = None
+        self._struct_ptr_fmt = None
+        super().__init__()
 
-class OperatingSystemLinuxAarch64(OperatingSystemBase):
-    _abstract = False
-    name = "OperatingSystem"
-    arch = api.Arch.AARCH64
-    os = api.OsType.OS_LINUX
+    @property
+    def pointer_width(self):
+        if self._pointer_width is None:
+            if api.arch == api.Arch.X86_64 or api.arch == api.Arch.AARCH64:
+                self._pointer_width = 8
+            else:
+                self._pointer_width = 4
+        return self._pointer_width
+
+    def read_kernel_pointer(self, addr):
+        if self._struct_ptr_fmt is None:
+            if self.pointer_width == 4:
+                self._struct_ptr_fmt = "<L"
+            else:
+                self._struct_ptr_fmt = "<Q"
+        return struct.unpack(self._struct_ptr_fmt,
+                             self.session.kernel_address_space.read(addr,
+                                                         self.pointer_width))[0]
+
+    @property
+    def per_cpu(self):
+        if self._per_cpu is None:
+            base = self.session.address_resolver.get_address_by_name(
+                                                       "linux!__per_cpu_offset")
+            self._per_cpu = list()
+            for offset in range(0, (self._vm.cpu_count * self.pointer_width),
+                                                            self.pointer_width):
+                self._per_cpu.append(self.read_kernel_pointer(base+offset))
+        return self._per_cpu
 
     def current_process(self, cpu_num):
-        return self.session.profile.task_struct(self._vm.cpu(cpu_num).sp_el0)
+        if self._per_cpu_current_task_offset is None:
+            self._per_cpu_current_task_offset = self.session.profile.get_constant("current_task")
+        task_struct_address = self.read_kernel_pointer(
+                    (self.per_cpu[cpu_num] + self._per_cpu_current_task_offset))
+        return self.session.profile.task_struct(task_struct_address)

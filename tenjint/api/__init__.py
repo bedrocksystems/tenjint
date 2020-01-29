@@ -8,6 +8,8 @@ class Arch(Enum):
     UNSUPPORTED = 0
     X86_64 = 1
     AARCH64 = 2
+    X86 = 3
+    AARCH32 = 4
 
 from .api import *
 if _arch == "x86_64":
