@@ -242,6 +242,7 @@ class InteractiveShell(plugins.Plugin, config.ConfigMixin):
             self._shell.banner +=  "\n" + self.get_context()
         else:
             self._renderer.format(self.get_context())
+        api.tenjint_api_mouse_out()
         self._shell(module=self._session.locals)
         self._renderer.flush()
         self._shell.display_banner = False

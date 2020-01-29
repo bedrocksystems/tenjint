@@ -76,4 +76,6 @@ cdef extern from "sysemu/vmi_api.h":
 
     uint64_t vmi_api_vtop(uint64_t, uint64_t)
 
+    void vmi_api_mouse_out()
+
 cdef _decode_event(vmi_event *c_event)

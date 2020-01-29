@@ -85,3 +85,6 @@ def tenjint_api_vtop(addr, dtb):
     if rv == 0xffffffffffffffff:
         raise api.TranslationError("Error translating 0x{:x} with dtb 0x{:x}".format(addr, dtb))
     return rv
+
+def tenjint_api_mouse_out():
+    vmi_api_mouse_out()
