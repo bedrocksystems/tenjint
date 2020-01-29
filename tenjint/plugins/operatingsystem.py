@@ -89,7 +89,7 @@ class OperatingSystemBase(plugins.Plugin):
         self._event_manager.remove_continue_hook(self._cont_hook)
 
     def _cont_hook(self):
-        self.session.cache.Clear()
+        self.session.cache.ClearVolatile()
 
     def process(self, pid=None, dtb=None):
         if pid is None and dtb is None:
