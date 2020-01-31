@@ -13,6 +13,17 @@ class LBRState(object):
         self.tos = tos
         self.lbr_from = lbr_from
         self.lbr_to = lbr_to
+        self.size = min(len(self.lbr_from), len(self.lbr_to))
+
+    def __repr__(self):
+        result = "LBR State - TOS: {}\n".format(self.tos)
+        result += "{}\n".format("-" * 46)
+        for i in range(0, self.size):
+            cur = (self.tos + i) % self.size
+            result += "[{:2d}]  0x{:16x} -> 0x{:16x}\n".format(cur,
+                                                             self.lbr_from[cur],
+                                                             self.lbr_to[cur])
+        return result
 
 class SystemEventTaskSwitch(event.CpuEvent):
     """Emitted when a task switch occurs."""
