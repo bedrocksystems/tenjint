@@ -1,3 +1,22 @@
+# tenjint - VMI Python Library
+#
+# Copyright (C) 2020 Bedrock Systems, Inc
+# Authors: Jonas Pfoh <jonas@bedrocksystems.com>
+#          Sebastian Vogl <sebastian@bedrocksystems.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as published
+# by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
 from . import plugins
 from .. import api
 from .. import event
@@ -9,11 +28,12 @@ class Breakpoint(object):
     automatic removal and insertion of the underlying QEMU breakpoint if the
     page is written/read?
     """
-    def __init__(self, gpa, event_manager, slp_service):
+    def __init__(self, gpa, event_manager, slp_service, logger):
         super().__init__()
         self.gpa = gpa
         self._event_manager = event_manager
         self._slp_service = slp_service
+        self._logger = logger
         self.is_set = False
 
         gfn = gpa >> api.PAGE_SHIFT
@@ -31,6 +51,7 @@ class Breakpoint(object):
     def _set_bp(self):
         api.tenjint_api_update_feature_debug(cpu_num=None,
                                             enable=True, gpa=self.gpa)
+        self._logger.debug("Breakpoint: bp set on 0x{:x}".format(self.gpa))
         self.is_set = True
 
     def set_bp(self):
@@ -43,14 +64,16 @@ class Breakpoint(object):
         try:
             self._slp_service.update_permissions(self.gpa, r=False, w=False, x=True)
         except api.UpdateSLPError:
-            pass # this is safe as the kernel will default any new pages to
-                 # X-only since we are requesting rw violations
+            self._logger.warning("Breakpoint: slp update perm failed")
+            # this is safe as the kernel will default any new pages to
+            # X-only since we are requesting rw violations
         self._event_manager.request_event(self._slp_rw_cb)
         self._set_bp()
 
     def _unset_bp(self):
         api.tenjint_api_update_feature_debug(cpu_num=None,
                                             enable=False, gpa=self.gpa)
+        self._logger.debug("Breakpoint: bp removed on 0x{:x}".format(self.gpa))
         self.is_set = False
 
     def unset_bp(self):
@@ -66,12 +89,14 @@ class Breakpoint(object):
             self._event_manager.cancel_event(self._slp_x_cb)
 
     def _slp_rw_cb_func(self, event):
+        self._logger.debug("Breakpoint: rw callback ob 0x{:x}".format(event.gva))
         self._unset_bp()
         self._slp_service.update_permissions(self.gpa, r=True, w=True, x=False)
         self._event_manager.cancel_event(self._slp_rw_cb)
         self._event_manager.request_event(self._slp_x_cb)
 
     def _slp_x_cb_func(self, event):
+        self._logger.debug("Breakpoint: x callback ob 0x{:x}".format(event.gva))
         self._event_manager.cancel_event(self._slp_x_cb)
         self._event_manager.request_event(self._slp_rw_cb)
         self._slp_service.update_permissions(self.gpa, r=False, w=False, x=True)
@@ -129,7 +154,7 @@ class BreakpointPlugin(plugins.EventPlugin):
 
         request_id = self._request_id_cntr
         self._request_id_cntr += 1
-        bp = Breakpoint(gpa, self._event_manager, self._slp_service)
+        bp = Breakpoint(gpa, self._event_manager, self._slp_service, self._logger)
         self._requests[request_id] = bp
         bp.set_bp()
         return request_id

@@ -1,3 +1,22 @@
+# tenjint - VMI Python Library
+#
+# Copyright (C) 2020 Bedrock Systems, Inc
+# Authors: Jonas Pfoh <jonas@bedrocksystems.com>
+#          Sebastian Vogl <sebastian@bedrocksystems.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as published
+# by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
 import sys
 import os
 import re
@@ -43,6 +62,11 @@ class TenjintShell(InteractiveShellEmbed):
                               テンジント
 
 For all your introspection needs.
+
+Copyright (C) 2020, Bedrock Systems, Inc,
+tenjint comes with ABSOLUTELY NO WARRANTY;
+This is free software, and you are welcome to redistribute it under certain
+conditions; for details see LICENSE.txt file distributed with this library
 ----------------------------------------------------------------------------
 
 """
@@ -56,6 +80,11 @@ For all your introspection needs.
                                 /___/
 
 For all your introspection needs.
+
+Copyright (C) 2020, Bedrock Systems, Inc,
+tenjint comes with ABSOLUTELY NO WARRANTY;
+This is free software, and you are welcome to redistribute it under certain
+conditions; for details see LICENSE.txt file distributed with this library
 ----------------------------------------------------------------------------
 
 """
