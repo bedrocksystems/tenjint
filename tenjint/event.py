@@ -17,15 +17,25 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+"""tenjint's event layer.
+
+This module provides all functionality related to tenjints event layer. The
+event layer is one of the key components within tenjint. It allows to register
+callbacks for events or to publish custom events to the system.
+"""
+
 from . import service
 from . import api
 from . import logger
 
 class Event(object):
-    producer = None
-    """Event base class
+    """The base class for all events."""
 
-    producer is set automatically by event manager, do not touch!
+    producer = None
+    """The event producer.
+
+    The event producer is the class that is responsible for emitting an event.
+    The producer is set automatically by event manager, do not touch!
     """
 
     params = {}
@@ -113,6 +123,11 @@ class Event(object):
         return False
 
 class CpuEvent(Event):
+    """Base class for all CPU events.
+
+    A CPU event is an event that occurs on a specific CPU. For instance, a
+    breakpoint is hit. Most events are CPU events, but not all of them.
+    """
     def __init__(self, cpu_num):
         super().__init__()
         self.cpu_num = cpu_num
@@ -121,7 +136,57 @@ class EventPluginExists(Exception):
     pass
 
 class EventCallback(object):
+    """Base class for event related callbacks.
+
+    This is the base class for event related callbacks. Event callbacks are used
+    to request notifications from the event system whenever a certain event
+    occurs. They allow to specify which event we are interested in and what
+    function we want to invoke whenever this event occurs. In addition, we can
+    filter events based on event parameters (event_params). If we specify
+    event parameters our callback function will only be invoked when an event is
+    of the given event type (event_name) and has the specified parameters. For
+    more information see :py:func:`__init__`.
+
+    See Also
+    --------
+    __init__
+    """
     def __init__(self, callback_func, event_name=None, event_params=None):
+        """Create a new event callback.
+
+        The constructor allows us to create a new event callback for a specific
+        event or all events.
+
+        Parameters
+        ----------
+        callback_func : function
+            The callback function to invoke whenever our event criteria (event
+            name and event params) match.
+        event_name : str, optional
+            The name of the event we want to filter on. Our callback_func will
+            only be invoked for events of this type. If no event_name is given
+            all events will invoke our callback.
+        event_params : dict, optional
+            Event parameters allow us to further filter events on a more fine
+            granular basis. For instance, we might not be interested in all
+            second level paging events, but only in execute violations. Event
+            parameters allow us to filter events based on such criteria. What
+            paramaters are supported depend on the event type (event_name) that
+            we are interested in. The event paramters that are supported can be
+            found in the documentation of the event class.
+
+        Returns
+        -------
+        object
+            A new event callback object. To use this callback we have to
+            register it with the event system
+            (see :py:func:`tenjint.event.EventManager.request_event`).
+
+        See Also
+        --------
+        EventManager.request_event
+        EventManager.cancel_event
+        """
         self._event_manager = service.manager().get("EventManager")
 
         self._callback_func = callback_func
@@ -156,6 +221,14 @@ class EventCallback(object):
             self._callback_func(event)
 
 class EventManager(logger.LoggerMixin):
+    """tenjint's event manager.
+
+    The event manager is the main component of the event system. It is
+    responsible for getting events from QEMU and to distpatch them within the
+    system. In addition, the event manager allows us to request callbacks for
+    certain events or to publish our own events within the system. See
+    :py:func:`request_event` and :py:func:`put_event` for details respectively.
+    """
     def __init__(self):
         super().__init__()
         self._event_queue = list()
@@ -167,6 +240,17 @@ class EventManager(logger.LoggerMixin):
                         "SystemEventVmStop": api.SystemEventVmStop}
 
     def register(self, plugin):
+        """Register a plugin with the event manager.
+
+        Plugins must be registered with the event manager if they produce
+        events. The plugin manager should take care of this automatically. Users
+        should not call this function.
+
+        Parameters
+        ----------
+        plugin : tenjint.plugins.plugins.Plugin
+            The plugin to register.
+        """
         for event_cls in plugin.produces:
             event_name = event_cls.__name__
             if event_name in self._event_plugins:
@@ -178,6 +262,17 @@ class EventManager(logger.LoggerMixin):
             self._event_plugins[event_name] = event_cls
 
     def unregister(self, plugin):
+        """Unregister a plugin from the event manager.
+
+        Plugins must be registered with the event manager if they produce
+        events. The plugin manager should take care of this automatically. Users
+        should not call this function.
+
+        Parameters
+        ----------
+        plugin : tenjint.plugins.plugins.Plugin
+            The plugin to unregister.
+        """
         for event_cls in plugin.produces:
             event_name = event_cls.__name__
             self._logger.debug("Unregistering {} with event manager as {} "
@@ -189,10 +284,42 @@ class EventManager(logger.LoggerMixin):
         return self._event_plugins[event_key]
 
     def get_registered_events(self):
+        """Get all events that the event manager is aware of.
+
+        This function can be used to retrieve all events that the event manager
+        is aware of.
+
+        Yields
+        ------
+        tuple (str, dict)
+            Returns tuples of the form (event class name, event parameters)
+        """
         for event_name, event_cls in self._event_plugins.items():
             yield event_name, event_cls.params
 
     def request_event(self, callback, send_request=True):
+        """Register an event callback with the event manager.
+
+        This function allows us to register an event callback with the event
+        manager. Once registered, the callback function specified in the event
+        callback will be invoked whenever a matching event is published in the
+        system.
+
+        Parameters
+        ----------
+        callback : EventCallback
+            The event callback to register.
+        send_request : bool, optional
+            Whether the event request should be forwarded to the plugin that
+            produces this event. Users should generally not provide this
+            argument and use its default value. If the event producer is not
+            informed about an event request it might not enable the appropriate
+            features and the event might never be produced.
+
+        See Also
+        --------
+        EventCallback
+        """
         if (send_request and callback.event_cls is not None and
                 callback.event_cls.producer is not None):
             plugin = self._event_plugins[callback.event_key].producer
@@ -207,6 +334,21 @@ class EventManager(logger.LoggerMixin):
         callback.active = True
 
     def cancel_event(self, callback):
+        """Cancel an event request.
+
+        This function allows us to unregister a event callback from the event
+        manager.
+
+        Parameters
+        ----------
+        callback : EventCallback
+            The event callback to unregister.
+
+        Raises
+        ------
+        KeyError
+            If the callback has not been registered with the event manager.
+        """
         self._event_callbacks[callback.event_key].remove(callback)
         if callback.request_id is not None:
             plugin = self._event_plugins[callback.event_key].producer
@@ -215,13 +357,31 @@ class EventManager(logger.LoggerMixin):
         callback.active = False
 
     def put_event(self, event):
+        """Publish an event in the system.
+
+        This function allows a plugin to publish an event within the system.
+        Any event callbacks that have been registered with the event manager
+        and match the published event will be notified.
+
+        Parameters
+        ----------
+        event : Event
+            The event to publish.
+        """
         self._event_queue.append(event)
 
     def add_continue_hook(self, callback_func):
+        """Add a continue hook.
+
+        This function allows to register a function that will be executed
+        before the virtual machine is resumed. In general, users should not use
+        continue hooks.
+        """
         self._logger.debug("Adding continue hook: {}".format(callback_func))
         self._continue_hooks.append(callback_func)
 
     def remove_continue_hook(self, callback_func):
+        """Remove a continue hook."""
         self._logger.debug("Removing continue hook: {}".format(callback_func))
         self._continue_hooks.remove(callback_func)
 
@@ -247,6 +407,7 @@ class EventManager(logger.LoggerMixin):
             event = api.tenjint_api_get_event()
 
     def run_loop(self):
+        """The event managers internal run loop."""
         while True:
             self._get_system_events()
             while self._event_queue:
@@ -256,12 +417,19 @@ class EventManager(logger.LoggerMixin):
                     return
 
 def run():
+    """Start the run loop of the event manager.
+
+    This function starts the run loop of the systemwide event manager. This
+    function should only be called internally.
+    """
     em = service.manager().get("EventManager")
     em.run_loop()
 
 def init():
+    """Initialize the event subsystem."""
     em = EventManager()
     service.manager().register(em)
 
 def uninit():
+    """Uninitialize the event subystem."""
     service.manager().unregister_by_name("EventManager")

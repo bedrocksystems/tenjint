@@ -17,6 +17,14 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+"""tenjint's output module.
+
+This is tenjint's output module. It is responsible for all output that is
+produced my tenjint. At the moment, the only output that is produced by
+tenjint are events. Events will be pickled and stored in a file based on the
+configuration of the PickleOutputManager.
+"""
+
 import pickle
 
 from .config import ConfigMixin
@@ -24,14 +32,27 @@ from .event import EventCallback
 from .service import manager
 
 _manager = None
+"""The current output manager.
+
+This is an internal variable that should not be accessed from outside of the
+module.
+"""
 
 class PickleOutputManager(ConfigMixin):
+    """Pickle output manager.
+
+    As the name suggests, the pickle output manager pickles events and stores
+    them to a file. The file path can be configured.
+    """
     _config_section = "OutputManager"
+    """The name of the config section."""
+
     _config_options = [
         {"name": "store", "default": False,
          "help": "Path where to store events. If set to False no events "
-                 "will be recoreded."}
+                 "will be recorded."}
     ]
+    """The supported config options."""
 
     def __init__(self):
         super().__init__()
@@ -61,11 +82,13 @@ class PickleOutputManager(ConfigMixin):
         self._events.append(event)
 
 def init():
+    """Initialize the output module."""
     global _manager
 
     _manager = PickleOutputManager()
 
 def uninit():
+    """Uninitialize the output module."""
     global _manager
 
     if _manager is not None:

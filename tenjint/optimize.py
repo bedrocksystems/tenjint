@@ -20,7 +20,7 @@
 """Optimize parts of interrupt for production.
 
 This module contains function that will try to optimize interrupt when it is
-used in production and has been compiled with -O. In paritcular, the module
+used in production and has been compiled with -O. In particular, the module
 will replace all calls to logging.
 """
 import importlib

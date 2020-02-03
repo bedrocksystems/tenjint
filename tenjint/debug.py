@@ -17,6 +17,12 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+"""Contains classes and functions for debugging.
+
+This module contains various classes and functions that make it easier to
+debug or test tenjint.
+"""
+
 import cProfile
 import io
 import pickle
@@ -33,6 +39,7 @@ _exception_handler = None
 _profiling = None
 
 class Profiling(config.ConfigMixin, logger.LoggerMixin):
+    """Provides profiling of tenjint based on cProfile."""
     _config_options = [
         {"name": "enable", "default": False, "help": "Enable profiling."},
         {"name": "profile_builtins", "default": False, "help": "Profile builtins."},
@@ -64,6 +71,12 @@ class Profiling(config.ConfigMixin, logger.LoggerMixin):
             self._logger.debug(s.getvalue())
 
 class ExceptionHandling(config.ConfigMixin, logger.LoggerMixin):
+    """This class allows to pickle exceptions that occure during runtime.
+
+    This class enables us to pickle and store unhandled exceptions that
+    occur during runtime. This is helpful for testing and other use cases.
+    Exception pickling is based on tblib.
+    """
     _config_options = [
         {"name": "log", "default": False, "help": "Log exceptions."},
         {"name": "store", "default": False,
@@ -106,8 +119,12 @@ class ExceptionHandling(config.ConfigMixin, logger.LoggerMixin):
         if self._orig_except_hook is not None:
             sys.excepthook = self._orig_except_hook
 
-
 def init():
+    """Initialize the debugging module.
+
+    This function must be called during the initialization of tenjint, if
+    debugging functionality should be used.
+    """
     global _init
     global _exception_handler
     global _profiling
@@ -118,6 +135,13 @@ def init():
     _init = True
 
 def uninit():
+    """Uninitialize the debugging module.
+
+    This function must be called when tenjint is uninitialized. It will in-turn
+    uninitialize objects used throughout the module. For instance, it will
+    uninitialize the profiling class, which will print the cProfile if
+    profiling was enabled.
+    """
     global _init
     global _exception_handler
     global _profiling

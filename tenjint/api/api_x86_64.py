@@ -17,7 +17,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-"""Python API for x86-64
+"""QEMU Python API for x86-64
 
 This file contains all python definitions (see tenjint_x86_64.pyx for the Cython
 definitions of the API) that are specific for x86-64.

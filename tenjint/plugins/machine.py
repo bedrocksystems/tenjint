@@ -17,21 +17,87 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+"""This module contains the virtual machine abstractions."""
+
 from . import plugins
 from .. import api
 
 class VirtualMachineBase(plugins.Plugin):
+    """Base class for all virtual machines (VMs)."""
+
     @property
     def phys_mem_size(self):
+        """Get the size of the physical memory of the VM.
+
+        Returns
+        -------
+        int
+            The size of the physical memory of the VM.
+        """
         return api.tenjint_api_get_ram_size()
 
     def phys_mem_read(self, addr, size):
+        """Read from the VM's physical memory.
+
+        Parameters
+        ----------
+        addr : int
+            The physical address to read from.
+        size : int
+            The number of bytes to read.
+
+        Returns
+        -------
+        bytes
+            The requested bytes.
+
+        Raises
+        ------
+        RuntimeError
+            If the requested physical memory cannot be read.
+
+        See Also
+        --------
+        phys_mem_size
+        """
         return api.tenjint_api_read_phys_mem(addr, size)
 
     def phys_mem_write(self, addr, buf):
+        """Write to the VM's physical mamory.
+
+        Paramaters
+        ----------
+        addr : int
+            The physical address to write to.
+        buf : bytes
+            The data to write.
+
+        Raises
+        ------
+        RuntimeError
+            If the requested physical memory cannot be written.
+        """
         return api.tenjint_api_write_phys_mem(addr, buf)
 
     def vtop(self, addr, dtb=None, cpu_num=None):
+        """Translate a guest virtual address to a guest physical address.
+
+        Parameters
+        ----------
+        addr : int
+            The virtual address to translate.
+        dtb : int, optional
+            The directory table base that should be used for the translation. If
+            no dtb is provided, the dtb on the given cpu (cpu_num) will be used.
+        cpu_num : int, optional
+            The number of the CPU that should be used for the translation. If no
+            dtb and cpu_num have been specified, cpu_num 0 will be used.
+
+        Raises
+        ------
+        tenjint.api.api.TranslationError
+            If the virtual address connot be translated.
+        """
         if dtb is None:
             if cpu_num is None:
                 cpu_num = 0
@@ -40,9 +106,32 @@ class VirtualMachineBase(plugins.Plugin):
 
     @property
     def cpu_count(self):
+        """Obtain the number of vCPUs that the VM has."""
         return api.tenjint_api_get_num_cpus()
 
     def cpu(self, cpu_num):
+        """Get a virtual CPU (vCPU).
+
+        Parameters
+        ----------
+        cpu_num : int
+            The number of the vCPU to get.
+
+        Returns
+        -------
+        object
+            An object representing the vCPU for the current architecture of
+            the virtual machine.
+
+        Raises
+        ------
+        ValueError
+            If the requested vCPU number does not exists.
+
+        See Also
+        --------
+        cpu_count
+        """
         if cpu_num >= self.cpu_count:
             raise ValueError("This machine only has {} cpu(s)".format(
                                                                 self.cpu_count))
@@ -55,6 +144,8 @@ class VirtualMachineBase(plugins.Plugin):
         return rv
 
 class VirtualMachineX86_64(VirtualMachineBase):
+    """Virtual machine class for x86-64."""
+
     _abstract = False
     name = "VirtualMachine"
     arch = api.Arch.X86_64
@@ -72,6 +163,14 @@ class VirtualMachineX86_64(VirtualMachineBase):
         self._lbrs.clear()
 
     def lbr_enable(self, cpu_num=None):
+        """Enable the Last Branch Record Stack (LBR).
+
+        Parameters
+        ----------
+        cpu_num : int, optional
+            The vCPU number to enable the LBR on. If no cpu number is provided,
+            the LBR will be enabled on all vCPUs.
+        """
         enable = False
 
         if cpu_num is None:
@@ -90,6 +189,14 @@ class VirtualMachineX86_64(VirtualMachineBase):
             api.tenjint_api_update_feature_lbr(cpu_num, True, 0)
 
     def lbr_disable(self, cpu_num=None):
+        """Disable the Last Branch Record Stack (LBR).
+
+        Parameters
+        ----------
+        cpu_num : int, optional
+            The vCPU number to disable the LBR on. If no cpu number is provided,
+            the LBR will be disabled on all vCPUs.
+        """
         disable = False
 
         if cpu_num is None:
@@ -108,6 +215,23 @@ class VirtualMachineX86_64(VirtualMachineBase):
             api.tenjint_api_update_feature_lbr(cpu_num, False, 0)
 
     def lbr(self, cpu_num):
+        """Retrieve the Last Branch Record Stack (LBR).
+
+        Parameters
+        ----------
+        cpu_num : int
+            The number of the vCPU whose LBR we want to retrieve.
+
+        Returns
+        -------
+        tenjint.api.api_x86_64.LBRState
+            The LBRState of the vCPU.
+
+        Raises
+        ------
+        RuntimeError
+            If the LBR has not been enabled to the requested vCPU.
+        """
         if not self._lbr_enabled[cpu_num]:
             raise RuntimeError("LBR was never enabled for this CPU")
         try:
@@ -119,6 +243,8 @@ class VirtualMachineX86_64(VirtualMachineBase):
 
 
 class VirtualMachineAARCH64(VirtualMachineBase):
+    """Virtual machine class for aarch64."""
+
     _abstract = False
     name = "VirtualMachine"
     arch = api.Arch.AARCH64

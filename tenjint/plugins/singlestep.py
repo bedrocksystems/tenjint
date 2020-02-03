@@ -17,11 +17,19 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+"""Provides singlestepping.
+
+This module provides classes and functions that enable us to singlestep the
+guest.
+"""
+
 from . import plugins
 from .. import api
 from .. import event
 
 class SingleStepPluginBase(plugins.EventPlugin):
+    """Base class for all singlestep plugins."""
+
     _abstract = True
     produces = [api.SystemEventSingleStep]
     name = "SingleStepPlugin"
@@ -42,6 +50,11 @@ class SingleStepPluginBase(plugins.EventPlugin):
         self._cb_ss = None
 
     def request_event(self, event_cls, **kwargs):
+        """Request a singlestep event.
+
+        This function is called by the EventManager when a singlestep event
+        is requested.
+        """
         [cpu_num, method] = event_cls.parse_request(**kwargs)
 
         if method is None:
@@ -60,6 +73,11 @@ class SingleStepPluginBase(plugins.EventPlugin):
         return request_id
 
     def cancel_event(self, request_id):
+        """Cancel a singlestep event request.
+
+        This function is called by the EventManager when a singlestep event
+        request is canceled.
+        """
         return
 
     def _cb_func_ss(self, event):
@@ -73,6 +91,7 @@ class SingleStepPluginBase(plugins.EventPlugin):
         return self._ss_inst_ptr[cpu_num]
 
 class SingleStepPluginAarch64(SingleStepPluginBase):
+    """Provides singlestepping on aarch64."""
     _abstract = False
     arch = api.Arch.AARCH64
 
@@ -85,6 +104,7 @@ class SingleStepPluginAarch64(SingleStepPluginBase):
                                             single_step=True)
 
 class SingleStepPluginX86(SingleStepPluginBase):
+    """Provides singlestepping on x86-64."""
     _abstract = False
     arch = api.Arch.X86_64
 

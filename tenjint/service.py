@@ -17,6 +17,14 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+"""tenjint's service layer.
+
+This module contains all classes and functions that provide tenjint's service
+layer. The service layer is responsible for maintaining all services available
+within the system. Effectively, the service layer allows modules to register
+services (objects) that can then be retrieved by other modules.
+"""
+
 from . import logger
 
 _service_manager = None
@@ -41,6 +49,8 @@ def register(obj, name=None):
     ------
     ValueError
         If the service layer has not been initialized.
+    ServiceRegisteredError
+            If a service with this name already exists.
     """
     if _service_manager is None:
         raise ValueError("Service manager is not initialized")
@@ -72,14 +82,36 @@ def get(name):
     return _service_manager.get(name)
 
 class ServiceRegisteredError(Exception):
+    """Error that is emitted when a service cannot be registered."""
     pass
 
 class ServiceManager(logger.LoggerMixin):
+    """The service manager.
+
+    The service manager is the main component of the tenjint service layer. It
+    allows to register (:py:func:`register`) and lookup (:py:func:`get`)
+    services in the system.
+    """
     def __init__(self):
         super().__init__()
         self._service_registry = dict()
 
     def register(self, obj, name=None):
+        """Register an object with the service manager.
+
+        Parameters
+        ----------
+        obj : object
+            The object to register.
+        name : str, optional
+            The name to register the object with. If no name is provided,
+            the class name will be used.
+
+        Raises
+        ------
+        ServiceRegisteredError
+            If a service with this name already exists.
+        """
         if name is None:
             name = type(obj).__name__
         if name in self._service_registry:
@@ -89,10 +121,38 @@ class ServiceManager(logger.LoggerMixin):
         self._service_registry[name] = obj
 
     def unregister_by_object(self, obj):
+        """Unregister an object using the object itself.
+
+        This function allows to unregister a previously registered object.
+
+        Parameters
+        ----------
+        obj : object
+            The object to unregister.
+
+        Raises
+        ------
+        KeyError
+            If the object has not been registered with the service layer.
+        """
         self._logger.debug("Unregistering {} with service manager".format(obj.name))
         return self._service_registry.pop(obj.name)
 
     def unregister_by_name(self, name):
+        """Unregister an object using its name.
+
+        This function allows to unregister a previously registered object.
+
+        Parameters
+        ----------
+        name : str
+            The name of the object to unregister.
+
+        Raises
+        ------
+        KeyError
+            If the object has not been registered with the service layer.
+        """
         self._logger.debug("Unregistering {} with service manager".format(name))
         return self._service_registry.pop(name)
 
@@ -117,9 +177,11 @@ def manager():
     return _service_manager
 
 def init():
+    """Initialize the service layer."""
     global _service_manager
     _service_manager = ServiceManager()
 
 def uninit():
+    """Uninitialize the service layer."""
     global _service_manager
     _service_manager = None

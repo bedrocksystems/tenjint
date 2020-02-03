@@ -19,6 +19,15 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+"""Provides access to the QEMU API.
+
+This Cython module defines a part of the low-level API to QEMU that we support.
+It contains the part of the API that is independent of the virtual machine's
+architecture. The architecture specific API is defined in
+:py:mod:`tenjint.api.tenjintapi_x86_64` (x86) and
+:py:mod:`tenjint.api.tenjintapi_aarch64` (aarch64), respectively.
+"""
+
 import numpy
 from enum import Enum
 from cpython.exc cimport PyErr_CheckSignals

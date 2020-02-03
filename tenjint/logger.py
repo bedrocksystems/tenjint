@@ -17,6 +17,11 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+"""tenjint's logging system.
+
+This module provides all classes and functions of tenjint's logging system.
+"""
+
 import logging
 import logging.config
 import inspect
@@ -41,6 +46,13 @@ def set_config(config):
     logging.config.dictConfig(config)
 
 class LoggerMixin(object):
+    """Logger mixin.
+
+    If you inherit from this class, your class will receive a _logger property.
+    This property can be used to access the logger, which in-turn allows to
+    log messages.
+    """
+
     def __init__(self):
         super().__init__()
         self.__logger = None

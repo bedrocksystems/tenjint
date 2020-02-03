@@ -17,6 +17,12 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+"""This module provides abstractions for the guest operating system.
+
+This module provides all classes and functions that give access to the guest
+operating system (OS).
+"""
+
 import struct
 
 from . import plugins
@@ -28,22 +34,41 @@ from rekall.plugins.addrspaces import tenjint
 from rekall.plugin import PluginError
 
 class SymbolResolutionError(Exception):
+    """Raised when a symbol cannot be resolved."""
     pass
 
 class OperatingSystemConfig(config.ConfigMixin):
+    """Helper class for the configuration of the operating system."""
     _config_options = [
         {
             "name": "rekall_profile", "default": None,
             "help": "The profile string to pass to the Rekall session."
         },
     ]
+    """Configuration options."""
 
 class OperatingSystemBase(plugins.Plugin):
+    """Base class for all operating systems."""
+
     session = None
+    """The rekall session object."""
+
     _config_values = None
+    """The config values."""
 
     @classmethod
     def load(cls, **kwargs):
+        """Detects the guest operating system (OS).
+
+        This method overwrites the original plugin load method. It will try to
+        detect the guest operating system and if it succeeds will configure the
+        underlying rekall session accordingly.
+
+        Raises
+        ------
+        RuntimeError
+            If the guest OS cannot be detected.
+        """
         if cls.session is None:
             if cls._config_values is None:
                 config = OperatingSystemConfig()
@@ -112,6 +137,31 @@ class OperatingSystemBase(plugins.Plugin):
         self.session.cache.ClearVolatile()
 
     def process(self, pid=None, dtb=None):
+        """Get a process running in the guest.
+
+        This function tries to retrieve a process running in the guest based
+        on its PID or DTB.
+
+        Parameters
+        ----------
+        pid : int, optional
+            The PID of the process to find. Either the PID or the DTB must be
+            specified.
+        dtb : int, optional
+            The directory table base (DTB) of the process to fund. Either the
+            PID or the DTB must be specified.
+
+        Returns
+        -------
+        object
+            A presentation of the process or None if the process cannot be
+            found.
+
+        Raises
+        ------
+        ValueError
+            If neither PID nor DTB was specified.
+        """
         if pid is None and dtb is None:
             raise ValueError("you must specify a pid or dtb")
 
@@ -124,6 +174,51 @@ class OperatingSystemBase(plugins.Plugin):
         return None
 
     def vtop(self, vaddr, pid=None, dtb=None, kernel_address_space=False):
+        """Translate a guest virtual address to a guest physical address.
+
+        While the vtop function of the virtual machine abstraction (
+        :py:func:`tenjint.plugins.machine.VirtualMachine.vtop`) translates
+        addresses based on the architecture, this function tries to consider
+        the intrinsics of the OS to translate an address. Since the OS has
+        internal state that describes where paged-out data resides, this
+        function is more powerful and might be able to translate some addresses
+        that cannot be translate according to the hardware architecture.
+        However, this function is only available if the OS can be detected.
+
+        Parameters
+        ----------
+        vaddr : int
+            The virtual address to translate.
+        pid : int, optional
+            The PID of the process to use as a basis for the translation. Since
+            we have access to the entire OS, the translation of a virtual
+            address depends on the address space that we use. If neither a PID
+            nor a DTB is given and the kernel address space should not be used
+            for the translation either, the default address space will be used.
+        dtb : int, optional
+            The dtb to use as a basis for the translation. Since
+            we have access to the entire OS, the translation of a virtual
+            address depends on the address space that we use. If neither a PID
+            nor a DTB is given and the kernel address space should not be used
+            for the translation either, the default address space will be used.
+        kernel_address_space : bool, optional
+            Whether to use the kernel address space as a basis for translation.
+            Since we have access to the entire OS, the translation of a virtual
+            address depends on the address space that we use. If neither a PID
+            nor a DTB is given and the kernel address space should not be used
+            for the translation either, the default address space will be used.
+
+        Returns
+        -------
+        int or None
+            The physical address or None if the address cannot be translated.
+
+        Raises
+        ------
+        ValueError
+            If the provided PID or DTB does not belong to a running process.
+        """
+
         if kernel_address_space:
             return self.session.kernel_address_space.vtop(vaddr)
         if pid is not None or dtb is not None:
@@ -137,6 +232,27 @@ class OperatingSystemBase(plugins.Plugin):
         return self.session.default_address_space.vtop(vaddr)
 
     def get_symbol_address(self, symbol):
+        """Get the address of a symbol.
+
+        This function can lookup the addresses of symbols. For this function
+        to succeed, the symbol must be contained in the profile of the
+        operating system.
+
+        Parameters
+        ----------
+        symbol : str
+            The symbol to search for.
+
+        Returns
+        -------
+        int
+            The address of the symbol.
+
+        Raises
+        ------
+        SymbolResolutionError
+            If the symbol cannot be found.
+        """
         rv = self.session.address_resolver.get_address_by_name(symbol)
         if rv == None:
             raise SymbolResolutionError(rv.reason)
@@ -164,12 +280,14 @@ class OperatingSystemBase(plugins.Plugin):
                                                                      address)[1]
 
 class OperatingSystemWinX86_64(OperatingSystemBase):
+    """Base class for 64-bit Windows systems."""
     _abstract = False
     name = "OperatingSystem"
     arch = api.Arch.X86_64
     os = api.OsType.OS_WIN
 
 class OperatingSystemLinux(OperatingSystemBase):
+    """Base class for Linux systems."""
     _abstract = False
     name = "OperatingSystem"
     os = api.OsType.OS_LINUX
@@ -183,6 +301,13 @@ class OperatingSystemLinux(OperatingSystemBase):
 
     @property
     def pointer_width(self):
+        """Retrieve the width of a pointer.
+
+        Returns
+        -------
+        int
+            The pointer size.
+        """
         if self._pointer_width is None:
             if api.arch == api.Arch.X86_64 or api.arch == api.Arch.AARCH64:
                 self._pointer_width = 8
@@ -191,6 +316,18 @@ class OperatingSystemLinux(OperatingSystemBase):
         return self._pointer_width
 
     def read_kernel_pointer(self, addr):
+        """Read a kernel pointer from the given address.
+
+        Parameters
+        ----------
+        addr : int
+            The address of the pointer
+
+        Returns
+        -------
+        bytes
+            The value of the pointer.
+        """
         if self._struct_ptr_fmt is None:
             if self.pointer_width == 4:
                 self._struct_ptr_fmt = "<L"
@@ -202,6 +339,7 @@ class OperatingSystemLinux(OperatingSystemBase):
 
     @property
     def per_cpu(self):
+        """Get the location of the per_cpu offset."""
         if self._per_cpu is None:
             base = self.session.address_resolver.get_address_by_name(
                                                        "linux!__per_cpu_offset")
@@ -212,6 +350,21 @@ class OperatingSystemLinux(OperatingSystemBase):
         return self._per_cpu
 
     def current_process(self, cpu_num):
+        """Retrieve the current process.
+
+        Retrieve the process that is currently running on the given vCPU.
+
+        Parameters
+        ----------
+        cpu_num : int
+            Try to retrieve the process that is currently running on the vCPU
+            with the number cpu_num.
+
+        Returns
+        -------
+        object
+            A representation of the process.
+        """
         if self._per_cpu_current_task_offset is None:
             self._per_cpu_current_task_offset = self.session.profile.get_constant("current_task")
         task_struct_address = self.read_kernel_pointer(

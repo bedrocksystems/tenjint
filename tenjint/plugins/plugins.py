@@ -17,6 +17,12 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+"""tenjint's plugin subsystem.
+
+This module provides tenjint's plugin subsystem. The plugin subsystem is
+responsible for loading, unloading, and managing plugins.
+"""
+
 import glob
 import os
 import types
@@ -156,11 +162,10 @@ class Plugin(logger.LoggerMixin):
         self._service_manager.unregister_by_object(self)
 
 class EventPlugin(Plugin):
-    """Plugin class for plugins that produce events
+    """Plugin class for plugins that produce events."""
 
-    produces should hold a list of event classes this plugin produces
-    """
     produces = None
+    """produces should hold a list of event classes this plugin produces."""
 
     def __init__(self):
         super().__init__()
@@ -181,23 +186,43 @@ class EventPlugin(Plugin):
         raise NotImplementedError("cancel_event not implemented")
 
 class PluginManager(config.ConfigMixin, logger.LoggerMixin):
+    """The plugin manager.
+
+    The plugin manager is the main component of the plugin subsystem. It is
+    responsible for loading and unloading plugins.
+    """
     _config_options = [
         {
             "name": "plugin_dir", "default": None,
             "help": "The directory to look for third-party plugins."
         },
     ]
+    """Configuration options."""
 
     def __init__(self):
         super().__init__()
         self._loaded_plugins = list()
 
     def load_plugin(self, cls, **kwargs):
+        """Load the given plugin class.
+
+        Parameters
+        ----------
+        cls : class
+            The plugin class to load.
+        """
         plugin = cls.load(**kwargs)
         if plugin is not None:
             self._loaded_plugins.append(plugin)
 
     def unload_plugin(self, plugin):
+        """Unload the given plugin.
+
+        Parameters
+        ----------
+        plugin : Plugin
+            The plugin to unload.
+        """
         self._loaded_plugins.remove(plugin)
         plugin.uninit()
 
@@ -337,6 +362,7 @@ class PluginManager(config.ConfigMixin, logger.LoggerMixin):
             self.load_module(mod, **kwargs)
 
     def load_user_plugins(self):
+        """Load all user plugins specified in the configuration."""
         if self._config_values["plugin_dir"] is not None:
             self._logger.debug("Loading user plugins from \"{}\"...".format(
                                             self._config_values["plugin_dir"]))
@@ -345,14 +371,17 @@ class PluginManager(config.ConfigMixin, logger.LoggerMixin):
             self.import_and_load_directory(plugin_dir)
 
     def unload_all(self):
+        """Unload all plugins."""
         while self._loaded_plugins:
             plugin = self._loaded_plugins.pop()
             plugin.uninit()
 
 def init():
+    """Initialize the plugin subsystem."""
     pm = PluginManager()
     service.manager().register(pm)
 
 def uninit():
+    """Uninitialize the plugin subsystem."""
     service.manager().unregister_by_name("PluginManager")
 

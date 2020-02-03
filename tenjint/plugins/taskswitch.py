@@ -67,6 +67,11 @@ class TaskSwitchPluginBase(plugins.EventPlugin):
         pass
 
     def request_event(self, event_cls, **kwargs):
+        """Request task switch events.
+
+        This function is called by the EventManager when task switch events
+        are requested.
+        """
         # Parse request
         request = event_cls.parse_request_to_dict(**kwargs)
 
@@ -81,6 +86,11 @@ class TaskSwitchPluginBase(plugins.EventPlugin):
         return request_id
 
     def cancel_event(self, request_id):
+        """Cancel a task switch event request.
+
+        This function is called by the EventManager when a task switch event
+        request is canceled.
+        """
         request = self._requests.pop(request_id)
         self._update_feature(request, enable=False)
 

@@ -17,12 +17,14 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+"""This module implements breakpoints."""
+
 from . import plugins
 from .. import api
 from .. import event
 
 class Breakpoint(object):
-    """Breakpoint class
+    """This class represents a breakpoint.
 
     An object of this class represents a single requested BP.  It handles the
     automatic removal and insertion of the underlying QEMU breakpoint if the

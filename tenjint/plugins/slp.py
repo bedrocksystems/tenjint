@@ -17,11 +17,14 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+"""Provides second level paging permission trapping and updating."""
+
 from . import plugins
 from .. import api
 from .. import event
 
 class SLPPermUpdateViolation(Exception):
+    """Emitted when invalid SLP permissions are used in an update request."""
     pass
 
 class SLPPlugin(plugins.EventPlugin):

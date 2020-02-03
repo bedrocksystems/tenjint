@@ -48,6 +48,8 @@ class ConfigMixin(object):
         {"name": "option_name2", "default": "abc", "help": "help description"},
     ]
 
+    Notes
+    -----
     if _config_section is None, the class name will be used as a default.
     """
     _config_options = list()

@@ -17,7 +17,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-"""Python API for aarch64
+"""QEMU Python API for aarch64
 
 This file contains all python definitions (see tenjint_aarch64.pyx for the Cython
 definitions of the API) that are specific for aarch64.

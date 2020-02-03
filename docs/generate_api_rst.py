@@ -44,6 +44,8 @@ for (dirpath, dirnames, filenames) in walk("../tenjint/"):
             continue
         if ".pyc" in f:
             continue
+        if ".pyx" in f:
+            continue
         py.append(os.path.join(dirpath, f))
 
 # Generate template

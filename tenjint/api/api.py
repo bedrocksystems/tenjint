@@ -17,6 +17,8 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+"""Low-level QEMU Python API."""
+
 from enum import Enum
 
 from .. import event
@@ -42,9 +44,11 @@ class QemuFeatureError(Exception):
     pass
 
 class TranslationError(Exception):
+    """Raised when an address translation error occurs."""
     pass
 
 class UpdateSLPError(Exception):
+    """Raised when an SLP entry cannot be updated."""
     pass
 
 class SystemEventVmShutdown(event.Event):

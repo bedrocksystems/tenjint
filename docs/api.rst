@@ -25,10 +25,7 @@ API Reference
    tenjint.plugins.breakpoint
    tenjint.api.tenjintapi_x86_64
    tenjint.api.api_x86_64
-   tenjint.api.tenjintapi_x86_64
    tenjint.api.tenjintapi
    tenjint.api.tenjintapi
-   tenjint.api.tenjintapi_aarch64
    tenjint.api.api
    tenjint.api.api_aarch64
-   tenjint.api.tenjintapi

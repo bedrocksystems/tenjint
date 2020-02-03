@@ -17,6 +17,12 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+"""tenjint's main module.
+
+This is tenjint's main module that can be used to initialize, uninitialize,
+and to run tenjint.
+"""
+
 from . import api
 from . import service
 from . import event
@@ -35,11 +41,14 @@ from .plugins import interactive
 from .plugins import operatingsystem
 
 def run(configs=None):
+    """Initialize tenjint, start the event loop, and uninitialize tenjint after
+    it returns."""
     init(configs)
     event.run()
     uninit()
 
 def init(configs):
+    """Initialize tenjint."""
     # Load modules
     logger.debug("Loading modules...")
     config.init(configs)
@@ -67,6 +76,7 @@ def init(configs):
     logger.debug("tenjint initialized")
 
 def uninit():
+    """Uninitialize tenjint."""
     # Unload plugins
     logger.debug("Unoading plugins...")
     pm = service.manager().get("PluginManager")
