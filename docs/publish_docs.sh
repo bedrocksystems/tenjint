@@ -22,10 +22,11 @@
 
 # Clean
 rm -rf generated
-rm -rf html
+rm -rf _build
 
 # build
 python3 generate_api_rst.py
-sphinx-build -b html . html
+mkdir _build
+sphinx-build -b html . _build/html
 
 # publish. Todo.
