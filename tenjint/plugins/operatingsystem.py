@@ -68,6 +68,7 @@ class OperatingSystemBase(plugins.Plugin):
                         session.kernel_address_space = find_dtb.GetAddressSpaceImplementation()(
                                 base=session.physical_address_space, dtb=item["DTB"], session=session,
                                 profile=session.profile, kernel_slide=item["kernel_slide"])
+                        session.SetCache("kernel_slide", item["kernel_slide"], volatile=False)
                         break
                 if not session.kernel_address_space:
                     raise e
@@ -121,6 +122,27 @@ class OperatingSystemBase(plugins.Plugin):
         if rv == None:
             raise SymbolResolutionError(rv.reason)
         return rv
+
+    def get_nearest_symbol_by_address(self, address):
+        """Get symbols by address.
+
+        This function will attempt to look up the nearest symbol based on an
+        address. If multiple symbols are located at an equal distance from the
+        address, all of them will be returned.
+
+        Parameters
+        ----------
+        address : int
+            The address to use for the search.
+
+        Returns
+        -------
+        list
+            The nearest symbols for the given address. If no symbol can be
+            found an empty list will be returned.
+        """
+        return self.session.address_resolver.get_nearest_constant_by_address(
+                                                                     address)[1]
 
 class OperatingSystemWinX86_64(OperatingSystemBase):
     _abstract = False
