@@ -13,7 +13,7 @@ These repositories can all be found within the tenjint GitHub project.  tenjint 
 Linux
 =====
 
-We modified the KVM component within the `Linux kernel <https://www.kernel.org/>`_ in order to facilitate VMI for both x86_64 and ARM64.  We currently maintain `two versions https://github.com/bedrocksystems/tenjint-linux>`_, the vanilla v5.2.6 as well as the rpi-5.2.y branch for the Raspberry Pi 4.
+We modified the KVM component within the `Linux kernel <https://www.kernel.org/>`_ in order to facilitate VMI for both x86_64 and ARM64.  We currently maintain `two versions <https://github.com/bedrocksystems/tenjint-linux>`_, the vanilla v5.2.6 as well as the rpi-5.2.y branch for the Raspberry Pi 4.
 
 Qemu
 ====

@@ -29,4 +29,19 @@ python3 generate_api_rst.py
 mkdir _build
 sphinx-build -b html . _build/html
 
-# publish. Todo.
+# publish.
+mkdir /tmp/tenjint-new-doc
+cp -r _build/html/* /tmp/tenjint-new-doc
+git clone git@github.com:bedrocksystems/tenjint.git /tmp/tenjint-doc
+cd /tmp/tenjint-doc
+git branch -D gh-pages
+git checkout -b gh-pages
+rm -rf *
+cp -r /tmp/tenjint-new-doc/* .
+touch .nojekyll
+git add *
+git add .nojekyll
+git commit -a -m "documentation update"
+git push --force origin gh-pages
+rm -rf /tmp/tenjint-*
+cd -
