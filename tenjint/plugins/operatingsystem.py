@@ -127,6 +127,8 @@ class OperatingSystemBase(plugins.Plugin):
 
     def __init__(self):
         super().__init__()
+
+        self._pointer_width = None
         self._event_manager.add_continue_hook(self._cont_hook)
 
     def uninit(self):
@@ -135,6 +137,44 @@ class OperatingSystemBase(plugins.Plugin):
 
     def _cont_hook(self):
         self.session.cache.ClearVolatile()
+
+    @property
+    def pointer_width(self):
+        """Retrieve the width of a pointer.
+
+        Returns
+        -------
+        int
+            The pointer size.
+        """
+        if self._pointer_width is None:
+            if api.arch == api.Arch.X86_64 or api.arch == api.Arch.AARCH64:
+                self._pointer_width = 8
+            else:
+                self._pointer_width = 4
+        return self._pointer_width
+
+    def read_kernel_pointer(self, addr):
+        """Read a kernel pointer from the given address.
+
+        Parameters
+        ----------
+        addr : int
+            The address of the pointer
+
+        Returns
+        -------
+        bytes
+            The value of the pointer.
+        """
+        if self._struct_ptr_fmt is None:
+            if self.pointer_width == 4:
+                self._struct_ptr_fmt = "<L"
+            else:
+                self._struct_ptr_fmt = "<Q"
+        return struct.unpack(self._struct_ptr_fmt,
+                             self.session.kernel_address_space.read(addr,
+                                                         self.pointer_width))[0]
 
     def process(self, pid=None, dtb=None):
         """Get a process running in the guest.
@@ -295,47 +335,8 @@ class OperatingSystemLinux(OperatingSystemBase):
     def __init__(self):
         self._per_cpu = None
         self._per_cpu_current_task_offset = None
-        self._pointer_width = None
         self._struct_ptr_fmt = None
         super().__init__()
-
-    @property
-    def pointer_width(self):
-        """Retrieve the width of a pointer.
-
-        Returns
-        -------
-        int
-            The pointer size.
-        """
-        if self._pointer_width is None:
-            if api.arch == api.Arch.X86_64 or api.arch == api.Arch.AARCH64:
-                self._pointer_width = 8
-            else:
-                self._pointer_width = 4
-        return self._pointer_width
-
-    def read_kernel_pointer(self, addr):
-        """Read a kernel pointer from the given address.
-
-        Parameters
-        ----------
-        addr : int
-            The address of the pointer
-
-        Returns
-        -------
-        bytes
-            The value of the pointer.
-        """
-        if self._struct_ptr_fmt is None:
-            if self.pointer_width == 4:
-                self._struct_ptr_fmt = "<L"
-            else:
-                self._struct_ptr_fmt = "<Q"
-        return struct.unpack(self._struct_ptr_fmt,
-                             self.session.kernel_address_space.read(addr,
-                                                         self.pointer_width))[0]
 
     @property
     def per_cpu(self):
