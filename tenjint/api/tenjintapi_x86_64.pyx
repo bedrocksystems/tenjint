@@ -193,6 +193,8 @@ cdef extern from "i386/cpu.h":
 
         target_ulong cr[5]
 
+        uint64_t efer
+
     struct X86CPU:
         CPUX86State env
 
@@ -522,6 +524,15 @@ cdef class X86CpuState:
         self._dirty = 1
         self._qemu_x86_cpu_state.cr[4] = numpy.uint64(value)
 
+    @property
+    def efer(self):
+        return self._qemu_x86_cpu_state.efer
+
+    @efer.setter
+    def efer(self, value):
+        self._dirty = 1
+        self._qemu_x86_cpu_state.efer = numpy.uint64(value)
+
     def __repr__(self):
         result = "CPU {} State\n".format(self.cpu_num)
         result += "-----------------------------------------------\n"
@@ -552,6 +563,7 @@ cdef class X86CpuState:
         result += "IDT: {}\n".format(self.idt)
         result += "\n"
         result += "FLAGS: 0x{:016x}\n".format(self.rflags)
+        result += "EFER:  0x{:016x}\n".format(self.efer)
         result += "\n"
 
         return result
