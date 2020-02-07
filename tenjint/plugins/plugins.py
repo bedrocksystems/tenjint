@@ -153,6 +153,18 @@ class Plugin(logger.LoggerMixin):
         Plugin._os = self._service_manager.get("OperatingSystem")
         return self._os
 
+    @property
+    def _fargs(self):
+        """Get the function argument service (self replacing)
+
+        This property will obtain the os. It will replace itself
+        on the first access by adding a class attribute with the same name. This
+        will improve the performance of further accesses to the property for
+        all classes that use it.
+        """
+        Plugin._fargs = self._service_manager.get("FunctionArguments")
+        return self._fargs
+
     def uninit(self):
         """Uninit function
 

@@ -39,6 +39,7 @@ from .plugins import singlestep
 from .plugins import breakpoint
 from .plugins import interactive
 from .plugins import operatingsystem
+from .plugins import fargs
 
 def run(configs=None):
     """Initialize tenjint, start the event loop, and uninitialize tenjint after
@@ -68,6 +69,7 @@ def init(configs):
     pm.load_module(slp)
     pm.load_module(singlestep)
     pm.load_module(breakpoint)
+    pm.load_module(fargs)
     pm.load_module(interactive)
 
     logger.debug("Loading user plugins...")

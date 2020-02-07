@@ -533,6 +533,53 @@ cdef class X86CpuState:
         self._dirty = 1
         self._qemu_x86_cpu_state.efer = numpy.uint64(value)
 
+    @property
+    def is_paging_set(self):
+        """Is the paging bit set."""
+        return bool(self.cr0 & (1 << 31))
+
+    @property
+    def is_pae_set(self):
+        """Is the PAE bit set"""
+        return bool(self.cr4 & (1 << 5))
+
+    @property
+    def is_ia32e(self):
+        """Is the processor in IA-32e mode."""
+        return bool(self.efer & (1 << 10))
+
+    @property
+    def is_code_64(self):
+        """Is the L flag set in the code segment."""
+        return bool(self.cs.flags & (1 << 21))
+
+    @property
+    def is_code_32(self):
+        """L flag not set and D/B set to 1."""
+        return not self.is_code_64 and bool(self.cs.flags & (1 << 22))
+
+    @property
+    def is_code_16(self):
+        """L flag not set and D/B set to 0."""
+        return not self.is_code_64 and not bool(self.cs.flags & (1 << 22))
+
+    @property
+    def is_supervisor(self):
+        """Is the processor in supervisor mode."""
+        return not bool(self.cs.selector & 3)
+
+    @property
+    def pointer_width(self):
+        if not self.is_paging_set:
+            raise RuntimeError("no paging set.")
+
+        if self.is_ia32e and self.is_code_64:
+            return 8
+        elif self.is_code_16:
+            return 2
+        else:
+            return 4
+
     def __repr__(self):
         result = "CPU {} State\n".format(self.cpu_num)
         result += "-----------------------------------------------\n"

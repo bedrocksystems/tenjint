@@ -104,6 +104,72 @@ class VirtualMachineBase(plugins.Plugin):
             dtb = self.cpu(cpu_num).page_table_base(addr)
         return api.tenjint_api_vtop(addr, dtb)
 
+    def mem_read(self, addr, size, dtb=None, cpu_num=None):
+        """Read virtual memory.
+
+        This function allows to read the guests virtual memory.
+
+        Parameters
+        ----------
+        addr : int
+            The virtual address to read from.
+        size : int
+            The number of bytes to read.
+        dtb : int, optional
+            The directory table base that should be used for the read. If
+            no dtb is provided, the dtb on the given cpu (cpu_num) will be used.
+        cpu_num : int, optional
+            The number of the CPU that should be used for the read. If no
+            dtb and cpu_num have been specified, cpu_num 0 will be used.
+
+        Returns
+        -------
+        bytes
+            The requested bytes.
+
+        Raises
+        ------
+        tenjint.api.api.TranslationError
+            If the virtual address connot be translated to a physical address.
+        RuntimeError
+            If the requested physical memory cannot be read.
+        """
+        paddr = self.vtop(addr, dtb=dtb, cpu_num=cpu_num)
+        return self.phys_mem_read(paddr, size)
+
+    def mem_write(self, addr, buf, dtb=None, cpu_num=None):
+        """Write virtual memory.
+
+        This function allows to write to the guests virtual memory.
+
+        Parameters
+        ----------
+        addr : int
+            The virtual address to write to.
+        buf : bytes
+            The data to write.
+        dtb : int, optional
+            The directory table base that should be used for the write. If
+            no dtb is provided, the dtb on the given cpu (cpu_num) will be used.
+        cpu_num : int, optional
+            The number of the CPU that should be used for the write. If no
+            dtb and cpu_num have been specified, cpu_num 0 will be used.
+
+        Returns
+        -------
+        bytes
+            The requested bytes.
+
+        Raises
+        ------
+        tenjint.api.api.TranslationError
+            If the virtual address connot be translated to a physical address.
+        RuntimeError
+            If the requested physical memory cannot be written.
+        """
+        paddr = self.vtop(addr, dtb=dtb, cpu_num=cpu_num)
+        return self.phys_mem_write(paddr, buf)
+
     @property
     def cpu_count(self):
         """Obtain the number of vCPUs that the VM has."""
