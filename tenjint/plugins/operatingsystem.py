@@ -129,6 +129,7 @@ class OperatingSystemBase(plugins.Plugin):
         super().__init__()
 
         self._pointer_width = None
+        self._struct_ptr_fmt = None
         self._event_manager.add_continue_hook(self._cont_hook)
 
     def uninit(self):
@@ -326,16 +327,16 @@ class OperatingSystemWinX86_64(OperatingSystemBase):
     arch = api.Arch.X86_64
     os = api.OsType.OS_WIN
 
-class OperatingSystemLinux(OperatingSystemBase):
+class OperatingSystemLinuxX86(OperatingSystemBase):
     """Base class for Linux systems."""
     _abstract = False
     name = "OperatingSystem"
     os = api.OsType.OS_LINUX
+    arch = api.Arch.X86_64
 
     def __init__(self):
         self._per_cpu = None
         self._per_cpu_current_task_offset = None
-        self._struct_ptr_fmt = None
         super().__init__()
 
     @property
@@ -367,7 +368,55 @@ class OperatingSystemLinux(OperatingSystemBase):
             A representation of the process.
         """
         if self._per_cpu_current_task_offset is None:
-            self._per_cpu_current_task_offset = self.session.profile.get_constant("current_task")
+            self._per_cpu_current_task_offset = \
+                               self.session.profile.get_constant("current_task")
         task_struct_address = self.read_kernel_pointer(
                     (self.per_cpu[cpu_num] + self._per_cpu_current_task_offset))
+        return self.session.profile.task_struct(task_struct_address)
+
+class OperatingSystemLinuxAarch64(OperatingSystemBase):
+    """Base class for Linux systems."""
+    _abstract = False
+    name = "OperatingSystem"
+    os = api.OsType.OS_LINUX
+    arch = api.Arch.AARCH64
+
+    def __init__(self):
+        self._per_cpu = None
+        self._per_cpu_entry_task_offset = None
+        super().__init__()
+
+    @property
+    def per_cpu(self):
+        """Get the location of the per_cpu offset."""
+        if self._per_cpu is None:
+            base = self.session.address_resolver.get_address_by_name(
+                                                       "linux!__per_cpu_offset")
+            self._per_cpu = list()
+            for offset in range(0, (self._vm.cpu_count * self.pointer_width),
+                                                            self.pointer_width):
+                self._per_cpu.append(self.read_kernel_pointer(base+offset))
+        return self._per_cpu
+
+    def current_process(self, cpu_num):
+        """Retrieve the current process.
+
+        Retrieve the process that is currently running on the given vCPU.
+
+        Parameters
+        ----------
+        cpu_num : int
+            Try to retrieve the process that is currently running on the vCPU
+            with the number cpu_num.
+
+        Returns
+        -------
+        object
+            A representation of the process.
+        """
+        if self._per_cpu_entry_task_offset is None:
+            self._per_cpu_entry_task_offset = self.get_symbol_address(
+                                                           "linux!__entry_task")
+        task_struct_address = self.read_kernel_pointer(
+                    (self.per_cpu[cpu_num] + self._per_cpu_entry_task_offset))
         return self.session.profile.task_struct(task_struct_address)

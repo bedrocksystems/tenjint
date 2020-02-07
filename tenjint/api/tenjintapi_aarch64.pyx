@@ -593,6 +593,10 @@ cdef class Aarch64CpuState:
         self._dirty = 1
         self._qemu_arm_cpu_state.cp15.tcr_el[1].raw_tcr = value
 
+    @property
+    def pointer_width(self):
+        return 8
+
     def __repr__(self):
         result = "CPU {} State\n".format(self.cpu_num)
         result += "-----------------------------------------------\n"
