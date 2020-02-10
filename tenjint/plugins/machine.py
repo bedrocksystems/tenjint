@@ -173,6 +173,34 @@ class VirtualMachineBase(plugins.Plugin):
         return self.phys_mem_write(paddr, buf)
 
     def read_pointer(self, addr, dtb=None, cpu_num=None, width=None):
+        """Read pointer from guest memory.
+
+        This function reads a pointer from the guest.  It allows the caller to
+        specify either a 4 or an 8 byte width.  If this is omitted, the width
+        is queried from the cpu.
+
+        Parameters
+        ----------
+        addr : int
+            The virtual address to read from.
+        dtb : int, optional
+            The directory table base that should be used for the read.  If
+            no dtb is provided, the dtb on the given cpu (cpu_num) will be used.
+        cpu_num : int, optional
+            The number of the CPU that should be used for the read. If no
+            dtb and cpu_num have been specified, cpu_num 0 will be used for the
+            read.
+        width : int, optional
+            The width of the pointer to read.  This value must either be 4 or 8.
+            If no width is provided, the cpu specified by cpu_num will be used
+            to determine the width.
+
+        Raises
+        ------
+        RuntimeError
+            This is raised if neither a width or cpu_num is specified or if the
+            width specified is neither 4 nor 8.
+        """
         if width is None:
             if cpu_num is None:
                 raise RuntimeError("Unable to determine width without cpu_num")
