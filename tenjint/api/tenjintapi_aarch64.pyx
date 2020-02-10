@@ -139,6 +139,7 @@ cdef extern from "arm/cpu.h":
         uint64_t xregs[32]
         uint64_t pc
         uint32_t pstate
+        uint32_t aarch64
         uint64_t elr_el[4]
         uint64_t sp_el[4]
         _cp15_t cp15
@@ -604,12 +605,18 @@ cdef class Aarch64CpuState:
         self._qemu_arm_cpu_state.pstate = value
 
     @property
+    def aarch64(self):
+        return self._qemu_arm_cpu_state.aarch64
+
+    @property
     def el(self):
         return (self.pstate >> 2 & 3)
 
     @property
     def pointer_width(self):
-        return 8
+        if self.aarch64:
+            return 8
+        return 4
 
     def __repr__(self):
         result = "CPU {} State\n".format(self.cpu_num)
