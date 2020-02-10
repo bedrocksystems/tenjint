@@ -22,6 +22,8 @@
 from . import plugins
 from .. import api
 
+import struct
+
 class VirtualMachineBase(plugins.Plugin):
     """Base class for all virtual machines (VMs)."""
 
@@ -169,6 +171,24 @@ class VirtualMachineBase(plugins.Plugin):
         """
         paddr = self.vtop(addr, dtb=dtb, cpu_num=cpu_num)
         return self.phys_mem_write(paddr, buf)
+
+    def read_pointer(self, addr, dtb=None, cpu_num=None, width=None):
+        if width is None:
+            if cpu_num is None:
+                raise RuntimeError("Unable to determine width without cpu_num")
+            width = self.cpu(cpu_num).pointer_width
+
+        if width != 4 and width != 8:
+            raise RuntimeError("invalid pointer length")
+
+        buf = self.mem_read(addr, width, dtb=dtb, cpu_num=cpu_num)
+
+        if width == 8:
+            rv = struct.unpack("<Q", buf)[0]
+        else:
+            rv = struct.unpack("<I", buf)[0]
+
+        return rv
 
     @property
     def cpu_count(self):
