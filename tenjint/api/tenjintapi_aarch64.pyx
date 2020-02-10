@@ -138,6 +138,7 @@ cdef extern from "arm/cpu.h":
         uint32_t regs[16]
         uint64_t xregs[32]
         uint64_t pc
+        uint32_t pstate
         uint64_t elr_el[4]
         uint64_t sp_el[4]
         _cp15_t cp15
@@ -592,6 +593,18 @@ cdef class Aarch64CpuState:
     def tcr_el1(self, value):
         self._dirty = 1
         self._qemu_arm_cpu_state.cp15.tcr_el[1].raw_tcr = value
+
+    @property
+    def pstate(self):
+        return self._qemu_arm_cpu_state.pstate
+
+    @pstate.setter
+    def pstate(self, value):
+        self._dirty = 1
+        self._qemu_arm_cpu_state.pstate = value
+
+    def el(self, value):
+        return (self.pstate >> 2 & 3)
 
     @property
     def pointer_width(self):
