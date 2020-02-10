@@ -603,7 +603,8 @@ cdef class Aarch64CpuState:
         self._dirty = 1
         self._qemu_arm_cpu_state.pstate = value
 
-    def el(self, value):
+    @property
+    def el(self):
         return (self.pstate >> 2 & 3)
 
     @property
