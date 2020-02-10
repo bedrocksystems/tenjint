@@ -497,33 +497,6 @@ cdef class Aarch64CpuState:
         self._qemu_arm_cpu_state.sp_el[1] = numpy.uint64(value)
 
     @property
-    def sp_el2(self):
-        return self._qemu_arm_cpu_state.sp_el[2]
-
-    @sp_el2.setter
-    def sp_el2(self, value):
-        self._dirty = 1
-        self._qemu_arm_cpu_state.sp_el[2] = numpy.uint64(value)
-
-    @property
-    def sp_el3(self):
-        return self._qemu_arm_cpu_state.sp_el[3]
-
-    @sp_el3.setter
-    def sp_el3(self, value):
-        self._dirty = 1
-        self._qemu_arm_cpu_state.sp_el[3] = numpy.uint64(value)
-
-    @property
-    def ttbr0_el0(self):
-        return self._qemu_arm_cpu_state.cp15.ttbr0_el[0]
-
-    @ttbr0_el0.setter
-    def ttbr0_el0(self, value):
-        self._dirty = 1
-        self._qemu_arm_cpu_state.cp15.ttbr0_el[0] = numpy.uint64(value)
-
-    @property
     def ttbr0_el1(self):
         return self._qemu_arm_cpu_state.cp15.ttbr0_el[1]
 
@@ -533,33 +506,6 @@ cdef class Aarch64CpuState:
         self._qemu_arm_cpu_state.cp15.ttbr0_el[1] = numpy.uint64(value)
 
     @property
-    def ttbr0_el2(self):
-        return self._qemu_arm_cpu_state.cp15.ttbr0_el[2]
-
-    @ttbr0_el2.setter
-    def ttbr0_el2(self, value):
-        self._dirty = 1
-        self._qemu_arm_cpu_state.cp15.ttbr0_el[2] = numpy.uint64(value)
-
-    @property
-    def ttbr0_el3(self):
-        return self._qemu_arm_cpu_state.cp15.ttbr0_el[3]
-
-    @ttbr0_el3.setter
-    def ttbr0_el3(self, value):
-        self._dirty = 1
-        self._qemu_arm_cpu_state.cp15.ttbr0_el[3] = numpy.uint64(value)
-
-    @property
-    def ttbr1_el0(self):
-        return self._qemu_arm_cpu_state.cp15.ttbr1_el[0]
-
-    @ttbr1_el0.setter
-    def ttbr1_el0(self, value):
-        self._dirty = 1
-        self._qemu_arm_cpu_state.cp15.ttbr1_el[0] = numpy.uint64(value)
-
-    @property
     def ttbr1_el1(self):
         return self._qemu_arm_cpu_state.cp15.ttbr1_el[1]
 
@@ -567,24 +513,6 @@ cdef class Aarch64CpuState:
     def ttbr1_el1(self, value):
         self._dirty = 1
         self._qemu_arm_cpu_state.cp15.ttbr1_el[1] = numpy.uint64(value)
-
-    @property
-    def ttbr1_el2(self):
-        return self._qemu_arm_cpu_state.cp15.ttbr1_el[2]
-
-    @ttbr1_el2.setter
-    def ttbr1_el2(self, value):
-        self._dirty = 1
-        self._qemu_arm_cpu_state.cp15.ttbr1_el[2] = numpy.uint64(value)
-
-    @property
-    def ttbr1_el3(self):
-        return self._qemu_arm_cpu_state.cp15.ttbr1_el[3]
-
-    @ttbr1_el3.setter
-    def ttbr1_el3(self, value):
-        self._dirty = 1
-        self._qemu_arm_cpu_state.cp15.ttbr1_el[3] = numpy.uint64(value)
 
     @property
     def tcr_el1(self):
@@ -598,11 +526,6 @@ cdef class Aarch64CpuState:
     @property
     def pstate(self):
         return self._qemu_arm_cpu_state.pstate
-
-    @pstate.setter
-    def pstate(self, value):
-        self._dirty = 1
-        self._qemu_arm_cpu_state.pstate = value
 
     @property
     def aarch64(self):
@@ -641,21 +564,10 @@ cdef class Aarch64CpuState:
         result += "PC:  0x{:016x}\n".format(self.pc)
         result += "SP_EL0: 0x{:016x}\tSP_EL1: 0x{:016x}\n".format(self.sp_el0,
                                                                   self.sp_el1)
-        result += "SP_EL2: 0x{:016x}\tSP_EL3: 0x{:016x}\n".format(self.sp_el2,
-                                                                  self.sp_el3)
         result += "\n"
-        result += "TTBR0_EL0: 0x{:016x}\tTTBR0_EL1: 0x{:016x}\n".format(
-                                                                self.ttbr0_el0,
-                                                                self.ttbr0_el1)
-        result += "TTBR0_EL2: 0x{:016x}\tTTBR0_EL3: 0x{:016x}\n".format(
-                                                                self.ttbr0_el2,
-                                                                self.ttbr0_el3)
-        result += "TTBR1_EL0: 0x{:016x}\tTTBR1_EL1: 0x{:016x}\n".format(
-                                                                self.ttbr1_el0,
+        result += "TTBR0_EL1: 0x{:016x}\tTTBR1_EL1: 0x{:016x}\n".format(
+                                                                self.ttbr0_el1,
                                                                 self.ttbr1_el1)
-        result += "TTBR1_EL2: 0x{:016x}\tTTBR1_EL3: 0x{:016x}\n".format(
-                                                                self.ttbr1_el2,
-                                                                self.ttbr1_el3)
         result += "TCR_EL1: 0x{:016x}\n".format(self.tcr_el1)
         result += "\n"
 
