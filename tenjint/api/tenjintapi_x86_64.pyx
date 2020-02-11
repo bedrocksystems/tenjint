@@ -26,6 +26,8 @@ from . cimport tenjintapi
 from . import api
 from . import api_x86_64
 
+from libc.string cimport memcpy
+
 ctypedef signed char __s8
 ctypedef signed short __s16
 ctypedef signed int __s32
@@ -252,6 +254,23 @@ cdef class X86SegmentState:
                                                      self.limit, self.flags)
 
 
+cdef class X86SavedState:
+    cdef target_ulong regs[CPU_NB_REGS]
+    cdef target_ulong eip
+    cdef uint64_t efer
+
+    def __cinit__(self, state):
+        cdef CPUX86State *_state = (<X86CpuState>state).state()
+        self.eip = _state.eip
+        self.efer = _state.efer
+        memcpy(self.regs, _state.regs, sizeof(self.regs))
+
+    def restore(self, state):
+        cdef CPUX86State *_state = (<X86CpuState>state).state()
+        _state.eip = self.eip
+        _state.efer = self.efer
+        memcpy(_state.regs, self.regs, sizeof(_state.regs))
+
 cdef class X86CpuState:
     cdef CPUX86State *_qemu_x86_cpu_state
     cdef int32_t _dirty
@@ -296,6 +315,9 @@ cdef class X86CpuState:
         del self.gdt
         del self.idt
 
+    cdef CPUX86State *state(self):
+        return self._qemu_x86_cpu_state
+
     cdef reset(self, CPUX86State *state):
         self._dirty = 0
         self._qemu_x86_cpu_state = state
@@ -311,6 +333,34 @@ cdef class X86CpuState:
         self.tr.reset(&(state.tr))
         self.gdt.reset(&(state.gdt))
         self.idt.reset(&(state.idt))
+
+    def save_state(self):
+        """Save the current state of the vCPU.
+
+        This function will return the current state of the vCPU.
+        Not all parts of the state will be saved, but only the general purpose
+        registers, the eip, and the efer. A saved state can be restored using
+        `restore_state`.
+
+        Returns
+        -------
+        X86SavedState
+            The current state of the vCPU
+        """
+        return X86SavedState(self)
+
+    def restore_state(self, state):
+        """Restore a previous vCPU state.
+
+        This function will restore a previously saved vCPU state. See
+        `save_state` fore details.
+
+        Parameters
+        -------
+        X86SavedState
+            The state of the vCPU to restore.
+        """
+        state.restore(self)
 
     # virtual registers
     @property
