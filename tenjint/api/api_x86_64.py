@@ -38,8 +38,8 @@ class LBRState(object):
         result = "LBR State - TOS: {}\n".format(self.tos)
         result += "{}\n".format("-" * 46)
         for i in range(0, self.size):
-            cur = (self.tos + i) % self.size
-            result += "[{:2d}]  0x{:16x} -> 0x{:16x}\n".format(cur,
+            cur = (self.tos - i) % self.size
+            result += "[{:2d}]  {:#18x} -> {:#18x}\n".format(cur,
                                                              self.lbr_from[cur],
                                                              self.lbr_to[cur])
         return result
