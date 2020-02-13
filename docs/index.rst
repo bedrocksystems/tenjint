@@ -73,19 +73,19 @@ Notice the "plugin_dir" in the "PluginManager" section, this is used to specify 
 
 Qemu with tenjint enabled on x86_64::
 
-    $ qemu-system-x86_64 -machine accel=kvm,vmi=on,vmi-configs=~/home/user/tenjint_config.yml -no-hpet -rtc base=utc,clock=vm,driftfix=none -global kvm-pit.lost_tick_policy=discard -smp 2 -m 2048 -net none -loadvm analysis -hda /home/user/images/ubuntu_19_04_x86_64.qcow2 -monitor telnet:127.0.0.1:5555,server,nowait
+    $ qemu-system-x86_64 -machine accel=kvm,vmi=on,vmi-configs=/home/user/tenjint_config.yml -no-hpet -rtc base=utc,clock=vm,driftfix=none -global kvm-pit.lost_tick_policy=discard -smp 2 -m 2048 -net none -loadvm analysis -hda /home/user/images/ubuntu_19_04_x86_64.qcow2 -monitor telnet:127.0.0.1:5555,server,nowait
 
 
 Qemu with tenjint enabled on ARM64::
 
-    $ qemu-system-aarch64 -M virt,gic_version=3,accel=kvm,vmi=on,vmi-configs=~/home/user/tenjint_config.yml -cpu host -smp 2 -m 2048 -rtc base=utc,clock=vm -bios /usr/share/qemu-efi/QEMU_EFI.fd -drive if=none,file=/home/user/images/ubuntu_19_04_aarch64.qcow2,id=hd0 -device virtio-blk-device,drive=hd0 -device e1000,netdev=net0 -netdev user,id=net0,hostfwd=tcp:127.0.0.1:5555-:22 -monitor tcp:localhost:4444,server,nowait -loadvm analysis
+    $ qemu-system-aarch64 -M virt,gic_version=3,accel=kvm,vmi=on,vmi-configs=/home/user/tenjint_config.yml -cpu host -smp 2 -m 2048 -rtc base=utc,clock=vm -bios /usr/share/qemu-efi/QEMU_EFI.fd -drive if=none,file=/home/user/images/ubuntu_19_04_aarch64.qcow2,id=hd0 -device virtio-blk-device,drive=hd0 -device e1000,netdev=net0 -netdev user,id=net0,hostfwd=tcp:127.0.0.1:5555-:22 -monitor tcp:localhost:4444,server,nowait -loadvm analysis
 
 Notice the clock options, these are recommended for use with tenjint.  Additionally, for now tenjint will only work when the guest is started from a snapshot.  Notice both examples assume a snapshot with the name "analysis" has already been created.
 
 API
 ===
 
-The API reference can be found on the left.
+The API reference can be found in the menu.
 
 The API can be used to write third-party plugins.  These plugins simply need to be copied into the plugin directory as specified in the configuration file.  See above for an example.
 
@@ -101,3 +101,4 @@ tenjint@bedrocksystems.com
    :hidden:
 
    api
+   rpi
