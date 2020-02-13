@@ -1,0 +1,6 @@
+CpuEvent.parse\_request
+=======================
+
+.. currentmodule:: tenjint.event
+
+.. automethod:: CpuEvent.parse_request

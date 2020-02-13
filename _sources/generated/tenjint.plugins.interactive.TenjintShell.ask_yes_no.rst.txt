@@ -1,0 +1,6 @@
+TenjintShell.ask\_yes\_no
+=========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.ask_yes_no

@@ -1,0 +1,6 @@
+TenjintShell.prefilter\_manager
+===============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.prefilter_manager

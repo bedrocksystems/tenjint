@@ -1,0 +1,6 @@
+TenjintShell.class\_traits
+==========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.class_traits

@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>PluginManager &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PluginManager.__init__" href="tenjint.plugins.plugins.PluginManager.__init__.html" />
+    <link rel="prev" title="Plugin.uninit" href="tenjint.plugins.plugins.Plugin.uninit.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tenjint.event.html">tenjint.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.output.html">tenjint.output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.service.html">tenjint.service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.logger.html">tenjint.logger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.optimize.html">tenjint.optimize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.config.html">tenjint.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.debug.html">tenjint.debug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.tenjint.html">tenjint.tenjint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.machine.html">tenjint.plugins.machine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.operatingsystem.html">tenjint.plugins.operatingsystem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.singlestep.html">tenjint.plugins.singlestep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.breakpoint.html">tenjint.plugins.breakpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.slp.html">tenjint.plugins.slp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.taskswitch.html">tenjint.plugins.taskswitch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.interactive.html">tenjint.plugins.interactive</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="tenjint.plugins.plugins.html">tenjint.plugins.plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tenjint.plugins.plugins.EventPlugin.html">EventPlugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tenjint.plugins.plugins.Plugin.html">Plugin</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">PluginManager</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.__init__.html">PluginManager.__init__</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.get_plugins_in_module.html">PluginManager.get_plugins_in_module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.import_and_load_directory.html">PluginManager.import_and_load_directory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.import_and_load_file.html">PluginManager.import_and_load_file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.import_directory.html">PluginManager.import_directory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.import_file.html">PluginManager.import_file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.load_module.html">PluginManager.load_module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.load_plugin.html">PluginManager.load_plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.load_user_plugins.html">PluginManager.load_user_plugins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.unload_all.html">PluginManager.unload_all</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.unload_plugin.html">PluginManager.unload_plugin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tenjint.plugins.plugins.init.html">init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tenjint.plugins.plugins.uninit.html">uninit</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.api.api_x86_64.html">tenjint.api.api_x86_64</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.api.api.html">tenjint.api.api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.api.api_aarch64.html">tenjint.api.api_aarch64</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rpi.html">tenjint Raspberry Pi 4 Image</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="tenjint.plugins.plugins.html">tenjint.plugins.plugins</a> &raquo;</li>
+        
+      <li>PluginManager</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/generated/tenjint.plugins.plugins.PluginManager.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pluginmanager">
+<h1>PluginManager<a class="headerlink" href="#pluginmanager" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="tenjint.plugins.plugins.PluginManager">
+<em class="property">class </em><code class="sig-prename descclassname">tenjint.plugins.plugins.</code><code class="sig-name descname">PluginManager</code><a class="reference internal" href="../_modules/tenjint/plugins/plugins.html#PluginManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tenjint.plugins.plugins.PluginManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>The plugin manager.</p>
+<p>The plugin manager is the main component of the plugin subsystem. It is
+responsible for loading and unloading plugins.</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.__init__.html#tenjint.plugins.plugins.PluginManager.__init__" title="tenjint.plugins.plugins.PluginManager.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PluginManager.__init__</span></code></a>()</p></td>
+<td><p>Initialize self.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.get_plugins_in_module.html#tenjint.plugins.plugins.PluginManager.get_plugins_in_module" title="tenjint.plugins.plugins.PluginManager.get_plugins_in_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PluginManager.get_plugins_in_module</span></code></a>(mod)</p></td>
+<td><p>Get all plugins contained in a module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.import_and_load_directory.html#tenjint.plugins.plugins.PluginManager.import_and_load_directory" title="tenjint.plugins.plugins.PluginManager.import_and_load_directory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PluginManager.import_and_load_directory</span></code></a>(path)</p></td>
+<td><p>Import and load all plugins contained in a directory.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.import_and_load_file.html#tenjint.plugins.plugins.PluginManager.import_and_load_file" title="tenjint.plugins.plugins.PluginManager.import_and_load_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PluginManager.import_and_load_file</span></code></a>(path[, …])</p></td>
+<td><p>Import and load all plugins contained in python source file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.import_directory.html#tenjint.plugins.plugins.PluginManager.import_directory" title="tenjint.plugins.plugins.PluginManager.import_directory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PluginManager.import_directory</span></code></a>(path[, …])</p></td>
+<td><p>Import all python source files in a directory.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.import_file.html#tenjint.plugins.plugins.PluginManager.import_file" title="tenjint.plugins.plugins.PluginManager.import_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PluginManager.import_file</span></code></a>(path[, module_name])</p></td>
+<td><p>Import a python source file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.load_module.html#tenjint.plugins.plugins.PluginManager.load_module" title="tenjint.plugins.plugins.PluginManager.load_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PluginManager.load_module</span></code></a>(mod, **kwargs)</p></td>
+<td><p>Load all plugins contained in a module.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.load_plugin.html#tenjint.plugins.plugins.PluginManager.load_plugin" title="tenjint.plugins.plugins.PluginManager.load_plugin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PluginManager.load_plugin</span></code></a>(cls, **kwargs)</p></td>
+<td><p>Load the given plugin class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.load_user_plugins.html#tenjint.plugins.plugins.PluginManager.load_user_plugins" title="tenjint.plugins.plugins.PluginManager.load_user_plugins"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PluginManager.load_user_plugins</span></code></a>()</p></td>
+<td><p>Load all user plugins specified in the configuration.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.unload_all.html#tenjint.plugins.plugins.PluginManager.unload_all" title="tenjint.plugins.plugins.PluginManager.unload_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PluginManager.unload_all</span></code></a>()</p></td>
+<td><p>Unload all plugins.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.plugins.PluginManager.unload_plugin.html#tenjint.plugins.plugins.PluginManager.unload_plugin" title="tenjint.plugins.plugins.PluginManager.unload_plugin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PluginManager.unload_plugin</span></code></a>(plugin)</p></td>
+<td><p>Unload the given plugin.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tenjint.plugins.plugins.PluginManager.__init__.html" class="btn btn-neutral float-right" title="PluginManager.__init__" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tenjint.plugins.plugins.Plugin.uninit.html" class="btn btn-neutral float-left" title="Plugin.uninit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

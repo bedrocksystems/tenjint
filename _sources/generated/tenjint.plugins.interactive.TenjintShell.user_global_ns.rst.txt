@@ -1,0 +1,6 @@
+TenjintShell.user\_global\_ns
+=============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoproperty:: TenjintShell.user_global_ns

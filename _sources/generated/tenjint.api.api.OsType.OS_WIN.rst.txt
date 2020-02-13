@@ -1,0 +1,6 @@
+OsType.OS\_WIN
+==============
+
+.. currentmodule:: tenjint.api.api
+
+.. autoattribute:: OsType.OS_WIN

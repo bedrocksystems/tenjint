@@ -1,0 +1,6 @@
+TenjintShell.init\_syntax\_highlighting
+=======================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.init_syntax_highlighting

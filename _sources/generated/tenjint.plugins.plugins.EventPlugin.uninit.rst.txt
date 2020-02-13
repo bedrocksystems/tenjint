@@ -1,0 +1,6 @@
+EventPlugin.uninit
+==================
+
+.. currentmodule:: tenjint.plugins.plugins
+
+.. automethod:: EventPlugin.uninit

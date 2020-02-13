@@ -1,0 +1,6 @@
+VirtualMachineX86\_64.arch
+==========================
+
+.. currentmodule:: tenjint.plugins.machine
+
+.. autoattribute:: VirtualMachineX86_64.arch

@@ -1,0 +1,6 @@
+ServiceManager.\_\_init\_\_
+===========================
+
+.. currentmodule:: tenjint.service
+
+.. automethod:: ServiceManager.__init__

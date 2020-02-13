@@ -1,0 +1,6 @@
+TenjintShell.clear\_main\_mod\_cache
+====================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.clear_main_mod_cache

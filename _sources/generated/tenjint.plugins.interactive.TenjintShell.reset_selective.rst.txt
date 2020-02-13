@@ -1,0 +1,6 @@
+TenjintShell.reset\_selective
+=============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.reset_selective

@@ -1,0 +1,6 @@
+Profiling.uninit
+================
+
+.. currentmodule:: tenjint.debug
+
+.. automethod:: Profiling.uninit

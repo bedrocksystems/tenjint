@@ -1,0 +1,6 @@
+tenjintInputTransformer
+=======================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autofunction:: tenjintInputTransformer

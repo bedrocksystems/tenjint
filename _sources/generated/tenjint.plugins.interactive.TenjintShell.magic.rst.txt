@@ -1,0 +1,6 @@
+TenjintShell.magic
+==================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.magic

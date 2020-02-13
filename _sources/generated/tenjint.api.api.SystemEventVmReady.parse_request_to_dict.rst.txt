@@ -1,0 +1,6 @@
+SystemEventVmReady.parse\_request\_to\_dict
+===========================================
+
+.. currentmodule:: tenjint.api.api
+
+.. automethod:: SystemEventVmReady.parse_request_to_dict

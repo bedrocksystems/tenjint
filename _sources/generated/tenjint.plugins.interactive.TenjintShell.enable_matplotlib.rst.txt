@@ -1,0 +1,6 @@
+TenjintShell.enable\_matplotlib
+===============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.enable_matplotlib

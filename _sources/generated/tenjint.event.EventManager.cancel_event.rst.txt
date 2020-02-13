@@ -1,0 +1,6 @@
+EventManager.cancel\_event
+==========================
+
+.. currentmodule:: tenjint.event
+
+.. automethod:: EventManager.cancel_event

@@ -1,0 +1,6 @@
+TenjintShell.profile
+====================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoproperty:: TenjintShell.profile

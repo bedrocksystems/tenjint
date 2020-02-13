@@ -1,0 +1,16 @@
+tenjint.plugins.slp
+===================
+
+.. rubric:: Description
+.. automodule:: tenjint.plugins.slp
+.. currentmodule:: tenjint.plugins.slp
+
+
+.. rubric:: Classes
+.. autosummary::
+    :toctree:
+    
+    SLPPlugin
+    
+
+

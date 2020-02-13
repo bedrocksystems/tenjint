@@ -1,0 +1,36 @@
+CpuEvent
+========
+
+.. currentmodule:: tenjint.event
+
+.. autoclass:: CpuEvent
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      CpuEvent.params
+   
+      CpuEvent.producer
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      CpuEvent.__init__
+   
+      CpuEvent.filter
+   
+      CpuEvent.parse_request
+   
+      CpuEvent.parse_request_to_dict
+   
+   
+   

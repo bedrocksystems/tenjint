@@ -1,0 +1,42 @@
+BreakpointPlugin
+================
+
+.. currentmodule:: tenjint.plugins.breakpoint
+
+.. autoclass:: BreakpointPlugin
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      BreakpointPlugin.arch
+   
+      BreakpointPlugin.name
+   
+      BreakpointPlugin.os
+   
+      BreakpointPlugin.produces
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      BreakpointPlugin.__init__
+   
+      BreakpointPlugin.cancel_event
+   
+      BreakpointPlugin.load
+   
+      BreakpointPlugin.request_event
+   
+      BreakpointPlugin.uninit
+   
+   
+   

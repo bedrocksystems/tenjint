@@ -1,0 +1,6 @@
+SingleStepPluginBase.uninit
+===========================
+
+.. currentmodule:: tenjint.plugins.singlestep
+
+.. automethod:: SingleStepPluginBase.uninit

@@ -1,0 +1,6 @@
+SingleStepPluginBase.name
+=========================
+
+.. currentmodule:: tenjint.plugins.singlestep
+
+.. autoattribute:: SingleStepPluginBase.name

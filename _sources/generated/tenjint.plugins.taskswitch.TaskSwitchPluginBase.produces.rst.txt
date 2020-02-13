@@ -1,0 +1,6 @@
+TaskSwitchPluginBase.produces
+=============================
+
+.. currentmodule:: tenjint.plugins.taskswitch
+
+.. autoattribute:: TaskSwitchPluginBase.produces

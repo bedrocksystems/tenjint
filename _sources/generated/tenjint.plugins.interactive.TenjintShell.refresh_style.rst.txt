@@ -1,0 +1,6 @@
+TenjintShell.refresh\_style
+===========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.refresh_style

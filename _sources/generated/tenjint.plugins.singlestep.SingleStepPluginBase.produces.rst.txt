@@ -1,0 +1,6 @@
+SingleStepPluginBase.produces
+=============================
+
+.. currentmodule:: tenjint.plugins.singlestep
+
+.. autoattribute:: SingleStepPluginBase.produces

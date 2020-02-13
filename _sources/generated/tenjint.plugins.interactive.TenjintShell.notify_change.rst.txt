@@ -1,0 +1,6 @@
+TenjintShell.notify\_change
+===========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.notify_change

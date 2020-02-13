@@ -1,0 +1,6 @@
+Event.parse\_request\_to\_dict
+==============================
+
+.. currentmodule:: tenjint.event
+
+.. automethod:: Event.parse_request_to_dict

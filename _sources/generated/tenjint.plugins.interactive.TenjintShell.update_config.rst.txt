@@ -1,0 +1,6 @@
+TenjintShell.update\_config
+===========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.update_config

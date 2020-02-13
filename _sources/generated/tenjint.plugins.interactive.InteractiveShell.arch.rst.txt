@@ -1,0 +1,6 @@
+InteractiveShell.arch
+=====================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: InteractiveShell.arch

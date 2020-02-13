@@ -1,0 +1,6 @@
+OperatingSystemBase.load
+========================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. automethod:: OperatingSystemBase.load

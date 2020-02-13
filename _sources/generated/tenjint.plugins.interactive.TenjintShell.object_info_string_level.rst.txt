@@ -1,0 +1,6 @@
+TenjintShell.object\_info\_string\_level
+========================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.object_info_string_level

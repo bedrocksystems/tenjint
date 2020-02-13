@@ -1,0 +1,6 @@
+TenjintShell.prepare\_user\_module
+==================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.prepare_user_module

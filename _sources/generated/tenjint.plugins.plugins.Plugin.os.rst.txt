@@ -1,0 +1,6 @@
+Plugin.os
+=========
+
+.. currentmodule:: tenjint.plugins.plugins
+
+.. autoattribute:: Plugin.os

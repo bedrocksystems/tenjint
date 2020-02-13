@@ -1,0 +1,6 @@
+TenjintShell.run\_cell\_magic
+=============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.run_cell_magic

@@ -1,0 +1,6 @@
+TenjintShell.enable\_html\_pager
+================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.enable_html_pager

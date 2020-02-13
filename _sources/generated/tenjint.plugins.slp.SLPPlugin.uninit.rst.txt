@@ -1,0 +1,6 @@
+SLPPlugin.uninit
+================
+
+.. currentmodule:: tenjint.plugins.slp
+
+.. automethod:: SLPPlugin.uninit

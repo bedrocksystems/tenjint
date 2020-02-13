@@ -1,0 +1,6 @@
+EventPlugin.arch
+================
+
+.. currentmodule:: tenjint.plugins.plugins
+
+.. autoattribute:: EventPlugin.arch

@@ -1,0 +1,6 @@
+TenjintShell.pre\_prompt
+========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.pre_prompt

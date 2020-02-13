@@ -1,0 +1,6 @@
+TaskSwitchPluginBase.uninit
+===========================
+
+.. currentmodule:: tenjint.plugins.taskswitch
+
+.. automethod:: TaskSwitchPluginBase.uninit

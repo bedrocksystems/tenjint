@@ -1,0 +1,6 @@
+TenjintShell.init\_builtins
+===========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.init_builtins

@@ -1,0 +1,6 @@
+SLPPlugin.produces
+==================
+
+.. currentmodule:: tenjint.plugins.slp
+
+.. autoattribute:: SLPPlugin.produces

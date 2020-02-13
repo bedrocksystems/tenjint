@@ -1,0 +1,6 @@
+TenjintShell.push
+=================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.push

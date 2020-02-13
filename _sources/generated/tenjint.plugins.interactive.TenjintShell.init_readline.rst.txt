@@ -1,0 +1,6 @@
+TenjintShell.init\_readline
+===========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.init_readline

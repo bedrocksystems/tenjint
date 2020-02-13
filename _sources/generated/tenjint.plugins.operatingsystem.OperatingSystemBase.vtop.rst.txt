@@ -1,0 +1,6 @@
+OperatingSystemBase.vtop
+========================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. automethod:: OperatingSystemBase.vtop

@@ -1,0 +1,41 @@
+EventManager
+============
+
+.. currentmodule:: tenjint.event
+
+.. autoclass:: EventManager
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      EventManager.__init__
+   
+      EventManager.add_continue_hook
+   
+      EventManager.cancel_event
+   
+      EventManager.get_event_cls
+   
+      EventManager.get_registered_events
+   
+      EventManager.put_event
+   
+      EventManager.register
+   
+      EventManager.remove_continue_hook
+   
+      EventManager.request_event
+   
+      EventManager.run_loop
+   
+      EventManager.unregister
+   
+   
+   

@@ -1,0 +1,6 @@
+CustomLoader.create\_module
+===========================
+
+.. currentmodule:: tenjint.optimize
+
+.. automethod:: CustomLoader.create_module

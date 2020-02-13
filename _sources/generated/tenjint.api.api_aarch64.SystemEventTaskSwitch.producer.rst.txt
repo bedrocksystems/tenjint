@@ -1,0 +1,6 @@
+SystemEventTaskSwitch.producer
+==============================
+
+.. currentmodule:: tenjint.api.api_aarch64
+
+.. autoattribute:: SystemEventTaskSwitch.producer

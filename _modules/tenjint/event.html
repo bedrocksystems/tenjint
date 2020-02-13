@@ -1,0 +1,633 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tenjint.event &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rpi.html">tenjint Raspberry Pi 4 Image</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tenjint.event</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tenjint.event</h1><div class="highlight"><pre>
+<span></span><span class="c1"># tenjint - VMI Python Library</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2020 Bedrock Systems, Inc</span>
+<span class="c1"># Authors: Jonas Pfoh &lt;jonas@bedrocksystems.com&gt;</span>
+<span class="c1">#          Sebastian Vogl &lt;sebastian@bedrocksystems.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License version 2 as published</span>
+<span class="c1"># by the Free Software Foundation.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+
+<span class="sd">&quot;&quot;&quot;tenjint&#39;s event layer.</span>
+
+<span class="sd">This module provides all functionality related to tenjints event layer. The</span>
+<span class="sd">event layer is one of the key components within tenjint. It allows to register</span>
+<span class="sd">callbacks for events or to publish custom events to the system.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">service</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">api</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">logger</span>
+
+<div class="viewcode-block" id="Event"><a class="viewcode-back" href="../../generated/tenjint.event.Event.html#tenjint.api.api.Event">[docs]</a><span class="k">class</span> <span class="nc">Event</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The base class for all events.&quot;&quot;&quot;</span>
+
+    <span class="n">producer</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;The event producer.</span>
+
+<span class="sd">    The event producer is the class that is responsible for emitting an event.</span>
+<span class="sd">    The producer is set automatically by event manager, do not touch!</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="sd">&quot;&quot;&quot;Event request params</span>
+
+<span class="sd">    This must contain a dict with the default parameters for requesting this</span>
+<span class="sd">    event.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Event.parse_request"><a class="viewcode-back" href="../../generated/tenjint.event.Event.parse_request.html#tenjint.api.api.Event.parse_request">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">parse_request</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse an event request using the event request params.</span>
+
+<span class="sd">        This function will parse a call to</span>
+<span class="sd">        :py:class:`tenjint.event.EventPlugin.request_event` using the event</span>
+<span class="sd">        params (:py:attr:`tenjint.event.Event.params`). For this purpose all</span>
+<span class="sd">        keyword arguments to request_event are passed to this function. For</span>
+<span class="sd">        each param that is missing in the request (was not passed as an</span>
+<span class="sd">        argument to request_event) the function will use the default value</span>
+<span class="sd">        as specified in the event params. Otherwise the specified value will</span>
+<span class="sd">        be used.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            The keyword arguments that were passed to</span>
+<span class="sd">            :py:class:`tenjint.event.EventPlugin.request_event`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            A list that contains all event params in the order that they were</span>
+<span class="sd">            specified in the event class. If a param was not passed in kwargs,</span>
+<span class="sd">            the list will contain its default value as specified in the event</span>
+<span class="sd">            params.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rv</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">def_value</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">def_value</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">rv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rv</span></div>
+
+<div class="viewcode-block" id="Event.parse_request_to_dict"><a class="viewcode-back" href="../../generated/tenjint.event.Event.parse_request_to_dict.html#tenjint.api.api.Event.parse_request_to_dict">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">parse_request_to_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse an event request using the event request params.</span>
+
+<span class="sd">        This function will parse a call to</span>
+<span class="sd">        :py:class:`tenjint.event.EventPlugin.request_event` using the event</span>
+<span class="sd">        params (:py:attr:`tenjint.event.Event.params`). For this purpose all</span>
+<span class="sd">        keyword arguments to request_event are passed to this function. For</span>
+<span class="sd">        each param that is missing in the request (was not passed as an</span>
+<span class="sd">        argument to request_event) the function will use the default value</span>
+<span class="sd">        as specified in the event params. Otherwise the specified value will</span>
+<span class="sd">        be used.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            The keyword arguments that were passed to</span>
+<span class="sd">            :py:class:`tenjint.event.EventPlugin.request_event`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary that contains all event params. If a param was not</span>
+<span class="sd">            passed in kwargs, the dictionary will contain its default value</span>
+<span class="sd">            as specified in the event params.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rv</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">def_value</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">def_value</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">rv</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">rv</span></div>
+
+<div class="viewcode-block" id="Event.filter"><a class="viewcode-back" href="../../generated/tenjint.event.Event.filter.html#tenjint.api.api.Event.filter">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">event_params</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Event filter function</span>
+
+<span class="sd">        This function should be implemented for each event.  The default</span>
+<span class="sd">        implementation ignores the event_params and simply passes if the</span>
+<span class="sd">        type matches.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">event</span><span class="p">)</span> <span class="o">==</span> <span class="bp">cls</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div></div>
+
+<div class="viewcode-block" id="CpuEvent"><a class="viewcode-back" href="../../generated/tenjint.event.CpuEvent.html#tenjint.api.api.CpuEvent">[docs]</a><span class="k">class</span> <span class="nc">CpuEvent</span><span class="p">(</span><span class="n">Event</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for all CPU events.</span>
+
+<span class="sd">    A CPU event is an event that occurs on a specific CPU. For instance, a</span>
+<span class="sd">    breakpoint is hit. Most events are CPU events, but not all of them.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CpuEvent.__init__"><a class="viewcode-back" href="../../generated/tenjint.event.CpuEvent.__init__.html#tenjint.api.api.CpuEvent.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpu_num</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpu_num</span> <span class="o">=</span> <span class="n">cpu_num</span></div></div>
+
+<span class="k">class</span> <span class="nc">EventPluginExists</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<div class="viewcode-block" id="EventCallback"><a class="viewcode-back" href="../../generated/tenjint.event.EventCallback.html#tenjint.api.api.EventCallback">[docs]</a><span class="k">class</span> <span class="nc">EventCallback</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for event related callbacks.</span>
+
+<span class="sd">    This is the base class for event related callbacks. Event callbacks are used</span>
+<span class="sd">    to request notifications from the event system whenever a certain event</span>
+<span class="sd">    occurs. They allow to specify which event we are interested in and what</span>
+<span class="sd">    function we want to invoke whenever this event occurs. In addition, we can</span>
+<span class="sd">    filter events based on event parameters (event_params). If we specify</span>
+<span class="sd">    event parameters our callback function will only be invoked when an event is</span>
+<span class="sd">    of the given event type (event_name) and has the specified parameters. For</span>
+<span class="sd">    more information see :py:func:`__init__`.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    __init__</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="EventCallback.__init__"><a class="viewcode-back" href="../../generated/tenjint.event.EventCallback.__init__.html#tenjint.api.api.EventCallback.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback_func</span><span class="p">,</span> <span class="n">event_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">event_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new event callback.</span>
+
+<span class="sd">        The constructor allows us to create a new event callback for a specific</span>
+<span class="sd">        event or all events.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        callback_func : function</span>
+<span class="sd">            The callback function to invoke whenever our event criteria (event</span>
+<span class="sd">            name and event params) match.</span>
+<span class="sd">        event_name : str, optional</span>
+<span class="sd">            The name of the event we want to filter on. Our callback_func will</span>
+<span class="sd">            only be invoked for events of this type. If no event_name is given</span>
+<span class="sd">            all events will invoke our callback.</span>
+<span class="sd">        event_params : dict, optional</span>
+<span class="sd">            Event parameters allow us to further filter events on a more fine</span>
+<span class="sd">            granular basis. For instance, we might not be interested in all</span>
+<span class="sd">            second level paging events, but only in execute violations. Event</span>
+<span class="sd">            parameters allow us to filter events based on such criteria. What</span>
+<span class="sd">            paramaters are supported depend on the event type (event_name) that</span>
+<span class="sd">            we are interested in. The event paramters that are supported can be</span>
+<span class="sd">            found in the documentation of the event class.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object</span>
+<span class="sd">            A new event callback object. To use this callback we have to</span>
+<span class="sd">            register it with the event system</span>
+<span class="sd">            (see :py:func:`tenjint.event.EventManager.request_event`).</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        EventManager.request_event</span>
+<span class="sd">        EventManager.cancel_event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">manager</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;EventManager&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callback_func</span> <span class="o">=</span> <span class="n">callback_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_name</span> <span class="o">=</span> <span class="n">event_name</span>
+        <span class="k">if</span> <span class="n">event_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">event_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">event_params</span> <span class="o">=</span> <span class="n">event_params</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request_id</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">event_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;*&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">event_cls</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">event_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">get_event_cls</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">event_cls</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">event_cls</span>
+
+<div class="viewcode-block" id="EventCallback.deliver"><a class="viewcode-back" href="../../generated/tenjint.event.EventCallback.deliver.html#tenjint.api.api.EventCallback.deliver">[docs]</a>    <span class="k">def</span> <span class="nf">deliver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">event_cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_cls</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_params</span><span class="p">,</span> <span class="n">event</span><span class="p">))):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_callback_func</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="EventManager"><a class="viewcode-back" href="../../generated/tenjint.event.EventManager.html#tenjint.api.api.EventManager">[docs]</a><span class="k">class</span> <span class="nc">EventManager</span><span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">LoggerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;tenjint&#39;s event manager.</span>
+
+<span class="sd">    The event manager is the main component of the event system. It is</span>
+<span class="sd">    responsible for getting events from QEMU and to distpatch them within the</span>
+<span class="sd">    system. In addition, the event manager allows us to request callbacks for</span>
+<span class="sd">    certain events or to publish our own events within the system. See</span>
+<span class="sd">    :py:func:`request_event` and :py:func:`put_event` for details respectively.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="EventManager.__init__"><a class="viewcode-back" href="../../generated/tenjint.event.EventManager.__init__.html#tenjint.api.api.EventManager.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_queue</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_callbacks</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">()}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_continue_hooks</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_plugins</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s2">&quot;SystemEventVmShutdown&quot;</span><span class="p">:</span> <span class="n">api</span><span class="o">.</span><span class="n">SystemEventVmShutdown</span><span class="p">,</span>
+                        <span class="s2">&quot;SystemEventVmReady&quot;</span><span class="p">:</span> <span class="n">api</span><span class="o">.</span><span class="n">SystemEventVmReady</span><span class="p">,</span>
+                        <span class="s2">&quot;SystemEventVmStop&quot;</span><span class="p">:</span> <span class="n">api</span><span class="o">.</span><span class="n">SystemEventVmStop</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="EventManager.register"><a class="viewcode-back" href="../../generated/tenjint.event.EventManager.register.html#tenjint.api.api.EventManager.register">[docs]</a>    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Register a plugin with the event manager.</span>
+
+<span class="sd">        Plugins must be registered with the event manager if they produce</span>
+<span class="sd">        events. The plugin manager should take care of this automatically. Users</span>
+<span class="sd">        should not call this function.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        plugin : tenjint.plugins.plugins.Plugin</span>
+<span class="sd">            The plugin to register.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">event_cls</span> <span class="ow">in</span> <span class="n">plugin</span><span class="o">.</span><span class="n">produces</span><span class="p">:</span>
+            <span class="n">event_name</span> <span class="o">=</span> <span class="n">event_cls</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="k">if</span> <span class="n">event_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_plugins</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">EventPluginExists</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> already provided by </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                <span class="n">event_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_plugins</span><span class="p">[</span><span class="n">event_name</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Registering </span><span class="si">{}</span><span class="s2"> with event manager as </span><span class="si">{}</span><span class="s2"> &quot;</span>
+                          <span class="s2">&quot;producer&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">event_name</span><span class="p">))</span>
+            <span class="n">event_cls</span><span class="o">.</span><span class="n">producer</span> <span class="o">=</span> <span class="n">plugin</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_plugins</span><span class="p">[</span><span class="n">event_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_cls</span></div>
+
+<div class="viewcode-block" id="EventManager.unregister"><a class="viewcode-back" href="../../generated/tenjint.event.EventManager.unregister.html#tenjint.api.api.EventManager.unregister">[docs]</a>    <span class="k">def</span> <span class="nf">unregister</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Unregister a plugin from the event manager.</span>
+
+<span class="sd">        Plugins must be registered with the event manager if they produce</span>
+<span class="sd">        events. The plugin manager should take care of this automatically. Users</span>
+<span class="sd">        should not call this function.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        plugin : tenjint.plugins.plugins.Plugin</span>
+<span class="sd">            The plugin to unregister.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">event_cls</span> <span class="ow">in</span> <span class="n">plugin</span><span class="o">.</span><span class="n">produces</span><span class="p">:</span>
+            <span class="n">event_name</span> <span class="o">=</span> <span class="n">event_cls</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Unregistering </span><span class="si">{}</span><span class="s2"> with event manager as </span><span class="si">{}</span><span class="s2"> &quot;</span>
+                          <span class="s2">&quot;producer&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">event_name</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_plugins</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">event_name</span><span class="p">)</span>
+            <span class="n">event_cls</span><span class="o">.</span><span class="n">producer</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="EventManager.get_event_cls"><a class="viewcode-back" href="../../generated/tenjint.event.EventManager.get_event_cls.html#tenjint.api.api.EventManager.get_event_cls">[docs]</a>    <span class="k">def</span> <span class="nf">get_event_cls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_plugins</span><span class="p">[</span><span class="n">event_key</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="EventManager.get_registered_events"><a class="viewcode-back" href="../../generated/tenjint.event.EventManager.get_registered_events.html#tenjint.api.api.EventManager.get_registered_events">[docs]</a>    <span class="k">def</span> <span class="nf">get_registered_events</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get all events that the event manager is aware of.</span>
+
+<span class="sd">        This function can be used to retrieve all events that the event manager</span>
+<span class="sd">        is aware of.</span>
+
+<span class="sd">        Yields</span>
+<span class="sd">        ------</span>
+<span class="sd">        tuple (str, dict)</span>
+<span class="sd">            Returns tuples of the form (event class name, event parameters)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">event_name</span><span class="p">,</span> <span class="n">event_cls</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_plugins</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">event_name</span><span class="p">,</span> <span class="n">event_cls</span><span class="o">.</span><span class="n">params</span></div>
+
+<div class="viewcode-block" id="EventManager.request_event"><a class="viewcode-back" href="../../generated/tenjint.event.EventManager.request_event.html#tenjint.api.api.EventManager.request_event">[docs]</a>    <span class="k">def</span> <span class="nf">request_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">send_request</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Register an event callback with the event manager.</span>
+
+<span class="sd">        This function allows us to register an event callback with the event</span>
+<span class="sd">        manager. Once registered, the callback function specified in the event</span>
+<span class="sd">        callback will be invoked whenever a matching event is published in the</span>
+<span class="sd">        system.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        callback : EventCallback</span>
+<span class="sd">            The event callback to register.</span>
+<span class="sd">        send_request : bool, optional</span>
+<span class="sd">            Whether the event request should be forwarded to the plugin that</span>
+<span class="sd">            produces this event. Users should generally not provide this</span>
+<span class="sd">            argument and use its default value. If the event producer is not</span>
+<span class="sd">            informed about an event request it might not enable the appropriate</span>
+<span class="sd">            features and the event might never be produced.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        EventCallback</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">send_request</span> <span class="ow">and</span> <span class="n">callback</span><span class="o">.</span><span class="n">event_cls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span>
+                <span class="n">callback</span><span class="o">.</span><span class="n">event_cls</span><span class="o">.</span><span class="n">producer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">plugin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_plugins</span><span class="p">[</span><span class="n">callback</span><span class="o">.</span><span class="n">event_key</span><span class="p">]</span><span class="o">.</span><span class="n">producer</span>
+            <span class="n">callback</span><span class="o">.</span><span class="n">request_id</span> <span class="o">=</span> <span class="n">plugin</span><span class="o">.</span><span class="n">request_event</span><span class="p">(</span><span class="n">callback</span><span class="o">.</span><span class="n">event_cls</span><span class="p">,</span>
+                                                       <span class="o">**</span><span class="n">callback</span><span class="o">.</span><span class="n">event_params</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">callback</span><span class="o">.</span><span class="n">event_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_callbacks</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_callbacks</span><span class="p">[</span><span class="n">callback</span><span class="o">.</span><span class="n">event_key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_callbacks</span><span class="p">[</span><span class="n">callback</span><span class="o">.</span><span class="n">event_key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+
+        <span class="n">callback</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="EventManager.cancel_event"><a class="viewcode-back" href="../../generated/tenjint.event.EventManager.cancel_event.html#tenjint.api.api.EventManager.cancel_event">[docs]</a>    <span class="k">def</span> <span class="nf">cancel_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Cancel an event request.</span>
+
+<span class="sd">        This function allows us to unregister a event callback from the event</span>
+<span class="sd">        manager.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        callback : EventCallback</span>
+<span class="sd">            The event callback to unregister.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        KeyError</span>
+<span class="sd">            If the callback has not been registered with the event manager.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_callbacks</span><span class="p">[</span><span class="n">callback</span><span class="o">.</span><span class="n">event_key</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">callback</span><span class="o">.</span><span class="n">request_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plugin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_plugins</span><span class="p">[</span><span class="n">callback</span><span class="o">.</span><span class="n">event_key</span><span class="p">]</span><span class="o">.</span><span class="n">producer</span>
+            <span class="n">plugin</span><span class="o">.</span><span class="n">cancel_event</span><span class="p">(</span><span class="n">callback</span><span class="o">.</span><span class="n">request_id</span><span class="p">)</span>
+        <span class="n">callback</span><span class="o">.</span><span class="n">request_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">callback</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="EventManager.put_event"><a class="viewcode-back" href="../../generated/tenjint.event.EventManager.put_event.html#tenjint.api.api.EventManager.put_event">[docs]</a>    <span class="k">def</span> <span class="nf">put_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Publish an event in the system.</span>
+
+<span class="sd">        This function allows a plugin to publish an event within the system.</span>
+<span class="sd">        Any event callbacks that have been registered with the event manager</span>
+<span class="sd">        and match the published event will be notified.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        event : Event</span>
+<span class="sd">            The event to publish.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventManager.add_continue_hook"><a class="viewcode-back" href="../../generated/tenjint.event.EventManager.add_continue_hook.html#tenjint.api.api.EventManager.add_continue_hook">[docs]</a>    <span class="k">def</span> <span class="nf">add_continue_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback_func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a continue hook.</span>
+
+<span class="sd">        This function allows to register a function that will be executed</span>
+<span class="sd">        before the virtual machine is resumed. In general, users should not use</span>
+<span class="sd">        continue hooks.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Adding continue hook: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">callback_func</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_continue_hooks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">callback_func</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventManager.remove_continue_hook"><a class="viewcode-back" href="../../generated/tenjint.event.EventManager.remove_continue_hook.html#tenjint.api.api.EventManager.remove_continue_hook">[docs]</a>    <span class="k">def</span> <span class="nf">remove_continue_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback_func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove a continue hook.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Removing continue hook: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">callback_func</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_continue_hooks</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">callback_func</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_call_continue_hooks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">hook</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_continue_hooks</span><span class="p">:</span>
+            <span class="n">hook</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_dispatch_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Dispatching event: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">event</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_callbacks</span><span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">]:</span>
+            <span class="n">callback</span><span class="o">.</span><span class="n">deliver</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="n">event_key</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">event</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="k">if</span> <span class="n">event_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_callbacks</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_callbacks</span><span class="p">[</span><span class="n">event_key</span><span class="p">]:</span>
+                <span class="n">callback</span><span class="o">.</span><span class="n">deliver</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_system_events</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_call_continue_hooks</span><span class="p">()</span>
+        <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_wait_event</span><span class="p">(</span><span class="n">secs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_get_event</span><span class="p">()</span>
+        <span class="k">while</span> <span class="n">event</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">put_event</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+            <span class="n">event</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_get_event</span><span class="p">()</span>
+
+<div class="viewcode-block" id="EventManager.run_loop"><a class="viewcode-back" href="../../generated/tenjint.event.EventManager.run_loop.html#tenjint.api.api.EventManager.run_loop">[docs]</a>    <span class="k">def</span> <span class="nf">run_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The event managers internal run loop.&quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_system_events</span><span class="p">()</span>
+            <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_queue</span><span class="p">:</span>
+                <span class="n">event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_event</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">event</span><span class="p">)</span> <span class="o">==</span> <span class="n">api</span><span class="o">.</span><span class="n">SystemEventVmShutdown</span><span class="p">:</span>
+                    <span class="k">return</span></div></div>
+
+<div class="viewcode-block" id="run"><a class="viewcode-back" href="../../generated/tenjint.event.run.html#tenjint.api.api.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Start the run loop of the event manager.</span>
+
+<span class="sd">    This function starts the run loop of the systemwide event manager. This</span>
+<span class="sd">    function should only be called internally.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">em</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">manager</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;EventManager&quot;</span><span class="p">)</span>
+    <span class="n">em</span><span class="o">.</span><span class="n">run_loop</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="init"><a class="viewcode-back" href="../../generated/tenjint.event.init.html#tenjint.api.api.init">[docs]</a><span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Initialize the event subsystem.&quot;&quot;&quot;</span>
+    <span class="n">em</span> <span class="o">=</span> <span class="n">EventManager</span><span class="p">()</span>
+    <span class="n">service</span><span class="o">.</span><span class="n">manager</span><span class="p">()</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">em</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="uninit"><a class="viewcode-back" href="../../generated/tenjint.event.uninit.html#tenjint.api.api.uninit">[docs]</a><span class="k">def</span> <span class="nf">uninit</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Uninitialize the event subystem.&quot;&quot;&quot;</span>
+    <span class="n">service</span><span class="o">.</span><span class="n">manager</span><span class="p">()</span><span class="o">.</span><span class="n">unregister_by_name</span><span class="p">(</span><span class="s2">&quot;EventManager&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

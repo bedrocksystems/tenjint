@@ -1,0 +1,6 @@
+EventCallback.event\_cls
+========================
+
+.. currentmodule:: tenjint.event
+
+.. autoproperty:: EventCallback.event_cls

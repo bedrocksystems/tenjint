@@ -1,0 +1,6 @@
+TenjintShell.del\_var
+=====================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.del_var

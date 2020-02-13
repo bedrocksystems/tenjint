@@ -1,0 +1,6 @@
+TenjintShell.history\_manager
+=============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.history_manager

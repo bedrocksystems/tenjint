@@ -1,0 +1,6 @@
+TenjintShell.object\_inspect\_mime
+==================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.object_inspect_mime

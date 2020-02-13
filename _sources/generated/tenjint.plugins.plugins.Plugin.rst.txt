@@ -1,0 +1,36 @@
+Plugin
+======
+
+.. currentmodule:: tenjint.plugins.plugins
+
+.. autoclass:: Plugin
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      Plugin.arch
+   
+      Plugin.name
+   
+      Plugin.os
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      Plugin.__init__
+   
+      Plugin.load
+   
+      Plugin.uninit
+   
+   
+   

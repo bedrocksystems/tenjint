@@ -1,0 +1,385 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tenjint.service &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rpi.html">tenjint Raspberry Pi 4 Image</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tenjint.service</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tenjint.service</h1><div class="highlight"><pre>
+<span></span><span class="c1"># tenjint - VMI Python Library</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2020 Bedrock Systems, Inc</span>
+<span class="c1"># Authors: Jonas Pfoh &lt;jonas@bedrocksystems.com&gt;</span>
+<span class="c1">#          Sebastian Vogl &lt;sebastian@bedrocksystems.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License version 2 as published</span>
+<span class="c1"># by the Free Software Foundation.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+
+<span class="sd">&quot;&quot;&quot;tenjint&#39;s service layer.</span>
+
+<span class="sd">This module contains all classes and functions that provide tenjint&#39;s service</span>
+<span class="sd">layer. The service layer is responsible for maintaining all services available</span>
+<span class="sd">within the system. Effectively, the service layer allows modules to register</span>
+<span class="sd">services (objects) that can then be retrieved by other modules.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">logger</span>
+
+<span class="n">_service_manager</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="register"><a class="viewcode-back" href="../../generated/tenjint.service.register.html#tenjint.service.register">[docs]</a><span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Register a new object with the service layer.</span>
+
+<span class="sd">    This function registers an object with the service layer. Once registered,</span>
+<span class="sd">    the object can be obtained by other objects using the</span>
+<span class="sd">    :py:func:`tenjint.service.get` function. If no name for the object is</span>
+<span class="sd">    provided, the object can be retrieved by its class name.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    obj : object</span>
+<span class="sd">        The object to register.</span>
+<span class="sd">    name : str</span>
+<span class="sd">        The name to register the object under. If no name is provided, the</span>
+<span class="sd">        class name will be used.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the service layer has not been initialized.</span>
+<span class="sd">    ServiceRegisteredError</span>
+<span class="sd">            If a service with this name already exists.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">_service_manager</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Service manager is not initialized&quot;</span><span class="p">)</span>
+
+    <span class="n">_service_manager</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="get"><a class="viewcode-back" href="../../generated/tenjint.service.get.html#tenjint.service.get">[docs]</a><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get an object by name.</span>
+
+<span class="sd">    This function allows to retrieve objects that have been registered with</span>
+<span class="sd">    the service layer (:py:func:`tenjint.service.register`) using their</span>
+<span class="sd">    name.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        The name of the object to retrieve</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the service layer has not been initialized.</span>
+<span class="sd">    KeyError</span>
+<span class="sd">        If the object cannot be found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">_service_manager</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Service manager is not initialized&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_service_manager</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+<span class="k">class</span> <span class="nc">ServiceRegisteredError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Error that is emitted when a service cannot be registered.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+<div class="viewcode-block" id="ServiceManager"><a class="viewcode-back" href="../../generated/tenjint.service.ServiceManager.html#tenjint.service.ServiceManager">[docs]</a><span class="k">class</span> <span class="nc">ServiceManager</span><span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">LoggerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The service manager.</span>
+
+<span class="sd">    The service manager is the main component of the tenjint service layer. It</span>
+<span class="sd">    allows to register (:py:func:`register`) and lookup (:py:func:`get`)</span>
+<span class="sd">    services in the system.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ServiceManager.__init__"><a class="viewcode-back" href="../../generated/tenjint.service.ServiceManager.__init__.html#tenjint.service.ServiceManager.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_service_registry</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ServiceManager.register"><a class="viewcode-back" href="../../generated/tenjint.service.ServiceManager.register.html#tenjint.service.ServiceManager.register">[docs]</a>    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Register an object with the service manager.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj : object</span>
+<span class="sd">            The object to register.</span>
+<span class="sd">        name : str, optional</span>
+<span class="sd">            The name to register the object with. If no name is provided,</span>
+<span class="sd">            the class name will be used.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ServiceRegisteredError</span>
+<span class="sd">            If a service with this name already exists.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_registry</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ServiceRegisteredError</span><span class="p">(</span>
+                                <span class="s2">&quot;Service </span><span class="si">{}</span><span class="s2"> already registered&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Registering </span><span class="si">{}</span><span class="s2"> with service manager&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_service_registry</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span></div>
+
+<div class="viewcode-block" id="ServiceManager.unregister_by_object"><a class="viewcode-back" href="../../generated/tenjint.service.ServiceManager.unregister_by_object.html#tenjint.service.ServiceManager.unregister_by_object">[docs]</a>    <span class="k">def</span> <span class="nf">unregister_by_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Unregister an object using the object itself.</span>
+
+<span class="sd">        This function allows to unregister a previously registered object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj : object</span>
+<span class="sd">            The object to unregister.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        KeyError</span>
+<span class="sd">            If the object has not been registered with the service layer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Unregistering </span><span class="si">{}</span><span class="s2"> with service manager&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_registry</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ServiceManager.unregister_by_name"><a class="viewcode-back" href="../../generated/tenjint.service.ServiceManager.unregister_by_name.html#tenjint.service.ServiceManager.unregister_by_name">[docs]</a>    <span class="k">def</span> <span class="nf">unregister_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Unregister an object using its name.</span>
+
+<span class="sd">        This function allows to unregister a previously registered object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the object to unregister.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        KeyError</span>
+<span class="sd">            If the object has not been registered with the service layer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Unregistering </span><span class="si">{}</span><span class="s2"> with service manager&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_registry</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ServiceManager.get"><a class="viewcode-back" href="../../generated/tenjint.service.ServiceManager.get.html#tenjint.service.ServiceManager.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_registry</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div></div>
+
+<div class="viewcode-block" id="manager"><a class="viewcode-back" href="../../generated/tenjint.service.manager.html#tenjint.service.manager">[docs]</a><span class="k">def</span> <span class="nf">manager</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Get the service manager.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :py:obj:`tenjint.service.ServiceManager`</span>
+<span class="sd">        The service manager.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the service layer was not initialized.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">_service_manager</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Service manager is not initialized&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_service_manager</span></div>
+
+<div class="viewcode-block" id="init"><a class="viewcode-back" href="../../generated/tenjint.service.init.html#tenjint.service.init">[docs]</a><span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Initialize the service layer.&quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_service_manager</span>
+    <span class="n">_service_manager</span> <span class="o">=</span> <span class="n">ServiceManager</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="uninit"><a class="viewcode-back" href="../../generated/tenjint.service.uninit.html#tenjint.service.uninit">[docs]</a><span class="k">def</span> <span class="nf">uninit</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Uninitialize the service layer.&quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_service_manager</span>
+    <span class="n">_service_manager</span> <span class="o">=</span> <span class="kc">None</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

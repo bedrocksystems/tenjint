@@ -1,0 +1,6 @@
+InteractiveShell.callbacks
+==========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoproperty:: InteractiveShell.callbacks

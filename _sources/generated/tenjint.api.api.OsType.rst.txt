@@ -1,0 +1,23 @@
+OsType
+======
+
+.. currentmodule:: tenjint.api.api
+
+.. autoclass:: OsType
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      OsType.OS_LINUX
+   
+      OsType.OS_WIN
+   
+   
+   
+
+   
+   
+   

@@ -1,0 +1,6 @@
+VirtualMachineX86\_64.phys\_mem\_read
+=====================================
+
+.. currentmodule:: tenjint.plugins.machine
+
+.. automethod:: VirtualMachineX86_64.phys_mem_read

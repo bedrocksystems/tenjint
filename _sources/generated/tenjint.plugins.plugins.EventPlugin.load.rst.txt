@@ -1,0 +1,6 @@
+EventPlugin.load
+================
+
+.. currentmodule:: tenjint.plugins.plugins
+
+.. automethod:: EventPlugin.load

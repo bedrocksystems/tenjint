@@ -1,0 +1,6 @@
+SystemEventVmReady.filter
+=========================
+
+.. currentmodule:: tenjint.api.api
+
+.. automethod:: SystemEventVmReady.filter

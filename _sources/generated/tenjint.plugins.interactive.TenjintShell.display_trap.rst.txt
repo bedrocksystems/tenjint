@@ -1,0 +1,6 @@
+TenjintShell.display\_trap
+==========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.display_trap

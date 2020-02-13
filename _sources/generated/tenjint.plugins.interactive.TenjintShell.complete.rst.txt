@@ -1,0 +1,6 @@
+TenjintShell.complete
+=====================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.complete

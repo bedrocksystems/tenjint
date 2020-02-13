@@ -1,0 +1,6 @@
+TenjintShell.section\_names
+===========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.section_names

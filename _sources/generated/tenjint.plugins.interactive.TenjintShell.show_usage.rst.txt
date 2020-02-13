@@ -1,0 +1,6 @@
+TenjintShell.show\_usage
+========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.show_usage

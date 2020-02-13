@@ -1,0 +1,6 @@
+TenjintShell.class\_get\_trait\_help
+====================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.class_get_trait_help

@@ -1,0 +1,6 @@
+TenjintShell.autoindent
+=======================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.autoindent

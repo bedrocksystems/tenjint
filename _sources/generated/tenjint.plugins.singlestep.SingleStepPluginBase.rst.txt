@@ -1,0 +1,44 @@
+SingleStepPluginBase
+====================
+
+.. currentmodule:: tenjint.plugins.singlestep
+
+.. autoclass:: SingleStepPluginBase
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      SingleStepPluginBase.arch
+   
+      SingleStepPluginBase.name
+   
+      SingleStepPluginBase.os
+   
+      SingleStepPluginBase.produces
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      SingleStepPluginBase.__init__
+   
+      SingleStepPluginBase.cancel_event
+   
+      SingleStepPluginBase.last_ss_gva
+   
+      SingleStepPluginBase.load
+   
+      SingleStepPluginBase.request_event
+   
+      SingleStepPluginBase.uninit
+   
+   
+   

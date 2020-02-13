@@ -1,0 +1,6 @@
+SingleStepPluginAarch64.request\_event
+======================================
+
+.. currentmodule:: tenjint.plugins.singlestep
+
+.. automethod:: SingleStepPluginAarch64.request_event

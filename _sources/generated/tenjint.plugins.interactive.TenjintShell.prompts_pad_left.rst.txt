@@ -1,0 +1,6 @@
+TenjintShell.prompts\_pad\_left
+===============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.prompts_pad_left

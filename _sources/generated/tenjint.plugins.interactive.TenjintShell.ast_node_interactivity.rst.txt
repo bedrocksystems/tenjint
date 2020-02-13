@@ -1,0 +1,6 @@
+TenjintShell.ast\_node\_interactivity
+=====================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.ast_node_interactivity

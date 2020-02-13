@@ -1,0 +1,6 @@
+EventPlugin.os
+==============
+
+.. currentmodule:: tenjint.plugins.plugins
+
+.. autoattribute:: EventPlugin.os

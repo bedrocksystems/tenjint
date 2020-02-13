@@ -1,0 +1,6 @@
+TenjintShell.xmode
+==================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.xmode

@@ -1,0 +1,6 @@
+LogTransformer.\_\_init\_\_
+===========================
+
+.. currentmodule:: tenjint.optimize
+
+.. automethod:: LogTransformer.__init__

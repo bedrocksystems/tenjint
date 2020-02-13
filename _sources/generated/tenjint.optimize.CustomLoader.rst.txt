@@ -1,0 +1,29 @@
+CustomLoader
+============
+
+.. currentmodule:: tenjint.optimize
+
+.. autoclass:: CustomLoader
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      CustomLoader.__init__
+   
+      CustomLoader.create_module
+   
+      CustomLoader.exec_module
+   
+      CustomLoader.load_module
+   
+      CustomLoader.module_repr
+   
+   
+   

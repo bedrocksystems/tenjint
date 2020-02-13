@@ -1,0 +1,6 @@
+Event.\_\_init\_\_
+==================
+
+.. currentmodule:: tenjint.event
+
+.. automethod:: Event.__init__

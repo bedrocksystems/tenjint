@@ -1,0 +1,6 @@
+SystemEventSingleStep.parse\_request
+====================================
+
+.. currentmodule:: tenjint.api.api
+
+.. automethod:: SystemEventSingleStep.parse_request

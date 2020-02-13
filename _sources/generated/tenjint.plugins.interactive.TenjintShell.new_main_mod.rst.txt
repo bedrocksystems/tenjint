@@ -1,0 +1,6 @@
+TenjintShell.new\_main\_mod
+===========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.new_main_mod

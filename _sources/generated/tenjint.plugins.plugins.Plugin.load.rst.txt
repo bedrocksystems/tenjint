@@ -1,0 +1,6 @@
+Plugin.load
+===========
+
+.. currentmodule:: tenjint.plugins.plugins
+
+.. automethod:: Plugin.load

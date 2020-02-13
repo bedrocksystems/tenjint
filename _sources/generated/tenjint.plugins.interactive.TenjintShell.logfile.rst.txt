@@ -1,0 +1,6 @@
+TenjintShell.logfile
+====================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.logfile

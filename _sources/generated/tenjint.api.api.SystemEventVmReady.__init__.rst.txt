@@ -1,0 +1,6 @@
+SystemEventVmReady.\_\_init\_\_
+===============================
+
+.. currentmodule:: tenjint.api.api
+
+.. automethod:: SystemEventVmReady.__init__

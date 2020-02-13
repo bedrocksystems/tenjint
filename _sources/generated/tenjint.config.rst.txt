@@ -1,0 +1,25 @@
+tenjint.config
+==============
+
+.. rubric:: Description
+.. automodule:: tenjint.config
+.. currentmodule:: tenjint.config
+
+
+.. rubric:: Classes
+.. autosummary::
+    :toctree:
+    
+    ConfigMixin
+    
+
+
+
+.. rubric:: Functions
+.. autosummary::
+    :toctree:
+    
+    init
+    
+    uninit
+    

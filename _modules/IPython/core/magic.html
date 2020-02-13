@@ -1,0 +1,882 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>IPython.core.magic &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rpi.html">tenjint Raspberry Pi 4 Image</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>IPython.core.magic</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for IPython.core.magic</h1><div class="highlight"><pre>
+<span></span><span class="c1"># encoding: utf-8</span>
+<span class="sd">&quot;&quot;&quot;Magic functions for InteractiveShell.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">#-----------------------------------------------------------------------------</span>
+<span class="c1">#  Copyright (C) 2001 Janko Hauser &lt;jhauser@zscout.de&gt; and</span>
+<span class="c1">#  Copyright (C) 2001 Fernando Perez &lt;fperez@colorado.edu&gt;</span>
+<span class="c1">#  Copyright (C) 2008 The IPython Development Team</span>
+
+<span class="c1">#  Distributed under the terms of the BSD License.  The full license is in</span>
+<span class="c1">#  the file COPYING, distributed as part of this software.</span>
+<span class="c1">#-----------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">getopt</span> <span class="k">import</span> <span class="n">getopt</span><span class="p">,</span> <span class="n">GetoptError</span>
+
+<span class="kn">from</span> <span class="nn">traitlets.config.configurable</span> <span class="k">import</span> <span class="n">Configurable</span>
+<span class="kn">from</span> <span class="nn">IPython.core</span> <span class="k">import</span> <span class="n">oinspect</span>
+<span class="kn">from</span> <span class="nn">IPython.core.error</span> <span class="k">import</span> <span class="n">UsageError</span>
+<span class="kn">from</span> <span class="nn">IPython.core.inputsplitter</span> <span class="k">import</span> <span class="n">ESC_MAGIC</span><span class="p">,</span> <span class="n">ESC_MAGIC2</span>
+<span class="kn">from</span> <span class="nn">decorator</span> <span class="k">import</span> <span class="n">decorator</span>
+<span class="kn">from</span> <span class="nn">IPython.utils.ipstruct</span> <span class="k">import</span> <span class="n">Struct</span>
+<span class="kn">from</span> <span class="nn">IPython.utils.process</span> <span class="k">import</span> <span class="n">arg_split</span>
+<span class="kn">from</span> <span class="nn">IPython.utils.text</span> <span class="k">import</span> <span class="n">dedent</span>
+<span class="kn">from</span> <span class="nn">traitlets</span> <span class="k">import</span> <span class="n">Bool</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">observe</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="k">import</span> <span class="n">error</span>
+
+<span class="c1">#-----------------------------------------------------------------------------</span>
+<span class="c1"># Globals</span>
+<span class="c1">#-----------------------------------------------------------------------------</span>
+
+<span class="c1"># A dict we&#39;ll use for each class that has magics, used as temporary storage to</span>
+<span class="c1"># pass information between the @line/cell_magic method decorators and the</span>
+<span class="c1"># @magics_class class decorator, because the method decorators have no</span>
+<span class="c1"># access to the class when they run.  See for more details:</span>
+<span class="c1"># http://stackoverflow.com/questions/2366713/can-a-python-decorator-of-an-instance-method-access-the-class</span>
+
+<span class="n">magics</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">line</span><span class="o">=</span><span class="p">{},</span> <span class="n">cell</span><span class="o">=</span><span class="p">{})</span>
+
+<span class="n">magic_kinds</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;line&#39;</span><span class="p">,</span> <span class="s1">&#39;cell&#39;</span><span class="p">)</span>
+<span class="n">magic_spec</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;line&#39;</span><span class="p">,</span> <span class="s1">&#39;cell&#39;</span><span class="p">,</span> <span class="s1">&#39;line_cell&#39;</span><span class="p">)</span>
+<span class="n">magic_escapes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">line</span><span class="o">=</span><span class="n">ESC_MAGIC</span><span class="p">,</span> <span class="n">cell</span><span class="o">=</span><span class="n">ESC_MAGIC2</span><span class="p">)</span>
+
+<span class="c1">#-----------------------------------------------------------------------------</span>
+<span class="c1"># Utility classes and functions</span>
+<span class="c1">#-----------------------------------------------------------------------------</span>
+
+<span class="k">class</span> <span class="nc">Bunch</span><span class="p">:</span> <span class="k">pass</span>
+
+
+<span class="k">def</span> <span class="nf">on_off</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return an ON/OFF string for a 1/0 input. Simple utility function.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;OFF&#39;</span><span class="p">,</span><span class="s1">&#39;ON&#39;</span><span class="p">][</span><span class="n">tag</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">compress_dhist</span><span class="p">(</span><span class="n">dh</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compress a directory history into a new one with at most 20 entries.</span>
+
+<span class="sd">    Return a new list made from the first and last 10 elements of dhist after</span>
+<span class="sd">    removal of duplicates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">head</span><span class="p">,</span> <span class="n">tail</span> <span class="o">=</span> <span class="n">dh</span><span class="p">[:</span><span class="o">-</span><span class="mi">10</span><span class="p">],</span> <span class="n">dh</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:]</span>
+
+    <span class="n">newhead</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">done</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">head</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">done</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">newhead</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">done</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">newhead</span> <span class="o">+</span> <span class="n">tail</span>
+
+
+<span class="k">def</span> <span class="nf">needs_local_scope</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decorator to mark magic functions which need to local scope to run.&quot;&quot;&quot;</span>
+    <span class="n">func</span><span class="o">.</span><span class="n">needs_local_scope</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="n">func</span>
+
+<span class="c1">#-----------------------------------------------------------------------------</span>
+<span class="c1"># Class and method decorators for registering magics</span>
+<span class="c1">#-----------------------------------------------------------------------------</span>
+
+<span class="k">def</span> <span class="nf">magics_class</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class decorator for all subclasses of the main Magics class.</span>
+
+<span class="sd">    Any class that subclasses Magics *must* also apply this decorator, to</span>
+<span class="sd">    ensure that all the methods that have been decorated as line/cell magics</span>
+<span class="sd">    get correctly registered in the class instance.  This is necessary because</span>
+<span class="sd">    when method decorators run, the class does not exist yet, so they</span>
+<span class="sd">    temporarily store their information into a module global.  Application of</span>
+<span class="sd">    this class decorator copies that global data to the class instance and</span>
+<span class="sd">    clears the global.</span>
+
+<span class="sd">    Obviously, this mechanism is not thread-safe, which means that the</span>
+<span class="sd">    *creation* of subclasses of Magic should only be done in a single-thread</span>
+<span class="sd">    context.  Instantiation of the classes has no restrictions.  Given that</span>
+<span class="sd">    these classes are typically created at IPython startup time and before user</span>
+<span class="sd">    application code becomes active, in practice this should not pose any</span>
+<span class="sd">    problems.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="n">registered</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="n">magics</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">line</span> <span class="o">=</span> <span class="n">magics</span><span class="p">[</span><span class="s1">&#39;line&#39;</span><span class="p">],</span>
+                      <span class="n">cell</span> <span class="o">=</span> <span class="n">magics</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">])</span>
+    <span class="n">magics</span><span class="p">[</span><span class="s1">&#39;line&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">magics</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">return</span> <span class="bp">cls</span>
+
+
+<span class="k">def</span> <span class="nf">record_magic</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="n">magic_kind</span><span class="p">,</span> <span class="n">magic_name</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Utility function to store a function as a magic of a specific kind.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dct : dict</span>
+<span class="sd">      A dictionary with &#39;line&#39; and &#39;cell&#39; subdicts.</span>
+
+<span class="sd">    magic_kind : str</span>
+<span class="sd">      Kind of magic to be stored.</span>
+
+<span class="sd">    magic_name : str</span>
+<span class="sd">      Key to store the magic as.</span>
+
+<span class="sd">    func : function</span>
+<span class="sd">      Callable object to store.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">magic_kind</span> <span class="o">==</span> <span class="s1">&#39;line_cell&#39;</span><span class="p">:</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;line&#39;</span><span class="p">][</span><span class="n">magic_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">][</span><span class="n">magic_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dct</span><span class="p">[</span><span class="n">magic_kind</span><span class="p">][</span><span class="n">magic_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span>
+
+
+<span class="k">def</span> <span class="nf">validate_type</span><span class="p">(</span><span class="n">magic_kind</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Ensure that the given magic_kind is valid.</span>
+
+<span class="sd">    Check that the given magic_kind is one of the accepted spec types (stored</span>
+<span class="sd">    in the global `magic_spec`), raise ValueError otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">magic_kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">magic_spec</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;magic_kind must be one of </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1"> given&#39;</span> <span class="o">%</span>
+                         <span class="n">magic_kinds</span><span class="p">,</span> <span class="n">magic_kind</span><span class="p">)</span>
+
+
+<span class="c1"># The docstrings for the decorator below will be fairly similar for the two</span>
+<span class="c1"># types (method and function), so we generate them here once and reuse the</span>
+<span class="c1"># templates below.</span>
+<span class="n">_docstring_template</span> <span class="o">=</span> \
+<span class="sd">&quot;&quot;&quot;Decorate the given {0} as {1} magic.</span>
+
+<span class="sd">The decorator can be used with or without arguments, as follows.</span>
+
+<span class="sd">i) without arguments: it will create a {1} magic named as the {0} being</span>
+<span class="sd">decorated::</span>
+
+<span class="sd">    @deco</span>
+<span class="sd">    def foo(...)</span>
+
+<span class="sd">will create a {1} magic named `foo`.</span>
+
+<span class="sd">ii) with one string argument: which will be used as the actual name of the</span>
+<span class="sd">resulting magic::</span>
+
+<span class="sd">    @deco(&#39;bar&#39;)</span>
+<span class="sd">    def foo(...)</span>
+
+<span class="sd">will create a {1} magic named `bar`.</span>
+
+<span class="sd">To register a class magic use ``Interactiveshell.register_magic(class or instance)``.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># These two are decorator factories.  While they are conceptually very similar,</span>
+<span class="c1"># there are enough differences in the details that it&#39;s simpler to have them</span>
+<span class="c1"># written as completely standalone functions rather than trying to share code</span>
+<span class="c1"># and make a single one with convoluted logic.</span>
+
+<span class="k">def</span> <span class="nf">_method_magic_marker</span><span class="p">(</span><span class="n">magic_kind</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decorator factory for methods in Magics subclasses.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">validate_type</span><span class="p">(</span><span class="n">magic_kind</span><span class="p">)</span>
+
+    <span class="c1"># This is a closure to capture the magic_kind.  We could also use a class,</span>
+    <span class="c1"># but it&#39;s overkill for just that one bit of state.</span>
+    <span class="k">def</span> <span class="nf">magic_deco</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+        <span class="n">call</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+            <span class="c1"># &quot;Naked&quot; decorator call (just @foo, no args)</span>
+            <span class="n">func</span> <span class="o">=</span> <span class="n">arg</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="n">retval</span> <span class="o">=</span> <span class="n">decorator</span><span class="p">(</span><span class="n">call</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+            <span class="n">record_magic</span><span class="p">(</span><span class="n">magics</span><span class="p">,</span> <span class="n">magic_kind</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="c1"># Decorator called with arguments (@foo(&#39;bar&#39;))</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">arg</span>
+            <span class="k">def</span> <span class="nf">mark</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+                <span class="n">record_magic</span><span class="p">(</span><span class="n">magics</span><span class="p">,</span> <span class="n">magic_kind</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">decorator</span><span class="p">(</span><span class="n">call</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+            <span class="n">retval</span> <span class="o">=</span> <span class="n">mark</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Decorator can only be called with &quot;</span>
+                            <span class="s2">&quot;string or function&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">retval</span>
+
+    <span class="c1"># Ensure the resulting decorator has a usable docstring</span>
+    <span class="n">magic_deco</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">_docstring_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;method&#39;</span><span class="p">,</span> <span class="n">magic_kind</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">magic_deco</span>
+
+
+<span class="k">def</span> <span class="nf">_function_magic_marker</span><span class="p">(</span><span class="n">magic_kind</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decorator factory for standalone functions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">validate_type</span><span class="p">(</span><span class="n">magic_kind</span><span class="p">)</span>
+    
+    <span class="c1"># This is a closure to capture the magic_kind.  We could also use a class,</span>
+    <span class="c1"># but it&#39;s overkill for just that one bit of state.</span>
+    <span class="k">def</span> <span class="nf">magic_deco</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+        <span class="n">call</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
+
+        <span class="c1"># Find get_ipython() in the caller&#39;s namespace</span>
+        <span class="n">caller</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ns</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;f_locals&#39;</span><span class="p">,</span> <span class="s1">&#39;f_globals&#39;</span><span class="p">,</span> <span class="s1">&#39;f_builtins&#39;</span><span class="p">]:</span>
+            <span class="n">get_ipython</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="n">ns</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;get_ipython&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">get_ipython</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s1">&#39;Decorator can only run in context where &#39;</span>
+                            <span class="s1">&#39;`get_ipython` exists&#39;</span><span class="p">)</span>
+
+        <span class="n">ip</span> <span class="o">=</span> <span class="n">get_ipython</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+            <span class="c1"># &quot;Naked&quot; decorator call (just @foo, no args)</span>
+            <span class="n">func</span> <span class="o">=</span> <span class="n">arg</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="n">ip</span><span class="o">.</span><span class="n">register_magic_function</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">magic_kind</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">retval</span> <span class="o">=</span> <span class="n">decorator</span><span class="p">(</span><span class="n">call</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="c1"># Decorator called with arguments (@foo(&#39;bar&#39;))</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">arg</span>
+            <span class="k">def</span> <span class="nf">mark</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+                <span class="n">ip</span><span class="o">.</span><span class="n">register_magic_function</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">magic_kind</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">decorator</span><span class="p">(</span><span class="n">call</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+            <span class="n">retval</span> <span class="o">=</span> <span class="n">mark</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Decorator can only be called with &quot;</span>
+                             <span class="s2">&quot;string or function&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">retval</span>
+
+    <span class="c1"># Ensure the resulting decorator has a usable docstring</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">_docstring_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;function&#39;</span><span class="p">,</span> <span class="n">magic_kind</span><span class="p">)</span>
+
+    <span class="n">ds</span> <span class="o">+=</span> <span class="n">dedent</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Note: this decorator can only be used in a context where IPython is already</span>
+<span class="s2">    active, so that the `get_ipython()` call succeeds.  You can therefore use</span>
+<span class="s2">    it in your startup files loaded after IPython initializes, but *not* in the</span>
+<span class="s2">    IPython configuration file itself, which is executed before IPython is</span>
+<span class="s2">    fully up and running.  Any file located in the `startup` subdirectory of</span>
+<span class="s2">    your configuration profile will be OK in this sense.</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
+    
+    <span class="n">magic_deco</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">ds</span>
+    <span class="k">return</span> <span class="n">magic_deco</span>
+
+
+<span class="c1"># Create the actual decorators for public use</span>
+
+<span class="c1"># These three are used to decorate methods in class definitions</span>
+<span class="n">line_magic</span> <span class="o">=</span> <span class="n">_method_magic_marker</span><span class="p">(</span><span class="s1">&#39;line&#39;</span><span class="p">)</span>
+<span class="n">cell_magic</span> <span class="o">=</span> <span class="n">_method_magic_marker</span><span class="p">(</span><span class="s1">&#39;cell&#39;</span><span class="p">)</span>
+<span class="n">line_cell_magic</span> <span class="o">=</span> <span class="n">_method_magic_marker</span><span class="p">(</span><span class="s1">&#39;line_cell&#39;</span><span class="p">)</span>
+
+<span class="c1"># These three decorate standalone functions and perform the decoration</span>
+<span class="c1"># immediately.  They can only run where get_ipython() works</span>
+<span class="n">register_line_magic</span> <span class="o">=</span> <span class="n">_function_magic_marker</span><span class="p">(</span><span class="s1">&#39;line&#39;</span><span class="p">)</span>
+<span class="n">register_cell_magic</span> <span class="o">=</span> <span class="n">_function_magic_marker</span><span class="p">(</span><span class="s1">&#39;cell&#39;</span><span class="p">)</span>
+<span class="n">register_line_cell_magic</span> <span class="o">=</span> <span class="n">_function_magic_marker</span><span class="p">(</span><span class="s1">&#39;line_cell&#39;</span><span class="p">)</span>
+
+<span class="c1">#-----------------------------------------------------------------------------</span>
+<span class="c1"># Core Magic classes</span>
+<span class="c1">#-----------------------------------------------------------------------------</span>
+
+<span class="k">class</span> <span class="nc">MagicsManager</span><span class="p">(</span><span class="n">Configurable</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Object that handles all magic-related functionality for IPython.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Non-configurable class attributes</span>
+
+    <span class="c1"># A two-level dict, first keyed by magic type, then by magic function, and</span>
+    <span class="c1"># holding the actual callable object as value.  This is the dict used for</span>
+    <span class="c1"># magic function dispatch</span>
+    <span class="n">magics</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
+
+    <span class="c1"># A registry of the original objects that we&#39;ve been given holding magics.</span>
+    <span class="n">registry</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
+
+    <span class="n">shell</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="s1">&#39;IPython.core.interactiveshell.InteractiveShellABC&#39;</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">auto_magic</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span>
+        <span class="s2">&quot;Automatically call line magics without requiring explicit % prefix&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;auto_magic&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_auto_magic_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">change</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">automagic</span> <span class="o">=</span> <span class="n">change</span><span class="p">[</span><span class="s1">&#39;new&#39;</span><span class="p">]</span>
+    
+    <span class="n">_auto_status</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;Automagic is OFF, % prefix IS needed for line magics.&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Automagic is ON, % prefix IS NOT needed for line magics.&#39;</span><span class="p">]</span>
+
+    <span class="n">user_magics</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="s1">&#39;IPython.core.magics.UserMagics&#39;</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user_magics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">traits</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">MagicsManager</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">shell</span><span class="o">=</span><span class="n">shell</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                           <span class="n">user_magics</span><span class="o">=</span><span class="n">user_magics</span><span class="p">,</span> <span class="o">**</span><span class="n">traits</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">magics</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">line</span><span class="o">=</span><span class="p">{},</span> <span class="n">cell</span><span class="o">=</span><span class="p">{})</span>
+        <span class="c1"># Let&#39;s add the user_magics to the registry for uniformity, so *all*</span>
+        <span class="c1"># registered magic containers can be found there.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">registry</span><span class="p">[</span><span class="n">user_magics</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_magics</span>
+
+    <span class="k">def</span> <span class="nf">auto_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return descriptive string with automagic status.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_status</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">auto_magic</span><span class="p">]</span>
+    
+    <span class="k">def</span> <span class="nf">lsmagic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a dict of currently available magic functions.</span>
+
+<span class="sd">        The return dict has the keys &#39;line&#39; and &#39;cell&#39;, corresponding to the</span>
+<span class="sd">        two types of magics we support.  Each value is a list of names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">magics</span>
+
+    <span class="k">def</span> <span class="nf">lsmagic_docs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">brief</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return dict of documentation of magic functions.</span>
+
+<span class="sd">        The return dict has the keys &#39;line&#39; and &#39;cell&#39;, corresponding to the</span>
+<span class="sd">        two types of magics we support. Each value is a dict keyed by magic</span>
+<span class="sd">        name whose value is the function docstring. If a docstring is</span>
+<span class="sd">        unavailable, the value of `missing` is used instead.</span>
+
+<span class="sd">        If brief is True, only the first line of each docstring will be returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">m_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">magics</span><span class="p">:</span>
+            <span class="n">m_docs</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">m_name</span><span class="p">,</span> <span class="n">m_func</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">magics</span><span class="p">[</span><span class="n">m_type</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">m_func</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">brief</span><span class="p">:</span>
+                        <span class="n">m_docs</span><span class="p">[</span><span class="n">m_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">m_func</span><span class="o">.</span><span class="vm">__doc__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">m_docs</span><span class="p">[</span><span class="n">m_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">m_func</span><span class="o">.</span><span class="vm">__doc__</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">m_docs</span><span class="p">[</span><span class="n">m_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">missing</span>
+            <span class="n">docs</span><span class="p">[</span><span class="n">m_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">m_docs</span>
+        <span class="k">return</span> <span class="n">docs</span>
+
+    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">magic_objects</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Register one or more instances of Magics.</span>
+
+<span class="sd">        Take one or more classes or instances of classes that subclass the main </span>
+<span class="sd">        `core.Magic` class, and register them with IPython to use the magic</span>
+<span class="sd">        functions they provide.  The registration process will then ensure that</span>
+<span class="sd">        any methods that have decorated to provide line and/or cell magics will</span>
+<span class="sd">        be recognized with the `%x`/`%%x` syntax as a line/cell magic</span>
+<span class="sd">        respectively.</span>
+
+<span class="sd">        If classes are given, they will be instantiated with the default</span>
+<span class="sd">        constructor.  If your classes need a custom constructor, you should</span>
+<span class="sd">        instanitate them first and pass the instance.</span>
+
+<span class="sd">        The provided arguments can be an arbitrary mix of classes and instances.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        magic_objects : one or more classes or instances</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Start by validating them to ensure they have all had their magic</span>
+        <span class="c1"># methods registered at the instance level</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">magic_objects</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="o">.</span><span class="n">registered</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Class of magics </span><span class="si">%r</span><span class="s2"> was constructed without &quot;</span>
+                                 <span class="s2">&quot;the @register_magics class decorator&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+                <span class="c1"># If we&#39;re given an uninstantiated class</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="n">shell</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="p">)</span>
+
+            <span class="c1"># Now that we have an instance, we can register it and update the</span>
+            <span class="c1"># table of callables</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">registry</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span>
+            <span class="k">for</span> <span class="n">mtype</span> <span class="ow">in</span> <span class="n">magic_kinds</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">magics</span><span class="p">[</span><span class="n">mtype</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">magics</span><span class="p">[</span><span class="n">mtype</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">register_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">magic_kind</span><span class="o">=</span><span class="s1">&#39;line&#39;</span><span class="p">,</span> <span class="n">magic_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Expose a standalone function as magic function for IPython.</span>
+
+<span class="sd">        This will create an IPython magic (line, cell or both) from a</span>
+<span class="sd">        standalone function.  The functions should have the following</span>
+<span class="sd">        signatures: </span>
+
+<span class="sd">        * For line magics: `def f(line)`</span>
+<span class="sd">        * For cell magics: `def f(line, cell)`</span>
+<span class="sd">        * For a function that does both: `def f(line, cell=None)`</span>
+
+<span class="sd">        In the latter case, the function will be called with `cell==None` when</span>
+<span class="sd">        invoked as `%f`, and with cell as a string when invoked as `%%f`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        func : callable</span>
+<span class="sd">          Function to be registered as a magic.</span>
+
+<span class="sd">        magic_kind : str</span>
+<span class="sd">          Kind of magic, one of &#39;line&#39;, &#39;cell&#39; or &#39;line_cell&#39;</span>
+
+<span class="sd">        magic_name : optional str</span>
+<span class="sd">          If given, the name the magic will have in the IPython namespace.  By</span>
+<span class="sd">          default, the name of the function itself is used.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Create the new method in the user_magics and register it in the</span>
+        <span class="c1"># global table</span>
+        <span class="n">validate_type</span><span class="p">(</span><span class="n">magic_kind</span><span class="p">)</span>
+        <span class="n">magic_name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">if</span> <span class="n">magic_name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">magic_name</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_magics</span><span class="p">,</span> <span class="n">magic_name</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+        <span class="n">record_magic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">magics</span><span class="p">,</span> <span class="n">magic_kind</span><span class="p">,</span> <span class="n">magic_name</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">register_alias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alias_name</span><span class="p">,</span> <span class="n">magic_name</span><span class="p">,</span> <span class="n">magic_kind</span><span class="o">=</span><span class="s1">&#39;line&#39;</span><span class="p">,</span> <span class="n">magic_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Register an alias to a magic function.</span>
+
+<span class="sd">        The alias is an instance of :class:`MagicAlias`, which holds the</span>
+<span class="sd">        name and kind of the magic it should call. Binding is done at</span>
+<span class="sd">        call time, so if the underlying magic function is changed the alias</span>
+<span class="sd">        will call the new function.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        alias_name : str</span>
+<span class="sd">          The name of the magic to be registered.</span>
+
+<span class="sd">        magic_name : str</span>
+<span class="sd">          The name of an existing magic.</span>
+
+<span class="sd">        magic_kind : str</span>
+<span class="sd">          Kind of magic, one of &#39;line&#39; or &#39;cell&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># `validate_type` is too permissive, as it allows &#39;line_cell&#39;</span>
+        <span class="c1"># which we do not handle.</span>
+        <span class="k">if</span> <span class="n">magic_kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">magic_kinds</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;magic_kind must be one of </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1"> given&#39;</span> <span class="o">%</span>
+                             <span class="n">magic_kinds</span><span class="p">,</span> <span class="n">magic_kind</span><span class="p">)</span>
+
+        <span class="n">alias</span> <span class="o">=</span> <span class="n">MagicAlias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="p">,</span> <span class="n">magic_name</span><span class="p">,</span> <span class="n">magic_kind</span><span class="p">,</span> <span class="n">magic_params</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_magics</span><span class="p">,</span> <span class="n">alias_name</span><span class="p">,</span> <span class="n">alias</span><span class="p">)</span>
+        <span class="n">record_magic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">magics</span><span class="p">,</span> <span class="n">magic_kind</span><span class="p">,</span> <span class="n">alias_name</span><span class="p">,</span> <span class="n">alias</span><span class="p">)</span>
+
+<span class="c1"># Key base class that provides the central functionality for magics.</span>
+
+
+<span class="k">class</span> <span class="nc">Magics</span><span class="p">(</span><span class="n">Configurable</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for implementing magic functions.</span>
+
+<span class="sd">    Shell functions which can be reached as %function_name. All magic</span>
+<span class="sd">    functions should accept a string, which they can parse for their own</span>
+<span class="sd">    needs. This can make some functions easier to type, eg `%cd ../`</span>
+<span class="sd">    vs. `%cd(&quot;../&quot;)`</span>
+
+<span class="sd">    Classes providing magic functions need to subclass this class, and they</span>
+<span class="sd">    MUST:</span>
+
+<span class="sd">    - Use the method decorators `@line_magic` and `@cell_magic` to decorate</span>
+<span class="sd">      individual methods as magic functions, AND</span>
+
+<span class="sd">    - Use the class decorator `@magics_class` to ensure that the magic</span>
+<span class="sd">      methods are properly registered at the instance level upon instance</span>
+<span class="sd">      initialization.</span>
+
+<span class="sd">    See :mod:`magic_functions` for examples of actual implementation classes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Dict holding all command-line options for each magic.</span>
+    <span class="n">options_table</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># Dict for the mapping of magic names to methods, set by class decorator</span>
+    <span class="n">magics</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># Flag to check that the class decorator was properly applied</span>
+    <span class="n">registered</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># Instance of IPython shell</span>
+    <span class="n">shell</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">registered</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Magics subclass without registration - &#39;</span>
+                             <span class="s1">&#39;did you forget to apply @magics_class?&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">shell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">shell</span><span class="p">,</span> <span class="s1">&#39;configurables&#39;</span><span class="p">):</span>
+                <span class="n">shell</span><span class="o">.</span><span class="n">configurables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">shell</span><span class="p">,</span> <span class="s1">&#39;config&#39;</span><span class="p">):</span>
+                <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;parent&#39;</span><span class="p">,</span> <span class="n">shell</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">shell</span> <span class="o">=</span> <span class="n">shell</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options_table</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># The method decorators are run when the instance doesn&#39;t exist yet, so</span>
+        <span class="c1"># they can only record the names of the methods they are supposed to</span>
+        <span class="c1"># grab.  Only now, that the instance exists, can we create the proper</span>
+        <span class="c1"># mapping to bound methods.  So we read the info off the original names</span>
+        <span class="c1"># table and replace each method name by the actual bound method.</span>
+        <span class="c1"># But we mustn&#39;t clobber the *class* mapping, in case of multiple instances.</span>
+        <span class="n">class_magics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">magics</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">magics</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">mtype</span> <span class="ow">in</span> <span class="n">magic_kinds</span><span class="p">:</span>
+            <span class="n">tab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">magics</span><span class="p">[</span><span class="n">mtype</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">cls_tab</span> <span class="o">=</span> <span class="n">class_magics</span><span class="p">[</span><span class="n">mtype</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">magic_name</span><span class="p">,</span> <span class="n">meth_name</span> <span class="ow">in</span> <span class="n">cls_tab</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">meth_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="c1"># it&#39;s a method name, grab it</span>
+                    <span class="n">tab</span><span class="p">[</span><span class="n">magic_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meth_name</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># it&#39;s the real thing</span>
+                    <span class="n">tab</span><span class="p">[</span><span class="n">magic_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">meth_name</span>
+        <span class="c1"># Configurable **needs** to be initiated at the end or the config</span>
+        <span class="c1"># magics get screwed up.</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Magics</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">arg_err</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print docstring if incorrect arguments were passed&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error in arguments:&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">oinspect</span><span class="o">.</span><span class="n">getdoc</span><span class="p">(</span><span class="n">func</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">format_latex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strng</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Format a string for latex inclusion.&quot;&quot;&quot;</span>
+
+        <span class="c1"># Characters that need to be escaped for latex:</span>
+        <span class="n">escape_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(%|_|\$|#|&amp;)&#39;</span><span class="p">,</span><span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
+        <span class="c1"># Magic command names as headers:</span>
+        <span class="n">cmd_name_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^(</span><span class="si">%s</span><span class="s1">.*?):&#39;</span> <span class="o">%</span> <span class="n">ESC_MAGIC</span><span class="p">,</span>
+                                 <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
+        <span class="c1"># Magic commands</span>
+        <span class="n">cmd_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?P&lt;cmd&gt;</span><span class="si">%s</span><span class="s1">.+?\b)(?!\}\}:)&#39;</span> <span class="o">%</span> <span class="n">ESC_MAGIC</span><span class="p">,</span>
+                            <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
+        <span class="c1"># Paragraph continue</span>
+        <span class="n">par_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">$&#39;</span><span class="p">,</span><span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
+
+        <span class="c1"># The &quot;\n&quot; symbol</span>
+        <span class="n">newline_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">n&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Now build the string for output:</span>
+        <span class="c1">#strng = cmd_name_re.sub(r&#39;\n\\texttt{\\textsl{\\large \1}}:&#39;,strng)</span>
+        <span class="n">strng</span> <span class="o">=</span> <span class="n">cmd_name_re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\n</span><span class="se">\\</span><span class="s1">bigskip\n</span><span class="se">\\</span><span class="s1">texttt{</span><span class="se">\\</span><span class="s1">textbf{ \1}}:&#39;</span><span class="p">,</span>
+                                <span class="n">strng</span><span class="p">)</span>
+        <span class="n">strng</span> <span class="o">=</span> <span class="n">cmd_re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">texttt{\g&lt;cmd&gt;}&#39;</span><span class="p">,</span><span class="n">strng</span><span class="p">)</span>
+        <span class="n">strng</span> <span class="o">=</span> <span class="n">par_re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;</span><span class="se">\\\\</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">strng</span><span class="p">)</span>
+        <span class="n">strng</span> <span class="o">=</span> <span class="n">escape_re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">\1&#39;</span><span class="p">,</span><span class="n">strng</span><span class="p">)</span>
+        <span class="n">strng</span> <span class="o">=</span> <span class="n">newline_re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">textbackslash</span><span class="si">{}</span><span class="s1">n&#39;</span><span class="p">,</span><span class="n">strng</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">strng</span>
+
+    <span class="k">def</span> <span class="nf">parse_options</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg_str</span><span class="p">,</span> <span class="n">opt_str</span><span class="p">,</span> <span class="o">*</span><span class="n">long_opts</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse options passed to an argument string.</span>
+
+<span class="sd">        The interface is similar to that of :func:`getopt.getopt`, but it</span>
+<span class="sd">        returns a :class:`~IPython.utils.struct.Struct` with the options as keys</span>
+<span class="sd">        and the stripped argument string still as a string.</span>
+
+<span class="sd">        arg_str is quoted as a true sys.argv vector by using shlex.split.</span>
+<span class="sd">        This allows us to easily expand variables, glob files, quote</span>
+<span class="sd">        arguments, etc.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        arg_str : str</span>
+<span class="sd">          The arguments to parse.</span>
+
+<span class="sd">        opt_str : str</span>
+<span class="sd">          The options specification.</span>
+
+<span class="sd">        mode : str, default &#39;string&#39;</span>
+<span class="sd">          If given as &#39;list&#39;, the argument string is returned as a list (split</span>
+<span class="sd">          on whitespace) instead of a string.</span>
+
+<span class="sd">        list_all : bool, default False</span>
+<span class="sd">          Put all option values in lists. Normally only options</span>
+<span class="sd">          appearing more than once are put in a list.</span>
+
+<span class="sd">        posix : bool, default True</span>
+<span class="sd">          Whether to split the input line in POSIX mode or not, as per the</span>
+<span class="sd">          conventions outlined in the :mod:`shlex` module from the standard</span>
+<span class="sd">          library.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># inject default options at the beginning of the input line</span>
+        <span class="n">caller</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span>
+        <span class="n">arg_str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options_table</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">),</span><span class="n">arg_str</span><span class="p">)</span>
+
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">,</span><span class="s1">&#39;string&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;string&#39;</span><span class="p">,</span><span class="s1">&#39;list&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;incorrect mode given: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mode</span><span class="p">)</span>
+        <span class="c1"># Get options</span>
+        <span class="n">list_all</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;list_all&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">posix</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;posix&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;posix&#39;</span><span class="p">)</span>
+        <span class="n">strict</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;strict&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Check if we have more than one argument to warrant extra processing:</span>
+        <span class="n">odict</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Dictionary with options</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">arg_str</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># If the list of inputs only has 0 or 1 thing in it, there&#39;s no</span>
+            <span class="c1"># need to look for options</span>
+            <span class="n">argv</span> <span class="o">=</span> <span class="n">arg_split</span><span class="p">(</span><span class="n">arg_str</span><span class="p">,</span> <span class="n">posix</span><span class="p">,</span> <span class="n">strict</span><span class="p">)</span>
+            <span class="c1"># Do regular option processing</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">opts</span><span class="p">,</span><span class="n">args</span> <span class="o">=</span> <span class="n">getopt</span><span class="p">(</span><span class="n">argv</span><span class="p">,</span> <span class="n">opt_str</span><span class="p">,</span> <span class="n">long_opts</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">GetoptError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">UsageError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> ( allowed: &quot;</span><span class="si">%s</span><span class="s1">&quot; </span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">msg</span><span class="p">,</span><span class="n">opt_str</span><span class="p">,</span>
+                                        <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">long_opts</span><span class="p">)))</span>
+            <span class="k">for</span> <span class="n">o</span><span class="p">,</span><span class="n">a</span> <span class="ow">in</span> <span class="n">opts</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">o</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;--&#39;</span><span class="p">):</span>
+                    <span class="n">o</span> <span class="o">=</span> <span class="n">o</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">o</span> <span class="o">=</span> <span class="n">o</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">odict</span><span class="p">[</span><span class="n">o</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                    <span class="n">odict</span><span class="p">[</span><span class="n">o</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">odict</span><span class="p">[</span><span class="n">o</span><span class="p">],</span><span class="n">a</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">list_all</span><span class="p">:</span>
+                        <span class="n">odict</span><span class="p">[</span><span class="n">o</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">odict</span><span class="p">[</span><span class="n">o</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span>
+
+        <span class="c1"># Prepare opts,args for return</span>
+        <span class="n">opts</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="n">odict</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;string&#39;</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">opts</span><span class="p">,</span><span class="n">args</span>
+
+    <span class="k">def</span> <span class="nf">default_option</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">optstr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Make an entry in the options_table for fn, with value optstr&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">fn</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lsmagic</span><span class="p">():</span>
+            <span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> is not a magic function&quot;</span> <span class="o">%</span> <span class="n">fn</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options_table</span><span class="p">[</span><span class="n">fn</span><span class="p">]</span> <span class="o">=</span> <span class="n">optstr</span>
+
+
+<span class="k">class</span> <span class="nc">MagicAlias</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An alias to another magic function.</span>
+
+<span class="sd">    An alias is determined by its magic name and magic kind. Lookup</span>
+<span class="sd">    is done at call time, so if the underlying magic changes the alias</span>
+<span class="sd">    will call the new function.</span>
+
+<span class="sd">    Use the :meth:`MagicsManager.register_alias` method or the</span>
+<span class="sd">    `%alias_magic` magic function to create and register a new alias.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shell</span><span class="p">,</span> <span class="n">magic_name</span><span class="p">,</span> <span class="n">magic_kind</span><span class="p">,</span> <span class="n">magic_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shell</span> <span class="o">=</span> <span class="n">shell</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">magic_name</span> <span class="o">=</span> <span class="n">magic_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">magic_params</span> <span class="o">=</span> <span class="n">magic_params</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">magic_kind</span> <span class="o">=</span> <span class="n">magic_kind</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pretty_target</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">magic_escapes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">magic_kind</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">magic_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;Alias for `</span><span class="si">%s</span><span class="s2">`.&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">pretty_target</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_call</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Call the magic alias.&quot;&quot;&quot;</span>
+        <span class="n">fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">find_magic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">magic_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">magic_kind</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UsageError</span><span class="p">(</span><span class="s2">&quot;Magic `</span><span class="si">%s</span><span class="s2">` not found.&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">pretty_target</span><span class="p">)</span>
+
+        <span class="c1"># Protect against infinite recursion.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_call</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UsageError</span><span class="p">(</span><span class="s2">&quot;Infinite recursion detected; &quot;</span>
+                             <span class="s2">&quot;magic aliases cannot call themselves.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_call</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">magic_params</span><span class="p">:</span>
+                <span class="n">args_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+                <span class="n">args_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">magic_params</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">args</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">args_list</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_in_call</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

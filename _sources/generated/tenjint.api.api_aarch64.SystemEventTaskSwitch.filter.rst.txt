@@ -1,0 +1,6 @@
+SystemEventTaskSwitch.filter
+============================
+
+.. currentmodule:: tenjint.api.api_aarch64
+
+.. automethod:: SystemEventTaskSwitch.filter

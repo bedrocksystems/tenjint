@@ -1,0 +1,6 @@
+TenjintShell.dummy\_mode
+========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.dummy_mode

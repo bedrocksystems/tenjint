@@ -1,0 +1,6 @@
+TaskSwitchPluginBase.request\_event
+===================================
+
+.. currentmodule:: tenjint.plugins.taskswitch
+
+.. automethod:: TaskSwitchPluginBase.request_event

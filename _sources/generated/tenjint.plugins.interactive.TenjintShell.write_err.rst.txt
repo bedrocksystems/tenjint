@@ -1,0 +1,6 @@
+TenjintShell.write\_err
+=======================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.write_err

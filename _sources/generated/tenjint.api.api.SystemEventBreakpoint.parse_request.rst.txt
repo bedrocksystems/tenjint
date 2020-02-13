@@ -1,0 +1,6 @@
+SystemEventBreakpoint.parse\_request
+====================================
+
+.. currentmodule:: tenjint.api.api
+
+.. automethod:: SystemEventBreakpoint.parse_request

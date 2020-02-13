@@ -1,0 +1,6 @@
+OperatingSystemLinux.pointer\_width
+===================================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. autoproperty:: OperatingSystemLinux.pointer_width

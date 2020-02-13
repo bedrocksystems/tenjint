@@ -1,0 +1,6 @@
+SystemEventVmStop.parse\_request
+================================
+
+.. currentmodule:: tenjint.api.api
+
+.. automethod:: SystemEventVmStop.parse_request

@@ -1,0 +1,6 @@
+TenjintShell.getoutput
+======================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.getoutput

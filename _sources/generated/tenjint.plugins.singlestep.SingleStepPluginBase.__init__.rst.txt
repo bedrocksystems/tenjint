@@ -1,0 +1,6 @@
+SingleStepPluginBase.\_\_init\_\_
+=================================
+
+.. currentmodule:: tenjint.plugins.singlestep
+
+.. automethod:: SingleStepPluginBase.__init__

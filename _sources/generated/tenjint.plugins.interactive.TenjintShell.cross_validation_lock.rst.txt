@@ -1,0 +1,6 @@
+TenjintShell.cross\_validation\_lock
+====================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoproperty:: TenjintShell.cross_validation_lock

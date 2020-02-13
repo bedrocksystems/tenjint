@@ -1,0 +1,6 @@
+TenjintShell.init\_create\_namespaces
+=====================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.init_create_namespaces

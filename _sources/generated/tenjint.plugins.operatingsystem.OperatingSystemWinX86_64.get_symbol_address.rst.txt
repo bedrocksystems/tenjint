@@ -1,0 +1,6 @@
+OperatingSystemWinX86\_64.get\_symbol\_address
+==============================================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. automethod:: OperatingSystemWinX86_64.get_symbol_address

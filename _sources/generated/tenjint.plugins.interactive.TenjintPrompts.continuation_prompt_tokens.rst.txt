@@ -1,0 +1,6 @@
+TenjintPrompts.continuation\_prompt\_tokens
+===========================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintPrompts.continuation_prompt_tokens

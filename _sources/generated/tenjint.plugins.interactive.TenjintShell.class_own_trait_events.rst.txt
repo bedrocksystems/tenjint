@@ -1,0 +1,6 @@
+TenjintShell.class\_own\_trait\_events
+======================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.class_own_trait_events

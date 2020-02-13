@@ -1,0 +1,42 @@
+TaskSwitchPluginX86\_64
+=======================
+
+.. currentmodule:: tenjint.plugins.taskswitch
+
+.. autoclass:: TaskSwitchPluginX86_64
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      TaskSwitchPluginX86_64.arch
+   
+      TaskSwitchPluginX86_64.name
+   
+      TaskSwitchPluginX86_64.os
+   
+      TaskSwitchPluginX86_64.produces
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      TaskSwitchPluginX86_64.__init__
+   
+      TaskSwitchPluginX86_64.cancel_event
+   
+      TaskSwitchPluginX86_64.load
+   
+      TaskSwitchPluginX86_64.request_event
+   
+      TaskSwitchPluginX86_64.uninit
+   
+   
+   

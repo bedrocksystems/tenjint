@@ -1,0 +1,6 @@
+TenjintShell.find\_user\_code
+=============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.find_user_code

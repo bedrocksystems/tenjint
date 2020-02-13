@@ -1,0 +1,22 @@
+tenjint.plugins.operatingsystem
+===============================
+
+.. rubric:: Description
+.. automodule:: tenjint.plugins.operatingsystem
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+
+.. rubric:: Classes
+.. autosummary::
+    :toctree:
+    
+    OperatingSystemBase
+    
+    OperatingSystemConfig
+    
+    OperatingSystemLinux
+    
+    OperatingSystemWinX86_64
+    
+
+

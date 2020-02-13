@@ -1,0 +1,6 @@
+SingleStepPluginAarch64.last\_ss\_gva
+=====================================
+
+.. currentmodule:: tenjint.plugins.singlestep
+
+.. automethod:: SingleStepPluginAarch64.last_ss_gva

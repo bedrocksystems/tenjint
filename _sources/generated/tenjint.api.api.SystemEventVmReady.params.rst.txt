@@ -1,0 +1,6 @@
+SystemEventVmReady.params
+=========================
+
+.. currentmodule:: tenjint.api.api
+
+.. autoattribute:: SystemEventVmReady.params

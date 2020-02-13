@@ -1,0 +1,6 @@
+TenjintShell.wildcards\_case\_sensitive
+=======================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.wildcards_case_sensitive

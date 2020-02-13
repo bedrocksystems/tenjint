@@ -1,0 +1,27 @@
+tenjint.plugins.interactive
+===========================
+
+.. rubric:: Description
+.. automodule:: tenjint.plugins.interactive
+.. currentmodule:: tenjint.plugins.interactive
+
+
+.. rubric:: Classes
+.. autosummary::
+    :toctree:
+    
+    InteractiveShell
+    
+    TenjintPrompts
+    
+    TenjintShell
+    
+
+
+
+.. rubric:: Functions
+.. autosummary::
+    :toctree:
+    
+    tenjintInputTransformer
+    

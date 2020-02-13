@@ -1,0 +1,6 @@
+TenjintShell.init\_virtualenv
+=============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.init_virtualenv

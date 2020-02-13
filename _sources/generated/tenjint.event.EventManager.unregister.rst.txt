@@ -1,0 +1,6 @@
+EventManager.unregister
+=======================
+
+.. currentmodule:: tenjint.event
+
+.. automethod:: EventManager.unregister

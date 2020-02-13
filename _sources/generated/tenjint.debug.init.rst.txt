@@ -1,0 +1,6 @@
+init
+====
+
+.. currentmodule:: tenjint.debug
+
+.. autofunction:: init

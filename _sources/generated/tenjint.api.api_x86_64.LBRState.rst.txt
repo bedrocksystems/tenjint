@@ -1,0 +1,21 @@
+LBRState
+========
+
+.. currentmodule:: tenjint.api.api_x86_64
+
+.. autoclass:: LBRState
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      LBRState.__init__
+   
+   
+   

@@ -1,0 +1,6 @@
+ServiceManager.get
+==================
+
+.. currentmodule:: tenjint.service
+
+.. automethod:: ServiceManager.get

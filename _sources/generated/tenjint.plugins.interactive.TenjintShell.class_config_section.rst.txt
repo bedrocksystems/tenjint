@@ -1,0 +1,6 @@
+TenjintShell.class\_config\_section
+===================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.class_config_section

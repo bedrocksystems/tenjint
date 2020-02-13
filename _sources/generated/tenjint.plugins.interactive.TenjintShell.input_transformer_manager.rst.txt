@@ -1,0 +1,6 @@
+TenjintShell.input\_transformer\_manager
+========================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.input_transformer_manager

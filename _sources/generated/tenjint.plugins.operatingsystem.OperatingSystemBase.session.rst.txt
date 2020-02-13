@@ -1,0 +1,6 @@
+OperatingSystemBase.session
+===========================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. autoattribute:: OperatingSystemBase.session

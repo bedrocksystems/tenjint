@@ -1,0 +1,23 @@
+Profiling
+=========
+
+.. currentmodule:: tenjint.debug
+
+.. autoclass:: Profiling
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      Profiling.__init__
+   
+      Profiling.uninit
+   
+   
+   

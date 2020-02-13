@@ -1,0 +1,6 @@
+TenjintShell.extra\_open\_editor\_shortcuts
+===========================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.extra_open_editor_shortcuts

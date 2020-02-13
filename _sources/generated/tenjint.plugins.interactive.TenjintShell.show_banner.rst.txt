@@ -1,0 +1,6 @@
+TenjintShell.show\_banner
+=========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.show_banner

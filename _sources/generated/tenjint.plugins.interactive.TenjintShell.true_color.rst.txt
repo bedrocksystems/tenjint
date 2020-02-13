@@ -1,0 +1,6 @@
+TenjintShell.true\_color
+========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.true_color

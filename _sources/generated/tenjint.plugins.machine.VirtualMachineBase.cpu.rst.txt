@@ -1,0 +1,6 @@
+VirtualMachineBase.cpu
+======================
+
+.. currentmodule:: tenjint.plugins.machine
+
+.. automethod:: VirtualMachineBase.cpu

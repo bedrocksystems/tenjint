@@ -1,0 +1,6 @@
+TenjintShell.init\_traceback\_handlers
+======================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.init_traceback_handlers

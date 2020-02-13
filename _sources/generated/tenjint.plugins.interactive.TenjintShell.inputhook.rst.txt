@@ -1,0 +1,6 @@
+TenjintShell.inputhook
+======================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.inputhook

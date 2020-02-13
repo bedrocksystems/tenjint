@@ -1,0 +1,6 @@
+TenjintShell.confirm\_exit
+==========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.confirm_exit

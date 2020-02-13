@@ -1,0 +1,6 @@
+VirtualMachineX86\_64.phys\_mem\_size
+=====================================
+
+.. currentmodule:: tenjint.plugins.machine
+
+.. autoproperty:: VirtualMachineX86_64.phys_mem_size

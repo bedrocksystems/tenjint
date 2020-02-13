@@ -1,0 +1,570 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tenjint.plugins.operatingsystem &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rpi.html">tenjint Raspberry Pi 4 Image</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>tenjint.plugins.operatingsystem</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tenjint.plugins.operatingsystem</h1><div class="highlight"><pre>
+<span></span><span class="c1"># tenjint - VMI Python Library</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2020 Bedrock Systems, Inc</span>
+<span class="c1"># Authors: Jonas Pfoh &lt;jonas@bedrocksystems.com&gt;</span>
+<span class="c1">#          Sebastian Vogl &lt;sebastian@bedrocksystems.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License version 2 as published</span>
+<span class="c1"># by the Free Software Foundation.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+
+<span class="sd">&quot;&quot;&quot;This module provides abstractions for the guest operating system.</span>
+
+<span class="sd">This module provides all classes and functions that give access to the guest</span>
+<span class="sd">operating system (OS).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">struct</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">plugins</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">api</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">config</span>
+
+<span class="kn">from</span> <span class="nn">rekall.session</span> <span class="k">import</span> <span class="n">InteractiveSession</span>
+<span class="kn">from</span> <span class="nn">rekall.plugins.addrspaces</span> <span class="k">import</span> <span class="n">tenjint</span>
+<span class="kn">from</span> <span class="nn">rekall.plugin</span> <span class="k">import</span> <span class="n">PluginError</span>
+
+<span class="k">class</span> <span class="nc">SymbolResolutionError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Raised when a symbol cannot be resolved.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+<div class="viewcode-block" id="OperatingSystemConfig"><a class="viewcode-back" href="../../../generated/tenjint.plugins.operatingsystem.OperatingSystemConfig.html#tenjint.plugins.operatingsystem.OperatingSystemConfig">[docs]</a><span class="k">class</span> <span class="nc">OperatingSystemConfig</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">ConfigMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Helper class for the configuration of the operating system.&quot;&quot;&quot;</span>
+    <span class="n">_config_options</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;rekall_profile&quot;</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;help&quot;</span><span class="p">:</span> <span class="s2">&quot;The profile string to pass to the Rekall session.&quot;</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+    <span class="sd">&quot;&quot;&quot;Configuration options.&quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="OperatingSystemBase"><a class="viewcode-back" href="../../../generated/tenjint.plugins.operatingsystem.OperatingSystemBase.html#tenjint.plugins.operatingsystem.OperatingSystemBase">[docs]</a><span class="k">class</span> <span class="nc">OperatingSystemBase</span><span class="p">(</span><span class="n">plugins</span><span class="o">.</span><span class="n">Plugin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for all operating systems.&quot;&quot;&quot;</span>
+
+    <span class="n">session</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;The rekall session object.&quot;&quot;&quot;</span>
+
+    <span class="n">_config_values</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;The config values.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="OperatingSystemBase.load"><a class="viewcode-back" href="../../../generated/tenjint.plugins.operatingsystem.OperatingSystemBase.load.html#tenjint.plugins.operatingsystem.OperatingSystemBase.load">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Detects the guest operating system (OS).</span>
+
+<span class="sd">        This method overwrites the original plugin load method. It will try to</span>
+<span class="sd">        detect the guest operating system and if it succeeds will configure the</span>
+<span class="sd">        underlying rekall session accordingly.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        RuntimeError</span>
+<span class="sd">            If the guest OS cannot be detected.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">session</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_config_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">config</span> <span class="o">=</span> <span class="n">OperatingSystemConfig</span><span class="p">()</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">_config_values</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">_config_values</span>
+
+            <span class="n">profile</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_config_values</span><span class="p">[</span><span class="s2">&quot;rekall_profile&quot;</span><span class="p">]</span>
+            <span class="n">session</span> <span class="o">=</span> <span class="n">InteractiveSession</span><span class="p">(</span><span class="n">session_name</span><span class="o">=</span><span class="s2">&quot;interrupt&quot;</span><span class="p">,</span>
+                                         <span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">)</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">session_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+
+            <span class="n">session</span><span class="o">.</span><span class="n">SetParameter</span><span class="p">(</span><span class="s2">&quot;cache&quot;</span><span class="p">,</span> <span class="s2">&quot;tenjint&quot;</span><span class="p">)</span>
+            <span class="n">addr_space</span> <span class="o">=</span> <span class="n">tenjint</span><span class="o">.</span><span class="n">TenjintAddressSpace</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">physical_address_space</span> <span class="o">=</span> <span class="n">addr_space</span>
+
+            <span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">GetParameter</span><span class="p">(</span><span class="s2">&quot;mode_windows&quot;</span><span class="p">):</span>
+                <span class="n">api</span><span class="o">.</span><span class="n">os</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">OsType</span><span class="o">.</span><span class="n">OS_WIN</span>
+            <span class="k">elif</span> <span class="n">session</span><span class="o">.</span><span class="n">GetParameter</span><span class="p">(</span><span class="s2">&quot;mode_linux&quot;</span><span class="p">):</span>
+                <span class="n">api</span><span class="o">.</span><span class="n">os</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">OsType</span><span class="o">.</span><span class="n">OS_LINUX</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Unable to determine guest OS type.&quot;</span><span class="p">)</span>
+
+            <span class="n">rekall_arch_str</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span><span class="s2">&quot;arch&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rekall_arch_str</span> <span class="o">==</span> <span class="s2">&quot;AMD64&quot;</span><span class="p">:</span>
+                <span class="n">api</span><span class="o">.</span><span class="n">arch</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Arch</span><span class="o">.</span><span class="n">X86_64</span>
+            <span class="k">elif</span> <span class="n">rekall_arch_str</span> <span class="o">==</span> <span class="s2">&quot;I386&quot;</span><span class="p">:</span>
+                <span class="n">api</span><span class="o">.</span><span class="n">arch</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Arch</span><span class="o">.</span><span class="n">X86</span>
+            <span class="k">elif</span> <span class="n">rekall_arch_str</span> <span class="o">==</span> <span class="s2">&quot;ARM&quot;</span><span class="p">:</span>
+                <span class="n">api</span><span class="o">.</span><span class="n">arch</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Arch</span><span class="o">.</span><span class="n">AARCH32</span>
+            <span class="k">elif</span> <span class="n">rekall_arch_str</span> <span class="o">==</span> <span class="s2">&quot;ARM64&quot;</span><span class="p">:</span>
+                <span class="n">api</span><span class="o">.</span><span class="n">arch</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Arch</span><span class="o">.</span><span class="n">AARCH64</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Unexpected guest kernel architecture&quot;</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">session</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">load_as</span><span class="p">()</span><span class="o">.</span><span class="n">GetVirtualAddressSpace</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">PluginError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">find_kaslr</span><span class="p">(</span>
+                        <span class="n">scan_whole_physical_space</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;Valid&quot;</span><span class="p">]:</span>
+                        <span class="n">find_dtb</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">find_dtb</span><span class="p">()</span>
+                        <span class="n">session</span><span class="o">.</span><span class="n">kernel_address_space</span> <span class="o">=</span> <span class="n">find_dtb</span><span class="o">.</span><span class="n">GetAddressSpaceImplementation</span><span class="p">()(</span>
+                                <span class="n">base</span><span class="o">=</span><span class="n">session</span><span class="o">.</span><span class="n">physical_address_space</span><span class="p">,</span> <span class="n">dtb</span><span class="o">=</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;DTB&quot;</span><span class="p">],</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+                                <span class="n">profile</span><span class="o">=</span><span class="n">session</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="n">kernel_slide</span><span class="o">=</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;kernel_slide&quot;</span><span class="p">])</span>
+                        <span class="n">session</span><span class="o">.</span><span class="n">SetCache</span><span class="p">(</span><span class="s2">&quot;kernel_slide&quot;</span><span class="p">,</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;kernel_slide&quot;</span><span class="p">],</span> <span class="n">volatile</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                        <span class="k">break</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">session</span><span class="o">.</span><span class="n">kernel_address_space</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+                <span class="n">session</span><span class="o">.</span><span class="n">SetCache</span><span class="p">(</span><span class="s2">&quot;default_address_space&quot;</span><span class="p">,</span>
+                                 <span class="n">session</span><span class="o">.</span><span class="n">kernel_address_space</span><span class="p">,</span>
+                                 <span class="n">volatile</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+            <span class="bp">cls</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
+
+        <span class="c1"># Now load</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OperatingSystemBase.__init__"><a class="viewcode-back" href="../../../generated/tenjint.plugins.operatingsystem.OperatingSystemBase.__init__.html#tenjint.plugins.operatingsystem.OperatingSystemBase.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">add_continue_hook</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cont_hook</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OperatingSystemBase.uninit"><a class="viewcode-back" href="../../../generated/tenjint.plugins.operatingsystem.OperatingSystemBase.uninit.html#tenjint.plugins.operatingsystem.OperatingSystemBase.uninit">[docs]</a>    <span class="k">def</span> <span class="nf">uninit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">uninit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">remove_continue_hook</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cont_hook</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_cont_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">ClearVolatile</span><span class="p">()</span>
+
+<div class="viewcode-block" id="OperatingSystemBase.process"><a class="viewcode-back" href="../../../generated/tenjint.plugins.operatingsystem.OperatingSystemBase.process.html#tenjint.plugins.operatingsystem.OperatingSystemBase.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dtb</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a process running in the guest.</span>
+
+<span class="sd">        This function tries to retrieve a process running in the guest based</span>
+<span class="sd">        on its PID or DTB.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pid : int, optional</span>
+<span class="sd">            The PID of the process to find. Either the PID or the DTB must be</span>
+<span class="sd">            specified.</span>
+<span class="sd">        dtb : int, optional</span>
+<span class="sd">            The directory table base (DTB) of the process to fund. Either the</span>
+<span class="sd">            PID or the DTB must be specified.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object</span>
+<span class="sd">            A presentation of the process or None if the process cannot be</span>
+<span class="sd">            found.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If neither PID nor DTB was specified.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">pid</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">dtb</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;you must specify a pid or dtb&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">proc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">pslist</span><span class="p">()</span><span class="o">.</span><span class="n">filter_processes</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">pid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">pid</span> <span class="o">==</span> <span class="n">proc</span><span class="o">.</span><span class="n">pid</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">proc</span>
+            <span class="k">elif</span> <span class="n">dtb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">dtb</span> <span class="o">==</span> <span class="n">proc</span><span class="o">.</span><span class="n">dtb</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">proc</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="OperatingSystemBase.vtop"><a class="viewcode-back" href="../../../generated/tenjint.plugins.operatingsystem.OperatingSystemBase.vtop.html#tenjint.plugins.operatingsystem.OperatingSystemBase.vtop">[docs]</a>    <span class="k">def</span> <span class="nf">vtop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vaddr</span><span class="p">,</span> <span class="n">pid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dtb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kernel_address_space</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Translate a guest virtual address to a guest physical address.</span>
+
+<span class="sd">        While the vtop function of the virtual machine abstraction (</span>
+<span class="sd">        :py:func:`tenjint.plugins.machine.VirtualMachine.vtop`) translates</span>
+<span class="sd">        addresses based on the architecture, this function tries to consider</span>
+<span class="sd">        the intrinsics of the OS to translate an address. Since the OS has</span>
+<span class="sd">        internal state that describes where paged-out data resides, this</span>
+<span class="sd">        function is more powerful and might be able to translate some addresses</span>
+<span class="sd">        that cannot be translate according to the hardware architecture.</span>
+<span class="sd">        However, this function is only available if the OS can be detected.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        vaddr : int</span>
+<span class="sd">            The virtual address to translate.</span>
+<span class="sd">        pid : int, optional</span>
+<span class="sd">            The PID of the process to use as a basis for the translation. Since</span>
+<span class="sd">            we have access to the entire OS, the translation of a virtual</span>
+<span class="sd">            address depends on the address space that we use. If neither a PID</span>
+<span class="sd">            nor a DTB is given and the kernel address space should not be used</span>
+<span class="sd">            for the translation either, the default address space will be used.</span>
+<span class="sd">        dtb : int, optional</span>
+<span class="sd">            The dtb to use as a basis for the translation. Since</span>
+<span class="sd">            we have access to the entire OS, the translation of a virtual</span>
+<span class="sd">            address depends on the address space that we use. If neither a PID</span>
+<span class="sd">            nor a DTB is given and the kernel address space should not be used</span>
+<span class="sd">            for the translation either, the default address space will be used.</span>
+<span class="sd">        kernel_address_space : bool, optional</span>
+<span class="sd">            Whether to use the kernel address space as a basis for translation.</span>
+<span class="sd">            Since we have access to the entire OS, the translation of a virtual</span>
+<span class="sd">            address depends on the address space that we use. If neither a PID</span>
+<span class="sd">            nor a DTB is given and the kernel address space should not be used</span>
+<span class="sd">            for the translation either, the default address space will be used.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int or None</span>
+<span class="sd">            The physical address or None if the address cannot be translated.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the provided PID or DTB does not belong to a running process.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">kernel_address_space</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">kernel_address_space</span><span class="o">.</span><span class="n">vtop</span><span class="p">(</span><span class="n">vaddr</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">dtb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">proc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">pid</span><span class="o">=</span><span class="n">pid</span><span class="p">,</span> <span class="n">dtb</span><span class="o">=</span><span class="n">dtb</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">proc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;process not found&quot;</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">proc</span><span class="o">.</span><span class="n">get_process_address_space</span><span class="p">()</span><span class="o">.</span><span class="n">vtop</span><span class="p">(</span><span class="n">vaddr</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">default_address_space</span><span class="o">.</span><span class="n">vtop</span><span class="p">(</span><span class="n">vaddr</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OperatingSystemBase.get_symbol_address"><a class="viewcode-back" href="../../../generated/tenjint.plugins.operatingsystem.OperatingSystemBase.get_symbol_address.html#tenjint.plugins.operatingsystem.OperatingSystemBase.get_symbol_address">[docs]</a>    <span class="k">def</span> <span class="nf">get_symbol_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the address of a symbol.</span>
+
+<span class="sd">        This function can lookup the addresses of symbols. For this function</span>
+<span class="sd">        to succeed, the symbol must be contained in the profile of the</span>
+<span class="sd">        operating system.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        symbol : str</span>
+<span class="sd">            The symbol to search for.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The address of the symbol.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        SymbolResolutionError</span>
+<span class="sd">            If the symbol cannot be found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">address_resolver</span><span class="o">.</span><span class="n">get_address_by_name</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rv</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SymbolResolutionError</span><span class="p">(</span><span class="n">rv</span><span class="o">.</span><span class="n">reason</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rv</span></div>
+
+<div class="viewcode-block" id="OperatingSystemBase.get_nearest_symbol_by_address"><a class="viewcode-back" href="../../../generated/tenjint.plugins.operatingsystem.OperatingSystemBase.get_nearest_symbol_by_address.html#tenjint.plugins.operatingsystem.OperatingSystemBase.get_nearest_symbol_by_address">[docs]</a>    <span class="k">def</span> <span class="nf">get_nearest_symbol_by_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get symbols by address.</span>
+
+<span class="sd">        This function will attempt to look up the nearest symbol based on an</span>
+<span class="sd">        address. If multiple symbols are located at an equal distance from the</span>
+<span class="sd">        address, all of them will be returned.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        address : int</span>
+<span class="sd">            The address to use for the search.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The nearest symbols for the given address. If no symbol can be</span>
+<span class="sd">            found an empty list will be returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">address_resolver</span><span class="o">.</span><span class="n">get_nearest_constant_by_address</span><span class="p">(</span>
+                                                                     <span class="n">address</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span></div></div>
+
+<div class="viewcode-block" id="OperatingSystemWinX86_64"><a class="viewcode-back" href="../../../generated/tenjint.plugins.operatingsystem.OperatingSystemWinX86_64.html#tenjint.plugins.operatingsystem.OperatingSystemWinX86_64">[docs]</a><span class="k">class</span> <span class="nc">OperatingSystemWinX86_64</span><span class="p">(</span><span class="n">OperatingSystemBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for 64-bit Windows systems.&quot;&quot;&quot;</span>
+    <span class="n">_abstract</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;OperatingSystem&quot;</span>
+    <span class="n">arch</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Arch</span><span class="o">.</span><span class="n">X86_64</span>
+    <span class="n">os</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">OsType</span><span class="o">.</span><span class="n">OS_WIN</span></div>
+
+<div class="viewcode-block" id="OperatingSystemLinux"><a class="viewcode-back" href="../../../generated/tenjint.plugins.operatingsystem.OperatingSystemLinux.html#tenjint.plugins.operatingsystem.OperatingSystemLinux">[docs]</a><span class="k">class</span> <span class="nc">OperatingSystemLinux</span><span class="p">(</span><span class="n">OperatingSystemBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for Linux systems.&quot;&quot;&quot;</span>
+    <span class="n">_abstract</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;OperatingSystem&quot;</span>
+    <span class="n">os</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">OsType</span><span class="o">.</span><span class="n">OS_LINUX</span>
+
+<div class="viewcode-block" id="OperatingSystemLinux.__init__"><a class="viewcode-back" href="../../../generated/tenjint.plugins.operatingsystem.OperatingSystemLinux.__init__.html#tenjint.plugins.operatingsystem.OperatingSystemLinux.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_per_cpu</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_per_cpu_current_task_offset</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pointer_width</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_struct_ptr_fmt</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pointer_width</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve the width of a pointer.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The pointer size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pointer_width</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">api</span><span class="o">.</span><span class="n">arch</span> <span class="o">==</span> <span class="n">api</span><span class="o">.</span><span class="n">Arch</span><span class="o">.</span><span class="n">X86_64</span> <span class="ow">or</span> <span class="n">api</span><span class="o">.</span><span class="n">arch</span> <span class="o">==</span> <span class="n">api</span><span class="o">.</span><span class="n">Arch</span><span class="o">.</span><span class="n">AARCH64</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_pointer_width</span> <span class="o">=</span> <span class="mi">8</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_pointer_width</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pointer_width</span>
+
+<div class="viewcode-block" id="OperatingSystemLinux.read_kernel_pointer"><a class="viewcode-back" href="../../../generated/tenjint.plugins.operatingsystem.OperatingSystemLinux.read_kernel_pointer.html#tenjint.plugins.operatingsystem.OperatingSystemLinux.read_kernel_pointer">[docs]</a>    <span class="k">def</span> <span class="nf">read_kernel_pointer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read a kernel pointer from the given address.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        addr : int</span>
+<span class="sd">            The address of the pointer</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bytes</span>
+<span class="sd">            The value of the pointer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_struct_ptr_fmt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pointer_width</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_struct_ptr_fmt</span> <span class="o">=</span> <span class="s2">&quot;&lt;L&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_struct_ptr_fmt</span> <span class="o">=</span> <span class="s2">&quot;&lt;Q&quot;</span>
+        <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_struct_ptr_fmt</span><span class="p">,</span>
+                             <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">kernel_address_space</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span>
+                                                         <span class="bp">self</span><span class="o">.</span><span class="n">pointer_width</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">per_cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the location of the per_cpu offset.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_per_cpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">address_resolver</span><span class="o">.</span><span class="n">get_address_by_name</span><span class="p">(</span>
+                                                       <span class="s2">&quot;linux!__per_cpu_offset&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_per_cpu</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">offset</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vm</span><span class="o">.</span><span class="n">cpu_count</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">pointer_width</span><span class="p">),</span>
+                                                            <span class="bp">self</span><span class="o">.</span><span class="n">pointer_width</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_per_cpu</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read_kernel_pointer</span><span class="p">(</span><span class="n">base</span><span class="o">+</span><span class="n">offset</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_per_cpu</span>
+
+<div class="viewcode-block" id="OperatingSystemLinux.current_process"><a class="viewcode-back" href="../../../generated/tenjint.plugins.operatingsystem.OperatingSystemLinux.current_process.html#tenjint.plugins.operatingsystem.OperatingSystemLinux.current_process">[docs]</a>    <span class="k">def</span> <span class="nf">current_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpu_num</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve the current process.</span>
+
+<span class="sd">        Retrieve the process that is currently running on the given vCPU.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cpu_num : int</span>
+<span class="sd">            Try to retrieve the process that is currently running on the vCPU</span>
+<span class="sd">            with the number cpu_num.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object</span>
+<span class="sd">            A representation of the process.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_per_cpu_current_task_offset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_per_cpu_current_task_offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">get_constant</span><span class="p">(</span><span class="s2">&quot;current_task&quot;</span><span class="p">)</span>
+        <span class="n">task_struct_address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_kernel_pointer</span><span class="p">(</span>
+                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">per_cpu</span><span class="p">[</span><span class="n">cpu_num</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_per_cpu_current_task_offset</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">task_struct</span><span class="p">(</span><span class="n">task_struct_address</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

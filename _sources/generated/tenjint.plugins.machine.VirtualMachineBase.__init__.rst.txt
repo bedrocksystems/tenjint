@@ -1,0 +1,6 @@
+VirtualMachineBase.\_\_init\_\_
+===============================
+
+.. currentmodule:: tenjint.plugins.machine
+
+.. automethod:: VirtualMachineBase.__init__

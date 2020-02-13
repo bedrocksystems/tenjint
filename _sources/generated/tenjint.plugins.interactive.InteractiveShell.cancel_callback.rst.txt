@@ -1,0 +1,6 @@
+InteractiveShell.cancel\_callback
+=================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: InteractiveShell.cancel_callback

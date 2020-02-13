@@ -1,0 +1,6 @@
+VirtualMachineX86\_64.cpu\_count
+================================
+
+.. currentmodule:: tenjint.plugins.machine
+
+.. autoproperty:: VirtualMachineX86_64.cpu_count

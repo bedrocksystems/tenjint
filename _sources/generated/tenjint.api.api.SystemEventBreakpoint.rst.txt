@@ -1,0 +1,36 @@
+SystemEventBreakpoint
+=====================
+
+.. currentmodule:: tenjint.api.api
+
+.. autoclass:: SystemEventBreakpoint
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      SystemEventBreakpoint.params
+   
+      SystemEventBreakpoint.producer
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      SystemEventBreakpoint.__init__
+   
+      SystemEventBreakpoint.filter
+   
+      SystemEventBreakpoint.parse_request
+   
+      SystemEventBreakpoint.parse_request_to_dict
+   
+   
+   

@@ -1,0 +1,6 @@
+TenjintShell.ast\_transformers
+==============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.ast_transformers

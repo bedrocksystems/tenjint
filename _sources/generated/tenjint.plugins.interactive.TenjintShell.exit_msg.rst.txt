@@ -1,0 +1,6 @@
+TenjintShell.exit\_msg
+======================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.exit_msg

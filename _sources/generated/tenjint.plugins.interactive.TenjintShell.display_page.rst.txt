@@ -1,0 +1,6 @@
+TenjintShell.display\_page
+==========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.display_page

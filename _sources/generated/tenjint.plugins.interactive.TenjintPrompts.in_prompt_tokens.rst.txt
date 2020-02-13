@@ -1,0 +1,6 @@
+TenjintPrompts.in\_prompt\_tokens
+=================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintPrompts.in_prompt_tokens

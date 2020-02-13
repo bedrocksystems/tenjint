@@ -1,0 +1,6 @@
+TenjintShell.find\_line\_magic
+==============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.find_line_magic

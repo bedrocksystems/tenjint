@@ -1,0 +1,6 @@
+SystemEventVmStop.params
+========================
+
+.. currentmodule:: tenjint.api.api
+
+.. autoattribute:: SystemEventVmStop.params

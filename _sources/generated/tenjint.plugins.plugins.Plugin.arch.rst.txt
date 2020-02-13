@@ -1,0 +1,6 @@
+Plugin.arch
+===========
+
+.. currentmodule:: tenjint.plugins.plugins
+
+.. autoattribute:: Plugin.arch

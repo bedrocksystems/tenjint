@@ -1,0 +1,6 @@
+InteractiveShell.cont
+=====================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: InteractiveShell.cont

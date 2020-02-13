@@ -1,0 +1,6 @@
+get
+===
+
+.. currentmodule:: tenjint.service
+
+.. autofunction:: get

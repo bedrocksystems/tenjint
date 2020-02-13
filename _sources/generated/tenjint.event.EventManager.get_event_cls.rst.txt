@@ -1,0 +1,6 @@
+EventManager.get\_event\_cls
+============================
+
+.. currentmodule:: tenjint.event
+
+.. automethod:: EventManager.get_event_cls

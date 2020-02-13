@@ -1,0 +1,6 @@
+TenjintShell.highlighting\_style
+================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.highlighting_style

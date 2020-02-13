@@ -1,0 +1,6 @@
+PathFinder.\_\_init\_\_
+=======================
+
+.. currentmodule:: tenjint.optimize
+
+.. automethod:: PathFinder.__init__

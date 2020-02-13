@@ -1,0 +1,6 @@
+InteractiveShell.get\_context
+=============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: InteractiveShell.get_context

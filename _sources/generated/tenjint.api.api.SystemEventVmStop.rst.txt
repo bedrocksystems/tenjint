@@ -1,0 +1,36 @@
+SystemEventVmStop
+=================
+
+.. currentmodule:: tenjint.api.api
+
+.. autoclass:: SystemEventVmStop
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      SystemEventVmStop.params
+   
+      SystemEventVmStop.producer
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      SystemEventVmStop.__init__
+   
+      SystemEventVmStop.filter
+   
+      SystemEventVmStop.parse_request
+   
+      SystemEventVmStop.parse_request_to_dict
+   
+   
+   

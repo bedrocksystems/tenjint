@@ -1,0 +1,6 @@
+TenjintShell.pt\_cli
+====================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.pt_cli

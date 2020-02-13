@@ -1,0 +1,6 @@
+PickleOutputManager.uninit
+==========================
+
+.. currentmodule:: tenjint.output
+
+.. automethod:: PickleOutputManager.uninit

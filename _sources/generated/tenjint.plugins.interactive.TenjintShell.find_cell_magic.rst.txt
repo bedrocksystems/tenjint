@@ -1,0 +1,6 @@
+TenjintShell.find\_cell\_magic
+==============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.find_cell_magic

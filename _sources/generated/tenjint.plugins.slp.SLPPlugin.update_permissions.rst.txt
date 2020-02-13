@@ -1,0 +1,6 @@
+SLPPlugin.update\_permissions
+=============================
+
+.. currentmodule:: tenjint.plugins.slp
+
+.. automethod:: SLPPlugin.update_permissions

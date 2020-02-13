@@ -1,0 +1,6 @@
+TenjintShell.class\_config\_rst\_doc
+====================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.class_config_rst_doc

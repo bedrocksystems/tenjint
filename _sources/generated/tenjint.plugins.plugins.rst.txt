@@ -1,0 +1,29 @@
+tenjint.plugins.plugins
+=======================
+
+.. rubric:: Description
+.. automodule:: tenjint.plugins.plugins
+.. currentmodule:: tenjint.plugins.plugins
+
+
+.. rubric:: Classes
+.. autosummary::
+    :toctree:
+    
+    EventPlugin
+    
+    Plugin
+    
+    PluginManager
+    
+
+
+
+.. rubric:: Functions
+.. autosummary::
+    :toctree:
+    
+    init
+    
+    uninit
+    

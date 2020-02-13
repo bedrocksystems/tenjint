@@ -1,0 +1,6 @@
+TenjintShell.term\_title
+========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.term_title

@@ -1,0 +1,6 @@
+TenjintShell.get\_ipython
+=========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.get_ipython

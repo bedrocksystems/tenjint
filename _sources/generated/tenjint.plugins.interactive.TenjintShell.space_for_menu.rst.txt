@@ -1,0 +1,6 @@
+TenjintShell.space\_for\_menu
+=============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.space_for_menu

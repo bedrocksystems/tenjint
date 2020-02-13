@@ -1,0 +1,6 @@
+TenjintShell.filename
+=====================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.filename

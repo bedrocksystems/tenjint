@@ -1,0 +1,6 @@
+TaskSwitchPluginAarch64.load
+============================
+
+.. currentmodule:: tenjint.plugins.taskswitch
+
+.. automethod:: TaskSwitchPluginAarch64.load

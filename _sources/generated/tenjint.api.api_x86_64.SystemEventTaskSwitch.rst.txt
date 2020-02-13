@@ -1,0 +1,36 @@
+SystemEventTaskSwitch
+=====================
+
+.. currentmodule:: tenjint.api.api_x86_64
+
+.. autoclass:: SystemEventTaskSwitch
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      SystemEventTaskSwitch.params
+   
+      SystemEventTaskSwitch.producer
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      SystemEventTaskSwitch.__init__
+   
+      SystemEventTaskSwitch.filter
+   
+      SystemEventTaskSwitch.parse_request
+   
+      SystemEventTaskSwitch.parse_request_to_dict
+   
+   
+   

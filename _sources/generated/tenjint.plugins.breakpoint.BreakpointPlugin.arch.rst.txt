@@ -1,0 +1,6 @@
+BreakpointPlugin.arch
+=====================
+
+.. currentmodule:: tenjint.plugins.breakpoint
+
+.. autoattribute:: BreakpointPlugin.arch

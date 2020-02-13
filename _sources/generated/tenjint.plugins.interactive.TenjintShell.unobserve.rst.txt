@@ -1,0 +1,6 @@
+TenjintShell.unobserve
+======================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.unobserve

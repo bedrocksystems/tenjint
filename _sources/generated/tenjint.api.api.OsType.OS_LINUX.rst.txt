@@ -1,0 +1,6 @@
+OsType.OS\_LINUX
+================
+
+.. currentmodule:: tenjint.api.api
+
+.. autoattribute:: OsType.OS_LINUX

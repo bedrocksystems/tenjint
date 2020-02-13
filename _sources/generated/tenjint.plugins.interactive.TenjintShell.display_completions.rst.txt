@@ -1,0 +1,6 @@
+TenjintShell.display\_completions
+=================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.display_completions

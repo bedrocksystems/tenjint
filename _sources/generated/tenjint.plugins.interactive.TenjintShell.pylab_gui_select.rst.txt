@@ -1,0 +1,6 @@
+TenjintShell.pylab\_gui\_select
+===============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.pylab_gui_select

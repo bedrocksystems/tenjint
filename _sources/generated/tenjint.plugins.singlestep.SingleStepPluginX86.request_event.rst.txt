@@ -1,0 +1,6 @@
+SingleStepPluginX86.request\_event
+==================================
+
+.. currentmodule:: tenjint.plugins.singlestep
+
+.. automethod:: SingleStepPluginX86.request_event

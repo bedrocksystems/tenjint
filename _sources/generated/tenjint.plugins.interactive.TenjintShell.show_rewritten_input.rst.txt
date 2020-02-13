@@ -1,0 +1,6 @@
+TenjintShell.show\_rewritten\_input
+===================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.show_rewritten_input

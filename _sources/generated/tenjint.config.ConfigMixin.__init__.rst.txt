@@ -1,0 +1,6 @@
+ConfigMixin.\_\_init\_\_
+========================
+
+.. currentmodule:: tenjint.config
+
+.. automethod:: ConfigMixin.__init__

@@ -1,0 +1,6 @@
+InteractiveShell.uninit
+=======================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: InteractiveShell.uninit

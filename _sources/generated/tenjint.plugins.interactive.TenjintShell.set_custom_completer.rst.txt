@@ -1,0 +1,6 @@
+TenjintShell.set\_custom\_completer
+===================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.set_custom_completer

@@ -1,0 +1,6 @@
+TenjintShell.init\_display\_formatter
+=====================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.init_display_formatter

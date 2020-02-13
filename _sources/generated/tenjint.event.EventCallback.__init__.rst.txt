@@ -1,0 +1,6 @@
+EventCallback.\_\_init\_\_
+==========================
+
+.. currentmodule:: tenjint.event
+
+.. automethod:: EventCallback.__init__

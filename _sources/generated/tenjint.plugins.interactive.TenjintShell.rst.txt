@@ -1,0 +1,500 @@
+TenjintShell
+============
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoclass:: TenjintShell
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      TenjintShell.active_eventloop
+   
+      TenjintShell.alias_manager
+   
+      TenjintShell.all_ns_refs
+   
+      TenjintShell.ast_node_interactivity
+   
+      TenjintShell.ast_transformers
+   
+      TenjintShell.autocall
+   
+      TenjintShell.autoindent
+   
+      TenjintShell.automagic
+   
+      TenjintShell.banner
+   
+      TenjintShell.banner1
+   
+      TenjintShell.banner2
+   
+      TenjintShell.builtin_trap
+   
+      TenjintShell.cache_size
+   
+      TenjintShell.call_pdb
+   
+      TenjintShell.color_info
+   
+      TenjintShell.colors
+   
+      TenjintShell.config
+   
+      TenjintShell.confirm_exit
+   
+      TenjintShell.cross_validation_lock
+   
+      TenjintShell.data_pub_class
+   
+      TenjintShell.debug
+   
+      TenjintShell.debugger_cls
+   
+      TenjintShell.debugger_history
+   
+      TenjintShell.default_user_namespaces
+   
+      TenjintShell.disable_failing_post_execute
+   
+      TenjintShell.display_banner
+   
+      TenjintShell.display_completions
+   
+      TenjintShell.display_formatter
+   
+      TenjintShell.display_page
+   
+      TenjintShell.display_pub_class
+   
+      TenjintShell.display_trap
+   
+      TenjintShell.displayhook_class
+   
+      TenjintShell.dummy_mode
+   
+      TenjintShell.editing_mode
+   
+      TenjintShell.editor
+   
+      TenjintShell.embedded
+   
+      TenjintShell.embedded_active
+   
+      TenjintShell.enable_history_search
+   
+      TenjintShell.enable_html_pager
+   
+      TenjintShell.execution_count
+   
+      TenjintShell.exit_msg
+   
+      TenjintShell.exit_now
+   
+      TenjintShell.exiter
+   
+      TenjintShell.extension_manager
+   
+      TenjintShell.extra_open_editor_shortcuts
+   
+      TenjintShell.filename
+   
+      TenjintShell.handle_return
+   
+      TenjintShell.highlight_matching_brackets
+   
+      TenjintShell.highlighting_style
+   
+      TenjintShell.highlighting_style_overrides
+   
+      TenjintShell.history_length
+   
+      TenjintShell.history_load_length
+   
+      TenjintShell.history_manager
+   
+      TenjintShell.init_syntax_highlighting
+   
+      TenjintShell.init_term_title
+   
+      TenjintShell.input_splitter
+   
+      TenjintShell.input_transformer_manager
+   
+      TenjintShell.ipython_dir
+   
+      TenjintShell.last_execution_result
+   
+      TenjintShell.last_execution_succeeded
+   
+      TenjintShell.log
+   
+      TenjintShell.logappend
+   
+      TenjintShell.logfile
+   
+      TenjintShell.logstart
+   
+      TenjintShell.magics_manager
+   
+      TenjintShell.mouse_support
+   
+      TenjintShell.object_info_string_level
+   
+      TenjintShell.parent
+   
+      TenjintShell.payload_manager
+   
+      TenjintShell.pdb
+   
+      TenjintShell.prefilter_manager
+   
+      TenjintShell.profile
+   
+      TenjintShell.profile_dir
+   
+      TenjintShell.prompt_in1
+   
+      TenjintShell.prompt_in2
+   
+      TenjintShell.prompt_out
+   
+      TenjintShell.prompts
+   
+      TenjintShell.prompts_class
+   
+      TenjintShell.prompts_pad_left
+   
+      TenjintShell.pt_cli
+   
+      TenjintShell.pylab_gui_select
+   
+      TenjintShell.quiet
+   
+      TenjintShell.rl_next_input
+   
+      TenjintShell.separate_in
+   
+      TenjintShell.separate_out
+   
+      TenjintShell.separate_out2
+   
+      TenjintShell.should_raise
+   
+      TenjintShell.show_rewritten_input
+   
+      TenjintShell.simple_prompt
+   
+      TenjintShell.space_for_menu
+   
+      TenjintShell.sphinxify_docstring
+   
+      TenjintShell.term_title
+   
+      TenjintShell.term_title_format
+   
+      TenjintShell.true_color
+   
+      TenjintShell.user_global_ns
+   
+      TenjintShell.utf8_banner
+   
+      TenjintShell.wildcards_case_sensitive
+   
+      TenjintShell.xmode
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      TenjintShell.__init__
+   
+      TenjintShell.add_traits
+   
+      TenjintShell.ask_exit
+   
+      TenjintShell.ask_yes_no
+   
+      TenjintShell.atexit_operations
+   
+      TenjintShell.auto_rewrite_input
+   
+      TenjintShell.check_complete
+   
+      TenjintShell.class_config_rst_doc
+   
+      TenjintShell.class_config_section
+   
+      TenjintShell.class_get_help
+   
+      TenjintShell.class_get_trait_help
+   
+      TenjintShell.class_own_trait_events
+   
+      TenjintShell.class_own_traits
+   
+      TenjintShell.class_print_help
+   
+      TenjintShell.class_trait_names
+   
+      TenjintShell.class_traits
+   
+      TenjintShell.cleanup
+   
+      TenjintShell.clear_instance
+   
+      TenjintShell.clear_main_mod_cache
+   
+      TenjintShell.complete
+   
+      TenjintShell.debugger
+   
+      TenjintShell.define_macro
+   
+      TenjintShell.del_var
+   
+      TenjintShell.drop_by_id
+   
+      TenjintShell.enable_gui
+   
+      TenjintShell.enable_matplotlib
+   
+      TenjintShell.enable_pylab
+   
+      TenjintShell.enable_win_unicode_console
+   
+      TenjintShell.ev
+   
+      TenjintShell.ex
+   
+      TenjintShell.excepthook
+   
+      TenjintShell.extract_input_lines
+   
+      TenjintShell.find_cell_magic
+   
+      TenjintShell.find_line_magic
+   
+      TenjintShell.find_magic
+   
+      TenjintShell.find_user_code
+   
+      TenjintShell.get_exception_only
+   
+      TenjintShell.get_ipython
+   
+      TenjintShell.getoutput
+   
+      TenjintShell.has_trait
+   
+      TenjintShell.hold_trait_notifications
+   
+      TenjintShell.init_alias
+   
+      TenjintShell.init_builtins
+   
+      TenjintShell.init_completer
+   
+      TenjintShell.init_create_namespaces
+   
+      TenjintShell.init_data_pub
+   
+      TenjintShell.init_deprecation_warnings
+   
+      TenjintShell.init_display_formatter
+   
+      TenjintShell.init_display_pub
+   
+      TenjintShell.init_displayhook
+   
+      TenjintShell.init_encoding
+   
+      TenjintShell.init_environment
+   
+      TenjintShell.init_events
+   
+      TenjintShell.init_extension_manager
+   
+      TenjintShell.init_history
+   
+      TenjintShell.init_hooks
+   
+      TenjintShell.init_inspector
+   
+      TenjintShell.init_instance_attrs
+   
+      TenjintShell.init_io
+   
+      TenjintShell.init_ipython_dir
+   
+      TenjintShell.init_logger
+   
+      TenjintShell.init_logstart
+   
+      TenjintShell.init_magics
+   
+      TenjintShell.init_payload
+   
+      TenjintShell.init_pdb
+   
+      TenjintShell.init_prefilter
+   
+      TenjintShell.init_profile_dir
+   
+      TenjintShell.init_prompt_toolkit_cli
+   
+      TenjintShell.init_prompts
+   
+      TenjintShell.init_pushd_popd_magic
+   
+      TenjintShell.init_readline
+   
+      TenjintShell.init_sys_modules
+   
+      TenjintShell.init_traceback_handlers
+   
+      TenjintShell.init_user_ns
+   
+      TenjintShell.init_virtualenv
+   
+      TenjintShell.initialized
+   
+      TenjintShell.inputhook
+   
+      TenjintShell.instance
+   
+      TenjintShell.interact
+   
+      TenjintShell.magic
+   
+      TenjintShell.mainloop
+   
+      TenjintShell.mktempfile
+   
+      TenjintShell.new_main_mod
+   
+      TenjintShell.notify_change
+   
+      TenjintShell.object_inspect
+   
+      TenjintShell.object_inspect_mime
+   
+      TenjintShell.object_inspect_text
+   
+      TenjintShell.observe
+   
+      TenjintShell.on_trait_change
+   
+      TenjintShell.pre_prompt
+   
+      TenjintShell.prepare_user_module
+   
+      TenjintShell.prompt_for_code
+   
+      TenjintShell.push
+   
+      TenjintShell.refresh_style
+   
+      TenjintShell.register_magic_function
+   
+      TenjintShell.register_post_execute
+   
+      TenjintShell.reset
+   
+      TenjintShell.reset_selective
+   
+      TenjintShell.restore_sys_module_state
+   
+      TenjintShell.run_ast_nodes
+   
+      TenjintShell.run_cell
+   
+      TenjintShell.run_cell_magic
+   
+      TenjintShell.run_code
+   
+      TenjintShell.run_line_magic
+   
+      TenjintShell.runcode
+   
+      TenjintShell.safe_execfile
+   
+      TenjintShell.safe_execfile_ipy
+   
+      TenjintShell.safe_run_module
+   
+      TenjintShell.save_sys_module_state
+   
+      TenjintShell.section_names
+   
+      TenjintShell.set_autoindent
+   
+      TenjintShell.set_completer_frame
+   
+      TenjintShell.set_custom_completer
+   
+      TenjintShell.set_custom_exc
+   
+      TenjintShell.set_hook
+   
+      TenjintShell.set_next_input
+   
+      TenjintShell.set_trait
+   
+      TenjintShell.setup_instance
+   
+      TenjintShell.show_banner
+   
+      TenjintShell.show_usage
+   
+      TenjintShell.show_usage_error
+   
+      TenjintShell.showindentationerror
+   
+      TenjintShell.showsyntaxerror
+   
+      TenjintShell.showtraceback
+   
+      TenjintShell.switch_doctest_mode
+   
+      TenjintShell.system
+   
+      TenjintShell.system_piped
+   
+      TenjintShell.system_raw
+   
+      TenjintShell.trait_events
+   
+      TenjintShell.trait_metadata
+   
+      TenjintShell.trait_names
+   
+      TenjintShell.traits
+   
+      TenjintShell.transform_ast
+   
+      TenjintShell.unobserve
+   
+      TenjintShell.unobserve_all
+   
+      TenjintShell.update_config
+   
+      TenjintShell.user_expressions
+   
+      TenjintShell.var_expand
+   
+      TenjintShell.write
+   
+      TenjintShell.write_err
+   
+   
+   

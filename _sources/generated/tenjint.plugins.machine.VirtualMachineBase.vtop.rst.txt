@@ -1,0 +1,6 @@
+VirtualMachineBase.vtop
+=======================
+
+.. currentmodule:: tenjint.plugins.machine
+
+.. automethod:: VirtualMachineBase.vtop

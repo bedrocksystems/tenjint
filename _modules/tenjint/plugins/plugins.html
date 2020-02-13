@@ -1,0 +1,585 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tenjint.plugins.plugins &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rpi.html">tenjint Raspberry Pi 4 Image</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>tenjint.plugins.plugins</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tenjint.plugins.plugins</h1><div class="highlight"><pre>
+<span></span><span class="c1"># tenjint - VMI Python Library</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2020 Bedrock Systems, Inc</span>
+<span class="c1"># Authors: Sebastian Vogl &lt;sebastian@bedrocksystems.com&gt;</span>
+<span class="c1">#          Jonas Pfoh &lt;jonas@bedrocksystems.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License version 2 as published</span>
+<span class="c1"># by the Free Software Foundation.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+
+<span class="sd">&quot;&quot;&quot;tenjint&#39;s plugin subsystem.</span>
+
+<span class="sd">This module provides tenjint&#39;s plugin subsystem. The plugin subsystem is</span>
+<span class="sd">responsible for loading, unloading, and managing plugins.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">types</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">importlib.machinery</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">base</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">api</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">service</span>
+
+<div class="viewcode-block" id="Plugin"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.Plugin.html#tenjint.plugins.breakpoint.Plugin">[docs]</a><span class="k">class</span> <span class="nc">Plugin</span><span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">LoggerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for all plugins.</span>
+
+<span class="sd">    This is the base class for all plugins.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_abstract</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="sd">&quot;&quot;&quot;Whether this is an abstract class.</span>
+
+<span class="sd">    An abstract class will not be loaded by the plugin manager and is an</span>
+<span class="sd">    abstract class meant to be sub-classed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;The name of the plugin.</span>
+
+<span class="sd">    If this is not provided, the class name will be used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">arch</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;The prerequisite architecture</span>
+
+<span class="sd">    The plugin will only be loaded if arch is None or matches the host arch.</span>
+<span class="sd">    This must be None or of type tenjint.api.Arch.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">os</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;The prerequisite operating system</span>
+
+<span class="sd">    The plugin will only be loaded if is is None or matches the guest OS. This</span>
+<span class="sd">    must be None or of type OsType.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Plugin.load"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.Plugin.load.html#tenjint.plugins.breakpoint.Plugin.load">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load function</span>
+
+<span class="sd">        This function is called by the plugin manager to load the plugin.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_abstract</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">arch</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">cls</span><span class="o">.</span><span class="n">arch</span> <span class="o">!=</span> <span class="n">api</span><span class="o">.</span><span class="n">arch</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">os</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">cls</span><span class="o">.</span><span class="n">os</span> <span class="o">!=</span> <span class="n">api</span><span class="o">.</span><span class="n">os</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">cls</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loading plugin: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Plugin.__init__"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.Plugin.__init__.html#tenjint.plugins.breakpoint.Plugin.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Initializing </span><span class="si">{}</span><span class="s2"> (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                                                         <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_service_manager</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_service_manager</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the service manager (self replacing)</span>
+
+<span class="sd">        This property will obtain the service manager. It will replace itself</span>
+<span class="sd">        on the first access by adding a class attribute with the same name. This</span>
+<span class="sd">        will improve the performance of further accesses to the property for</span>
+<span class="sd">        all classes that use it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Plugin</span><span class="o">.</span><span class="n">_service_manager</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">manager</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_manager</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_event_manager</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the event manager (self replacing)</span>
+
+<span class="sd">        This property will obtain the event manager. It will replace itself</span>
+<span class="sd">        on the first access by adding a class attribute with the same name. This</span>
+<span class="sd">        will improve the performance of further accesses to the property for</span>
+<span class="sd">        all classes that use it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Plugin</span><span class="o">.</span><span class="n">_event_manager</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_manager</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;EventManager&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_plugin_manager</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the plugin manager (self replacing)</span>
+
+<span class="sd">        This property will obtain the plugin manager. It will replace itself</span>
+<span class="sd">        on the first access by adding a class attribute with the same name. This</span>
+<span class="sd">        will improve the performance of further accesses to the property for</span>
+<span class="sd">        all classes that use it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Plugin</span><span class="o">.</span><span class="n">_plugin_manager</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_manager</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PluginManager&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plugin_manager</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_vm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the vm (self replacing)</span>
+
+<span class="sd">        This property will obtain the vm. It will replace itself</span>
+<span class="sd">        on the first access by adding a class attribute with the same name. This</span>
+<span class="sd">        will improve the performance of further accesses to the property for</span>
+<span class="sd">        all classes that use it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Plugin</span><span class="o">.</span><span class="n">_vm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_manager</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;VirtualMachine&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vm</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_os</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the os (self replacing)</span>
+
+<span class="sd">        This property will obtain the os. It will replace itself</span>
+<span class="sd">        on the first access by adding a class attribute with the same name. This</span>
+<span class="sd">        will improve the performance of further accesses to the property for</span>
+<span class="sd">        all classes that use it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Plugin</span><span class="o">.</span><span class="n">_os</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_manager</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;OperatingSystem&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_os</span>
+
+<div class="viewcode-block" id="Plugin.uninit"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.Plugin.uninit.html#tenjint.plugins.breakpoint.Plugin.uninit">[docs]</a>    <span class="k">def</span> <span class="nf">uninit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Uninit function</span>
+
+<span class="sd">        This function will be called by the plugin manager on unload.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Uninitializing </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_service_manager</span><span class="o">.</span><span class="n">unregister_by_object</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="EventPlugin"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.EventPlugin.html#tenjint.plugins.breakpoint.EventPlugin">[docs]</a><span class="k">class</span> <span class="nc">EventPlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plugin class for plugins that produce events.&quot;&quot;&quot;</span>
+
+    <span class="n">produces</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;produces should hold a list of event classes this plugin produces.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="EventPlugin.__init__"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.EventPlugin.__init__.html#tenjint.plugins.breakpoint.EventPlugin.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventPlugin.uninit"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.EventPlugin.uninit.html#tenjint.plugins.breakpoint.EventPlugin.uninit">[docs]</a>    <span class="k">def</span> <span class="nf">uninit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Uninit function</span>
+
+<span class="sd">        This function will be called by the plugin manager on unload.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">uninit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventPlugin.request_event"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.EventPlugin.request_event.html#tenjint.plugins.breakpoint.EventPlugin.request_event">[docs]</a>    <span class="k">def</span> <span class="nf">request_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;request_event not implemented&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventPlugin.cancel_event"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.EventPlugin.cancel_event.html#tenjint.plugins.breakpoint.EventPlugin.cancel_event">[docs]</a>    <span class="k">def</span> <span class="nf">cancel_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_id</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;cancel_event not implemented&quot;</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="PluginManager"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.PluginManager.html#tenjint.plugins.breakpoint.PluginManager">[docs]</a><span class="k">class</span> <span class="nc">PluginManager</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">ConfigMixin</span><span class="p">,</span> <span class="n">logger</span><span class="o">.</span><span class="n">LoggerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The plugin manager.</span>
+
+<span class="sd">    The plugin manager is the main component of the plugin subsystem. It is</span>
+<span class="sd">    responsible for loading and unloading plugins.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_config_options</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;plugin_dir&quot;</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;help&quot;</span><span class="p">:</span> <span class="s2">&quot;The directory to look for third-party plugins.&quot;</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+    <span class="sd">&quot;&quot;&quot;Configuration options.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PluginManager.__init__"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.PluginManager.__init__.html#tenjint.plugins.breakpoint.PluginManager.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loaded_plugins</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PluginManager.load_plugin"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.PluginManager.load_plugin.html#tenjint.plugins.breakpoint.PluginManager.load_plugin">[docs]</a>    <span class="k">def</span> <span class="nf">load_plugin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load the given plugin class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cls : class</span>
+<span class="sd">            The plugin class to load.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">plugin</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">plugin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_loaded_plugins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PluginManager.unload_plugin"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.PluginManager.unload_plugin.html#tenjint.plugins.breakpoint.PluginManager.unload_plugin">[docs]</a>    <span class="k">def</span> <span class="nf">unload_plugin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Unload the given plugin.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        plugin : Plugin</span>
+<span class="sd">            The plugin to unload.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loaded_plugins</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span>
+        <span class="n">plugin</span><span class="o">.</span><span class="n">uninit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PluginManager.get_plugins_in_module"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.PluginManager.get_plugins_in_module.html#tenjint.plugins.breakpoint.PluginManager.get_plugins_in_module">[docs]</a>    <span class="k">def</span> <span class="nf">get_plugins_in_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mod</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get all plugins contained in a module.</span>
+
+<span class="sd">        This function will find all plugins in module and return them.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mod :  types.ModuleType</span>
+<span class="sd">            The module to search.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            A list of :py:class:´BasePlugin´ plugins</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">mod</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Plugin</span><span class="p">)):</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="PluginManager.load_module"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.PluginManager.load_module.html#tenjint.plugins.breakpoint.PluginManager.load_module">[docs]</a>    <span class="k">def</span> <span class="nf">load_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mod</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load all plugins contained in a module.</span>
+
+<span class="sd">        This function will find and load all plugins in a module.  Any</span>
+<span class="sd">        additional keyword arguments will be passed to the loaded plugins.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mod :  types.ModuleType</span>
+<span class="sd">            The module to search.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_plugins_in_module</span><span class="p">(</span><span class="n">mod</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_plugin</span><span class="p">(</span><span class="n">plugin</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PluginManager.import_file"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.PluginManager.import_file.html#tenjint.plugins.breakpoint.PluginManager.import_file">[docs]</a>    <span class="k">def</span> <span class="nf">import_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">module_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Import a python source file.</span>
+
+<span class="sd">        This function will load a python source file as a python module. The</span>
+<span class="sd">        name of the module can be provided using the module_name parameter.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        path : str</span>
+<span class="sd">            The full path to the python source file to load.</span>
+<span class="sd">        module_name : str</span>
+<span class="sd">            The module name that the loaded source file should use.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        types.ModuleType</span>
+<span class="sd">            A python module representing the source file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">module_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">module_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">path</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">loader</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">machinery</span><span class="o">.</span><span class="n">SourceFileLoader</span><span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="n">mod</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">(</span><span class="n">loader</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mod</span></div>
+
+<div class="viewcode-block" id="PluginManager.import_and_load_file"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.PluginManager.import_and_load_file.html#tenjint.plugins.breakpoint.PluginManager.import_and_load_file">[docs]</a>    <span class="k">def</span> <span class="nf">import_and_load_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">module_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Import and load all plugins contained in python source file.</span>
+
+<span class="sd">        This function will import and load all plugins contained in a python</span>
+<span class="sd">        source file. Any additional keyword arguments will be passed to the</span>
+<span class="sd">        loaded plugins.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        path : str</span>
+<span class="sd">            The full path to the python source file to consider.</span>
+<span class="sd">        module_name : str</span>
+<span class="sd">            The module name that the loaded source file should use.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mod</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_file</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">module_name</span><span class="o">=</span><span class="n">module_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_module</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PluginManager.import_directory"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.PluginManager.import_directory.html#tenjint.plugins.breakpoint.PluginManager.import_directory">[docs]</a>    <span class="k">def</span> <span class="nf">import_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">module_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Import all python source files in a directory.</span>
+
+<span class="sd">        This function will import all python source files in a directory. For</span>
+<span class="sd">        each imported file a module will be returned. The imported modules will</span>
+<span class="sd">        have the name &quot;&lt;module_prefix&gt;.&lt;filename&gt;&quot;.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        path : str</span>
+<span class="sd">            The full path to the directory to import from.</span>
+<span class="sd">        module_prefix : str</span>
+<span class="sd">            A prefix for the name of the modules.</span>
+<span class="sd">        recursive : bool</span>
+<span class="sd">            Whether to import from subdirectories.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            A list of python modules.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">glob_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;*.py&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">module_prefix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">module_prefix</span> <span class="o">=</span> <span class="s2">&quot;runtime_import.&quot;</span>
+
+        <span class="k">for</span> <span class="n">src_file</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">glob_path</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="n">recursive</span><span class="p">):</span>
+            <span class="n">mod_dir</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">src_file</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">):])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">))</span>
+            <span class="n">mod_name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">module_prefix</span><span class="p">,</span> <span class="n">mod_dir</span><span class="p">,</span>
+                                        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">src_file</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">import_file</span><span class="p">(</span><span class="n">src_file</span><span class="p">,</span> <span class="n">module_name</span><span class="o">=</span><span class="n">mod_name</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="PluginManager.import_and_load_directory"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.PluginManager.import_and_load_directory.html#tenjint.plugins.breakpoint.PluginManager.import_and_load_directory">[docs]</a>    <span class="k">def</span> <span class="nf">import_and_load_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">module_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                  <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Import and load all plugins contained in a directory.</span>
+
+<span class="sd">        This function will import and load all plugins contained in a</span>
+<span class="sd">        directory. Any additional keyword arguments will be passed to the</span>
+<span class="sd">        loaded plugins.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        path : str</span>
+<span class="sd">            The full path to the directory to load from.</span>
+<span class="sd">        module_prefix : str</span>
+<span class="sd">            A prefix for the name of the modules that will be imported.</span>
+<span class="sd">        recursive : bool</span>
+<span class="sd">            Whether to consider subdirectories.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_directory</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">module_prefix</span><span class="o">=</span><span class="n">module_prefix</span><span class="p">,</span>
+                                         <span class="n">recursive</span><span class="o">=</span><span class="n">recursive</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_module</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PluginManager.load_user_plugins"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.PluginManager.load_user_plugins.html#tenjint.plugins.breakpoint.PluginManager.load_user_plugins">[docs]</a>    <span class="k">def</span> <span class="nf">load_user_plugins</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load all user plugins specified in the configuration.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config_values</span><span class="p">[</span><span class="s2">&quot;plugin_dir&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loading user plugins from </span><span class="se">\&quot;</span><span class="si">{}</span><span class="se">\&quot;</span><span class="s2">...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">_config_values</span><span class="p">[</span><span class="s2">&quot;plugin_dir&quot;</span><span class="p">]))</span>
+            <span class="n">plugin_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config_values</span><span class="p">[</span><span class="s2">&quot;plugin_dir&quot;</span><span class="p">])</span>
+            <span class="n">plugin_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">plugin_dir</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">import_and_load_directory</span><span class="p">(</span><span class="n">plugin_dir</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PluginManager.unload_all"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.PluginManager.unload_all.html#tenjint.plugins.breakpoint.PluginManager.unload_all">[docs]</a>    <span class="k">def</span> <span class="nf">unload_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Unload all plugins.&quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loaded_plugins</span><span class="p">:</span>
+            <span class="n">plugin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loaded_plugins</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">plugin</span><span class="o">.</span><span class="n">uninit</span><span class="p">()</span></div></div>
+
+<div class="viewcode-block" id="init"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.init.html#tenjint.plugins.breakpoint.init">[docs]</a><span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Initialize the plugin subsystem.&quot;&quot;&quot;</span>
+    <span class="n">pm</span> <span class="o">=</span> <span class="n">PluginManager</span><span class="p">()</span>
+    <span class="n">service</span><span class="o">.</span><span class="n">manager</span><span class="p">()</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">pm</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="uninit"><a class="viewcode-back" href="../../../generated/tenjint.plugins.plugins.uninit.html#tenjint.plugins.breakpoint.uninit">[docs]</a><span class="k">def</span> <span class="nf">uninit</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Uninitialize the plugin subsystem.&quot;&quot;&quot;</span>
+    <span class="n">service</span><span class="o">.</span><span class="n">manager</span><span class="p">()</span><span class="o">.</span><span class="n">unregister_by_name</span><span class="p">(</span><span class="s2">&quot;PluginManager&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+SystemEventSLP.parse\_request
+=============================
+
+.. currentmodule:: tenjint.api.api_aarch64
+
+.. automethod:: SystemEventSLP.parse_request

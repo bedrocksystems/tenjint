@@ -1,0 +1,32 @@
+EventCallback
+=============
+
+.. currentmodule:: tenjint.event
+
+.. autoclass:: EventCallback
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      EventCallback.event_cls
+   
+      EventCallback.event_key
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      EventCallback.__init__
+   
+      EventCallback.deliver
+   
+   
+   

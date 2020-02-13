@@ -1,0 +1,6 @@
+TenjintShell.prompts\_class
+===========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.prompts_class

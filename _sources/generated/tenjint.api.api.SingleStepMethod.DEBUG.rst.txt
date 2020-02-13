@@ -1,0 +1,6 @@
+SingleStepMethod.DEBUG
+======================
+
+.. currentmodule:: tenjint.api.api
+
+.. autoattribute:: SingleStepMethod.DEBUG

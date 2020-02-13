@@ -1,0 +1,6 @@
+OperatingSystemWinX86\_64.os
+============================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. autoattribute:: OperatingSystemWinX86_64.os

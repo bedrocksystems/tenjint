@@ -1,0 +1,6 @@
+TenjintShell.system\_piped
+==========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.system_piped

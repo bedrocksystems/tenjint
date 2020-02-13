@@ -1,0 +1,6 @@
+TenjintShell.clear\_instance
+============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.clear_instance

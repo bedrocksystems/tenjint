@@ -1,0 +1,6 @@
+SingleStepPluginAarch64.name
+============================
+
+.. currentmodule:: tenjint.plugins.singlestep
+
+.. autoattribute:: SingleStepPluginAarch64.name

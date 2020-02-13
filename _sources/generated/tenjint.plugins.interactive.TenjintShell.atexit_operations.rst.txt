@@ -1,0 +1,6 @@
+TenjintShell.atexit\_operations
+===============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.atexit_operations

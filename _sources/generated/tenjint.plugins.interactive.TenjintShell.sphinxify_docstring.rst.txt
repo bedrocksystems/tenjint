@@ -1,0 +1,6 @@
+TenjintShell.sphinxify\_docstring
+=================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.sphinxify_docstring

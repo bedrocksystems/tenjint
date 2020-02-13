@@ -1,0 +1,31 @@
+LogTransformer
+==============
+
+.. currentmodule:: tenjint.optimize
+
+.. autoclass:: LogTransformer
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      LogTransformer.__init__
+   
+      LogTransformer.generic_visit
+   
+      LogTransformer.visit
+   
+      LogTransformer.visit_Assign
+   
+      LogTransformer.visit_Expr
+   
+      LogTransformer.visit_ImportFrom
+   
+   
+   

@@ -1,0 +1,6 @@
+EventManager.register
+=====================
+
+.. currentmodule:: tenjint.event
+
+.. automethod:: EventManager.register

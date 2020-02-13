@@ -1,0 +1,23 @@
+ExceptionHandling
+=================
+
+.. currentmodule:: tenjint.debug
+
+.. autoclass:: ExceptionHandling
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      ExceptionHandling.__init__
+   
+      ExceptionHandling.uninit
+   
+   
+   

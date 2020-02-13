@@ -1,0 +1,6 @@
+OperatingSystemBase.\_\_init\_\_
+================================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. automethod:: OperatingSystemBase.__init__

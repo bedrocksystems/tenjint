@@ -1,0 +1,6 @@
+SystemEventVmShutdown.params
+============================
+
+.. currentmodule:: tenjint.api.api
+
+.. autoattribute:: SystemEventVmShutdown.params

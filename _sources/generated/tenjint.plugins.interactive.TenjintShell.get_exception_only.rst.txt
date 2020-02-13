@@ -1,0 +1,6 @@
+TenjintShell.get\_exception\_only
+=================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.get_exception_only

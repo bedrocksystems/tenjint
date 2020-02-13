@@ -1,0 +1,6 @@
+LoggerMixin.\_\_init\_\_
+========================
+
+.. currentmodule:: tenjint.logger
+
+.. automethod:: LoggerMixin.__init__

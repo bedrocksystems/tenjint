@@ -1,0 +1,6 @@
+TenjintShell.init\_payload
+==========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.init_payload

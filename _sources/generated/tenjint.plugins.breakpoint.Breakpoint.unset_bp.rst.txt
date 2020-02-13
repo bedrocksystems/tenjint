@@ -1,0 +1,6 @@
+Breakpoint.unset\_bp
+====================
+
+.. currentmodule:: tenjint.plugins.breakpoint
+
+.. automethod:: Breakpoint.unset_bp

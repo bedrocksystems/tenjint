@@ -1,0 +1,6 @@
+TenjintShell.check\_complete
+============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.check_complete

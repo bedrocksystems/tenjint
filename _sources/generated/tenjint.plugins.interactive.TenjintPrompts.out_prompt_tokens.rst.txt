@@ -1,0 +1,6 @@
+TenjintPrompts.out\_prompt\_tokens
+==================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintPrompts.out_prompt_tokens

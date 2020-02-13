@@ -1,0 +1,6 @@
+TenjintShell.enable\_gui
+========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.enable_gui

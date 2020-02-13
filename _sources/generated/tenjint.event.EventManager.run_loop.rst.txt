@@ -1,0 +1,6 @@
+EventManager.run\_loop
+======================
+
+.. currentmodule:: tenjint.event
+
+.. automethod:: EventManager.run_loop

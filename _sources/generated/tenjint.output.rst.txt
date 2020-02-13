@@ -1,0 +1,25 @@
+tenjint.output
+==============
+
+.. rubric:: Description
+.. automodule:: tenjint.output
+.. currentmodule:: tenjint.output
+
+
+.. rubric:: Classes
+.. autosummary::
+    :toctree:
+    
+    PickleOutputManager
+    
+
+
+
+.. rubric:: Functions
+.. autosummary::
+    :toctree:
+    
+    init
+    
+    uninit
+    

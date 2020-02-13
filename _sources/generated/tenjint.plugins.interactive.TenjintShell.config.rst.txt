@@ -1,0 +1,6 @@
+TenjintShell.config
+===================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.config

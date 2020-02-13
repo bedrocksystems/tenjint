@@ -1,0 +1,6 @@
+TenjintShell.init\_extension\_manager
+=====================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.init_extension_manager

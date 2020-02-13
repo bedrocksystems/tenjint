@@ -1,0 +1,6 @@
+OperatingSystemLinux.per\_cpu
+=============================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. autoproperty:: OperatingSystemLinux.per_cpu

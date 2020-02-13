@@ -1,0 +1,6 @@
+TaskSwitchPluginBase.cancel\_event
+==================================
+
+.. currentmodule:: tenjint.plugins.taskswitch
+
+.. automethod:: TaskSwitchPluginBase.cancel_event

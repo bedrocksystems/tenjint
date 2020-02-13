@@ -1,0 +1,6 @@
+VirtualMachineBase.load
+=======================
+
+.. currentmodule:: tenjint.plugins.machine
+
+.. automethod:: VirtualMachineBase.load

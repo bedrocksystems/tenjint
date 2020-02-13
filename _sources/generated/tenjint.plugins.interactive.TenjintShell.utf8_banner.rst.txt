@@ -1,0 +1,6 @@
+TenjintShell.utf8\_banner
+=========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.utf8_banner

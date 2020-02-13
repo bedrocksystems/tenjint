@@ -1,0 +1,6 @@
+TenjintShell.quiet
+==================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.quiet

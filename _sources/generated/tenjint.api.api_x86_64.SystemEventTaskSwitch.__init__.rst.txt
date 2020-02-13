@@ -1,0 +1,6 @@
+SystemEventTaskSwitch.\_\_init\_\_
+==================================
+
+.. currentmodule:: tenjint.api.api_x86_64
+
+.. automethod:: SystemEventTaskSwitch.__init__

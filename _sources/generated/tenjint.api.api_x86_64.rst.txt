@@ -1,0 +1,20 @@
+tenjint.api.api\_x86\_64
+========================
+
+.. rubric:: Description
+.. automodule:: tenjint.api.api_x86_64
+.. currentmodule:: tenjint.api.api_x86_64
+
+
+.. rubric:: Classes
+.. autosummary::
+    :toctree:
+    
+    LBRState
+    
+    SystemEventSLP
+    
+    SystemEventTaskSwitch
+    
+
+

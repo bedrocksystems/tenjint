@@ -1,0 +1,6 @@
+TenjintShell.register\_magic\_function
+======================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.register_magic_function

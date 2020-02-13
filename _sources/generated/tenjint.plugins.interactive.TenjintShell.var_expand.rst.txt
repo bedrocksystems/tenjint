@@ -1,0 +1,6 @@
+TenjintShell.var\_expand
+========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.var_expand

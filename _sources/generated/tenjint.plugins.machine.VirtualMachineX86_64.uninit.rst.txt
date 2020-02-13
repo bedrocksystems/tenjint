@@ -1,0 +1,6 @@
+VirtualMachineX86\_64.uninit
+============================
+
+.. currentmodule:: tenjint.plugins.machine
+
+.. automethod:: VirtualMachineX86_64.uninit

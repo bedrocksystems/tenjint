@@ -1,0 +1,54 @@
+VirtualMachineX86\_64
+=====================
+
+.. currentmodule:: tenjint.plugins.machine
+
+.. autoclass:: VirtualMachineX86_64
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      VirtualMachineX86_64.arch
+   
+      VirtualMachineX86_64.cpu_count
+   
+      VirtualMachineX86_64.name
+   
+      VirtualMachineX86_64.os
+   
+      VirtualMachineX86_64.phys_mem_size
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      VirtualMachineX86_64.__init__
+   
+      VirtualMachineX86_64.cpu
+   
+      VirtualMachineX86_64.lbr
+   
+      VirtualMachineX86_64.lbr_disable
+   
+      VirtualMachineX86_64.lbr_enable
+   
+      VirtualMachineX86_64.load
+   
+      VirtualMachineX86_64.phys_mem_read
+   
+      VirtualMachineX86_64.phys_mem_write
+   
+      VirtualMachineX86_64.uninit
+   
+      VirtualMachineX86_64.vtop
+   
+   
+   

@@ -1,0 +1,31 @@
+tenjint.service
+===============
+
+.. rubric:: Description
+.. automodule:: tenjint.service
+.. currentmodule:: tenjint.service
+
+
+.. rubric:: Classes
+.. autosummary::
+    :toctree:
+    
+    ServiceManager
+    
+
+
+
+.. rubric:: Functions
+.. autosummary::
+    :toctree:
+    
+    get
+    
+    init
+    
+    manager
+    
+    register
+    
+    uninit
+    

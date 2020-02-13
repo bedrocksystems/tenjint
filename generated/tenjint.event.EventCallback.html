@@ -1,0 +1,301 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>EventCallback &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="EventCallback.event_cls" href="tenjint.event.EventCallback.event_cls.html" />
+    <link rel="prev" title="Event.parse_request_to_dict" href="tenjint.event.Event.parse_request_to_dict.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="tenjint.event.html">tenjint.event</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tenjint.event.CpuEvent.html">CpuEvent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tenjint.event.Event.html">Event</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">EventCallback</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.event.EventCallback.event_cls.html">EventCallback.event_cls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.event.EventCallback.event_key.html">EventCallback.event_key</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.event.EventCallback.__init__.html">EventCallback.__init__</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.event.EventCallback.deliver.html">EventCallback.deliver</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tenjint.event.EventManager.html">EventManager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tenjint.event.init.html">init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tenjint.event.run.html">run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tenjint.event.uninit.html">uninit</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.output.html">tenjint.output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.service.html">tenjint.service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.logger.html">tenjint.logger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.optimize.html">tenjint.optimize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.config.html">tenjint.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.debug.html">tenjint.debug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.tenjint.html">tenjint.tenjint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.machine.html">tenjint.plugins.machine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.operatingsystem.html">tenjint.plugins.operatingsystem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.singlestep.html">tenjint.plugins.singlestep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.breakpoint.html">tenjint.plugins.breakpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.slp.html">tenjint.plugins.slp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.taskswitch.html">tenjint.plugins.taskswitch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.interactive.html">tenjint.plugins.interactive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.plugins.html">tenjint.plugins.plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.api.api_x86_64.html">tenjint.api.api_x86_64</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.api.api.html">tenjint.api.api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.api.api_aarch64.html">tenjint.api.api_aarch64</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rpi.html">tenjint Raspberry Pi 4 Image</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="tenjint.event.html">tenjint.event</a> &raquo;</li>
+        
+      <li>EventCallback</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/generated/tenjint.event.EventCallback.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="eventcallback">
+<h1>EventCallback<a class="headerlink" href="#eventcallback" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="tenjint.event.EventCallback">
+<em class="property">class </em><code class="sig-prename descclassname">tenjint.event.</code><code class="sig-name descname">EventCallback</code><span class="sig-paren">(</span><em class="sig-param">callback_func</em>, <em class="sig-param">event_name=None</em>, <em class="sig-param">event_params=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tenjint/event.html#EventCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tenjint.event.EventCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for event related callbacks.</p>
+<p>This is the base class for event related callbacks. Event callbacks are used
+to request notifications from the event system whenever a certain event
+occurs. They allow to specify which event we are interested in and what
+function we want to invoke whenever this event occurs. In addition, we can
+filter events based on event parameters (event_params). If we specify
+event parameters our callback function will only be invoked when an event is
+of the given event type (event_name) and has the specified parameters. For
+more information see <a class="reference internal" href="tenjint.event.EventCallback.__init__.html#tenjint.event.EventCallback.__init__" title="tenjint.event.EventCallback.__init__"><code class="xref py py-func docutils literal notranslate"><span class="pre">__init__()</span></code></a>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="tenjint.event.EventCallback.__init__.html#tenjint.event.EventCallback.__init__" title="tenjint.event.EventCallback.__init__"><code class="xref py py-class docutils literal notranslate"><span class="pre">__init__</span></code></a></p>
+</div>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.event.EventCallback.event_cls.html#tenjint.event.EventCallback.event_cls" title="tenjint.event.EventCallback.event_cls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventCallback.event_cls</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.event.EventCallback.event_key.html#tenjint.event.EventCallback.event_key" title="tenjint.event.EventCallback.event_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventCallback.event_key</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.event.EventCallback.__init__.html#tenjint.event.EventCallback.__init__" title="tenjint.event.EventCallback.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventCallback.__init__</span></code></a>(callback_func[, …])</p></td>
+<td><p>Create a new event callback.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.event.EventCallback.deliver.html#tenjint.event.EventCallback.deliver" title="tenjint.event.EventCallback.deliver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventCallback.deliver</span></code></a>(event)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tenjint.event.EventCallback.event_cls.html" class="btn btn-neutral float-right" title="EventCallback.event_cls" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tenjint.event.Event.parse_request_to_dict.html" class="btn btn-neutral float-left" title="Event.parse_request_to_dict" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

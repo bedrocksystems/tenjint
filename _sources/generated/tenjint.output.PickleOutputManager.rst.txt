@@ -1,0 +1,23 @@
+PickleOutputManager
+===================
+
+.. currentmodule:: tenjint.output
+
+.. autoclass:: PickleOutputManager
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      PickleOutputManager.__init__
+   
+      PickleOutputManager.uninit
+   
+   
+   

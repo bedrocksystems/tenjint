@@ -1,0 +1,6 @@
+CpuEvent.producer
+=================
+
+.. currentmodule:: tenjint.event
+
+.. autoattribute:: CpuEvent.producer

@@ -1,0 +1,6 @@
+OperatingSystemLinux.current\_process
+=====================================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. automethod:: OperatingSystemLinux.current_process

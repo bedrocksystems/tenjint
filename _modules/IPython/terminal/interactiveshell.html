@@ -1,0 +1,740 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>IPython.terminal.interactiveshell &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rpi.html">tenjint Raspberry Pi 4 Image</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>IPython.terminal.interactiveshell</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for IPython.terminal.interactiveshell</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;IPython terminal interface using prompt_toolkit&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="k">import</span> <span class="n">warn</span>
+
+<span class="kn">from</span> <span class="nn">IPython.core.interactiveshell</span> <span class="k">import</span> <span class="n">InteractiveShell</span><span class="p">,</span> <span class="n">InteractiveShellABC</span>
+<span class="kn">from</span> <span class="nn">IPython.utils</span> <span class="k">import</span> <span class="n">io</span>
+<span class="kn">from</span> <span class="nn">IPython.utils.py3compat</span> <span class="k">import</span> <span class="nb">input</span>
+<span class="kn">from</span> <span class="nn">IPython.utils.terminal</span> <span class="k">import</span> <span class="n">toggle_set_term_title</span><span class="p">,</span> <span class="n">set_term_title</span>
+<span class="kn">from</span> <span class="nn">IPython.utils.process</span> <span class="k">import</span> <span class="n">abbrev_cwd</span>
+<span class="kn">from</span> <span class="nn">traitlets</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">Bool</span><span class="p">,</span> <span class="n">Unicode</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">observe</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span>
+    <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">prompt_toolkit.document</span> <span class="k">import</span> <span class="n">Document</span>
+<span class="kn">from</span> <span class="nn">prompt_toolkit.enums</span> <span class="k">import</span> <span class="n">DEFAULT_BUFFER</span><span class="p">,</span> <span class="n">EditingMode</span>
+<span class="kn">from</span> <span class="nn">prompt_toolkit.filters</span> <span class="k">import</span> <span class="p">(</span><span class="n">HasFocus</span><span class="p">,</span> <span class="n">Condition</span><span class="p">,</span> <span class="n">IsDone</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">prompt_toolkit.history</span> <span class="k">import</span> <span class="n">InMemoryHistory</span>
+<span class="kn">from</span> <span class="nn">prompt_toolkit.shortcuts</span> <span class="k">import</span> <span class="n">create_prompt_application</span><span class="p">,</span> <span class="n">create_eventloop</span><span class="p">,</span> <span class="n">create_prompt_layout</span><span class="p">,</span> <span class="n">create_output</span>
+<span class="kn">from</span> <span class="nn">prompt_toolkit.interface</span> <span class="k">import</span> <span class="n">CommandLineInterface</span>
+<span class="kn">from</span> <span class="nn">prompt_toolkit.key_binding.manager</span> <span class="k">import</span> <span class="n">KeyBindingManager</span>
+<span class="kn">from</span> <span class="nn">prompt_toolkit.layout.processors</span> <span class="k">import</span> <span class="n">ConditionalProcessor</span><span class="p">,</span> <span class="n">HighlightMatchingBracketProcessor</span>
+<span class="kn">from</span> <span class="nn">prompt_toolkit.styles</span> <span class="k">import</span> <span class="n">PygmentsStyle</span><span class="p">,</span> <span class="n">DynamicStyle</span>
+
+<span class="kn">from</span> <span class="nn">pygments.styles</span> <span class="k">import</span> <span class="n">get_style_by_name</span>
+<span class="kn">from</span> <span class="nn">pygments.style</span> <span class="k">import</span> <span class="n">Style</span>
+<span class="kn">from</span> <span class="nn">pygments.token</span> <span class="k">import</span> <span class="n">Token</span>
+
+<span class="kn">from</span> <span class="nn">.debugger</span> <span class="k">import</span> <span class="n">TerminalPdb</span><span class="p">,</span> <span class="n">Pdb</span>
+<span class="kn">from</span> <span class="nn">.magics</span> <span class="k">import</span> <span class="n">TerminalMagics</span>
+<span class="kn">from</span> <span class="nn">.pt_inputhooks</span> <span class="k">import</span> <span class="n">get_inputhook_name_and_func</span>
+<span class="kn">from</span> <span class="nn">.prompts</span> <span class="k">import</span> <span class="n">Prompts</span><span class="p">,</span> <span class="n">ClassicPrompts</span><span class="p">,</span> <span class="n">RichPromptDisplayHook</span>
+<span class="kn">from</span> <span class="nn">.ptutils</span> <span class="k">import</span> <span class="n">IPythonPTCompleter</span><span class="p">,</span> <span class="n">IPythonPTLexer</span>
+<span class="kn">from</span> <span class="nn">.shortcuts</span> <span class="k">import</span> <span class="n">register_ipython_shortcuts</span>
+
+<span class="n">DISPLAY_BANNER_DEPRECATED</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">_NoStyle</span><span class="p">(</span><span class="n">Style</span><span class="p">):</span> <span class="k">pass</span>
+
+
+
+<span class="n">_style_overrides_light_bg</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">Token</span><span class="o">.</span><span class="n">Prompt</span><span class="p">:</span> <span class="s1">&#39;#0000ff&#39;</span><span class="p">,</span>
+            <span class="n">Token</span><span class="o">.</span><span class="n">PromptNum</span><span class="p">:</span> <span class="s1">&#39;#0000ee bold&#39;</span><span class="p">,</span>
+            <span class="n">Token</span><span class="o">.</span><span class="n">OutPrompt</span><span class="p">:</span> <span class="s1">&#39;#cc0000&#39;</span><span class="p">,</span>
+            <span class="n">Token</span><span class="o">.</span><span class="n">OutPromptNum</span><span class="p">:</span> <span class="s1">&#39;#bb0000 bold&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">_style_overrides_linux</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">Token</span><span class="o">.</span><span class="n">Prompt</span><span class="p">:</span> <span class="s1">&#39;#00cc00&#39;</span><span class="p">,</span>
+            <span class="n">Token</span><span class="o">.</span><span class="n">PromptNum</span><span class="p">:</span> <span class="s1">&#39;#00bb00 bold&#39;</span><span class="p">,</span>
+            <span class="n">Token</span><span class="o">.</span><span class="n">OutPrompt</span><span class="p">:</span> <span class="s1">&#39;#cc0000&#39;</span><span class="p">,</span>
+            <span class="n">Token</span><span class="o">.</span><span class="n">OutPromptNum</span><span class="p">:</span> <span class="s1">&#39;#bb0000 bold&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">get_default_editor</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;EDITOR&#39;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">except</span> <span class="ne">UnicodeError</span><span class="p">:</span>
+        <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;$EDITOR environment variable is not pure ASCII. Using platform &quot;</span>
+             <span class="s2">&quot;default editor.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;posix&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;vi&#39;</span>  <span class="c1"># the only one guaranteed to be there!</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;notepad&#39;</span> <span class="c1"># same in Windows!</span>
+
+<span class="c1"># conservatively check for tty</span>
+<span class="c1"># overridden streams can result in things like:</span>
+<span class="c1"># - sys.stdin = None</span>
+<span class="c1"># - no isatty method</span>
+<span class="k">for</span> <span class="n">_name</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;stdin&#39;</span><span class="p">,</span> <span class="s1">&#39;stdout&#39;</span><span class="p">,</span> <span class="s1">&#39;stderr&#39;</span><span class="p">):</span>
+    <span class="n">_stream</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="n">_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_stream</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">_stream</span><span class="p">,</span> <span class="s1">&#39;isatty&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">_stream</span><span class="o">.</span><span class="n">isatty</span><span class="p">():</span>
+        <span class="n">_is_tty</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">break</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">_is_tty</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+<span class="n">_use_simple_prompt</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;IPY_TEST_SIMPLE_PROMPT&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">_is_tty</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">TerminalInteractiveShell</span><span class="p">(</span><span class="n">InteractiveShell</span><span class="p">):</span>
+    <span class="n">space_for_menu</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Number of line at the bottom of the screen &#39;</span>
+                                                  <span class="s1">&#39;to reserve for the completion menu&#39;</span>
+                            <span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_space_for_menu_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_layout</span><span class="p">()</span>
+
+    <span class="n">pt_cli</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">debugger_history</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_pt_app</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">simple_prompt</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="n">_use_simple_prompt</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Use `raw_input` for the REPL, without completion and prompt colors.</span>
+
+<span class="s2">            Useful when controlling IPython as a subprocess, and piping STDIN/OUT/ERR. Known usage are:</span>
+<span class="s2">            IPython own testing machinery, and emacs inferior-shell integration through elpy.</span>
+
+<span class="s2">            This mode default to `True` if the `IPY_TEST_SIMPLE_PROMPT`</span>
+<span class="s2">            environment variable is set, or the current terminal is not a tty.&quot;&quot;&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">debugger_cls</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Pdb</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">simple_prompt</span> <span class="k">else</span> <span class="n">TerminalPdb</span>
+
+    <span class="n">confirm_exit</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        Set to confirm when you try to exit IPython with an EOF (Control-D</span>
+<span class="s2">        in Unix, Control-Z/Enter in Windows). By typing &#39;exit&#39; or &#39;quit&#39;,</span>
+<span class="s2">        you can force a direct exit without any confirmation.&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">editing_mode</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="s1">&#39;emacs&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Shortcut style to use at the prompt. &#39;vi&#39; or &#39;emacs&#39;.&quot;</span><span class="p">,</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">mouse_support</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Enable mouse support in the prompt</span><span class="se">\n</span><span class="s2">(Note: prevents selecting text with the mouse)&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># We don&#39;t load the list of styles for the help string, because loading</span>
+    <span class="c1"># Pygments plugins takes time and can cause unexpected errors.</span>
+    <span class="n">highlighting_style</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Unicode</span><span class="p">(</span><span class="s1">&#39;legacy&#39;</span><span class="p">),</span> <span class="n">Type</span><span class="p">(</span><span class="n">klass</span><span class="o">=</span><span class="n">Style</span><span class="p">)],</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The name or class of a Pygments style to use for syntax</span>
+<span class="s2">        highlighting. To see available styles, run `pygmentize -L styles`.&quot;&quot;&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+
+    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;highlighting_style&#39;</span><span class="p">)</span>
+    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_highlighting_style_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">change</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh_style</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">refresh_style</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_style</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_style_from_name_or_cls</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">highlighting_style</span><span class="p">)</span>
+
+
+    <span class="n">highlighting_style_overrides</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Override highlighting format for specific tokens&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">true_color</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Use 24bit colors instead of 256 colors in prompt highlighting. &quot;</span>
+              <span class="s2">&quot;If your terminal supports true color, the following command &quot;</span>
+              <span class="s2">&quot;should print &#39;TRUECOLOR&#39; in orange: &quot;</span>
+              <span class="s2">&quot;printf </span><span class="se">\&quot;\\</span><span class="s2">x1b[38;2;255;100;0mTRUECOLOR</span><span class="se">\\</span><span class="s2">x1b[0m</span><span class="se">\\</span><span class="s2">n</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">editor</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="n">get_default_editor</span><span class="p">(),</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Set the editor used by IPython (default to $EDITOR/vi/notepad).&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">prompts_class</span> <span class="o">=</span> <span class="n">Type</span><span class="p">(</span><span class="n">Prompts</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Class used to generate Prompt token for prompt_toolkit&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">prompts</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">Prompts</span><span class="p">)</span>
+
+    <span class="nd">@default</span><span class="p">(</span><span class="s1">&#39;prompts&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_prompts_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompts_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;prompts&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">change</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_layout</span><span class="p">()</span>
+
+    <span class="nd">@default</span><span class="p">(</span><span class="s1">&#39;displayhook_class&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_displayhook_class_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">RichPromptDisplayHook</span>
+
+    <span class="n">term_title</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Automatically set the terminal title&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">term_title_format</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="s2">&quot;IPython: </span><span class="si">{cwd}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Customize the terminal title format.  This is a python format string. &quot;</span> <span class="o">+</span>
+             <span class="s2">&quot;Available substitutions are: </span><span class="si">{cwd}</span><span class="s2">.&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">display_completions</span> <span class="o">=</span> <span class="n">Enum</span><span class="p">((</span><span class="s1">&#39;column&#39;</span><span class="p">,</span> <span class="s1">&#39;multicolumn&#39;</span><span class="p">,</span><span class="s1">&#39;readlinelike&#39;</span><span class="p">),</span>
+        <span class="n">help</span><span class="o">=</span> <span class="p">(</span> <span class="s2">&quot;Options for displaying tab completions, &#39;column&#39;, &#39;multicolumn&#39;, and &quot;</span>
+                <span class="s2">&quot;&#39;readlinelike&#39;. These options are for `prompt_toolkit`, see &quot;</span>
+                <span class="s2">&quot;`prompt_toolkit` documentation for more information.&quot;</span>
+                <span class="p">),</span>
+        <span class="n">default_value</span><span class="o">=</span><span class="s1">&#39;multicolumn&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">highlight_matching_brackets</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Highlight matching brackets.&quot;</span><span class="p">,</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">extra_open_editor_shortcuts</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Enable vi (v) or Emacs (C-X C-E) shortcuts to open an external editor. &quot;</span>
+             <span class="s2">&quot;This is in addition to the F2 binding, which is always enabled.&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">handle_return</span> <span class="o">=</span> <span class="n">Any</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Provide an alternative handler to be called when the user presses &quot;</span>
+             <span class="s2">&quot;Return. This is an advanced option intended for debugging, which &quot;</span>
+             <span class="s2">&quot;may be changed or removed in later releases.&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">enable_history_search</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Allows to enable/disable the prompt toolkit history search&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;term_title&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">init_term_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">change</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Enable or disable the terminal title.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">term_title</span><span class="p">:</span>
+            <span class="n">toggle_set_term_title</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">set_term_title</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term_title_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cwd</span><span class="o">=</span><span class="n">abbrev_cwd</span><span class="p">()))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">toggle_set_term_title</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">init_display_formatter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TerminalInteractiveShell</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">init_display_formatter</span><span class="p">()</span>
+        <span class="c1"># terminal only supports plain text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_formatter</span><span class="o">.</span><span class="n">active_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;text/plain&#39;</span><span class="p">]</span>
+        <span class="c1"># disable `_ipython_display_`</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_formatter</span><span class="o">.</span><span class="n">ipython_display_formatter</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">init_prompt_toolkit_cli</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">simple_prompt</span><span class="p">:</span>
+            <span class="c1"># Fall back to plain non-interactive output for tests.</span>
+            <span class="c1"># This is very limited, and only accepts a single line.</span>
+            <span class="k">def</span> <span class="nf">prompt</span><span class="p">():</span>
+                <span class="n">isp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_splitter</span>
+                <span class="n">prompt_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span><span class="o">.</span><span class="n">in_prompt_tokens</span><span class="p">())</span>
+                <span class="n">prompt_continuation</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span><span class="o">.</span><span class="n">continuation_prompt_tokens</span><span class="p">())</span>
+                <span class="k">while</span> <span class="n">isp</span><span class="o">.</span><span class="n">push_accepts_more</span><span class="p">():</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="n">prompt_text</span><span class="p">)</span>
+                    <span class="n">isp</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                    <span class="n">prompt_text</span> <span class="o">=</span> <span class="n">prompt_continuation</span>
+                <span class="k">return</span> <span class="n">isp</span><span class="o">.</span><span class="n">source_reset</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prompt_for_code</span> <span class="o">=</span> <span class="n">prompt</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Set up keyboard shortcuts</span>
+        <span class="n">kbmanager</span> <span class="o">=</span> <span class="n">KeyBindingManager</span><span class="o">.</span><span class="n">for_prompt</span><span class="p">(</span>
+            <span class="n">enable_open_in_editor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_open_editor_shortcuts</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">register_ipython_shortcuts</span><span class="p">(</span><span class="n">kbmanager</span><span class="o">.</span><span class="n">registry</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># Pre-populate history from IPython&#39;s history database</span>
+        <span class="n">history</span> <span class="o">=</span> <span class="n">InMemoryHistory</span><span class="p">()</span>
+        <span class="n">last_cell</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">__</span><span class="p">,</span> <span class="n">___</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">history_manager</span><span class="o">.</span><span class="n">get_tail</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history_load_length</span><span class="p">,</span>
+                                                        <span class="n">include_latest</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="c1"># Ignore blank lines and consecutive duplicates</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">cell</span> <span class="ow">and</span> <span class="p">(</span><span class="n">cell</span> <span class="o">!=</span> <span class="n">last_cell</span><span class="p">):</span>
+                <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+                <span class="n">last_cell</span> <span class="o">=</span> <span class="n">cell</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_style</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_style_from_name_or_cls</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">highlighting_style</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">style</span> <span class="o">=</span> <span class="n">DynamicStyle</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="p">)</span>
+
+        <span class="n">editing_mode</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">EditingMode</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">editing_mode</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+
+        <span class="k">def</span> <span class="nf">patch_stdout</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pt_cli</span><span class="o">.</span><span class="n">patch_stdout_context</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pt_app</span> <span class="o">=</span> <span class="n">create_prompt_application</span><span class="p">(</span>
+                            <span class="n">editing_mode</span><span class="o">=</span><span class="n">editing_mode</span><span class="p">,</span>
+                            <span class="n">key_bindings_registry</span><span class="o">=</span><span class="n">kbmanager</span><span class="o">.</span><span class="n">registry</span><span class="p">,</span>
+                            <span class="n">history</span><span class="o">=</span><span class="n">history</span><span class="p">,</span>
+                            <span class="n">completer</span><span class="o">=</span><span class="n">IPythonPTCompleter</span><span class="p">(</span><span class="n">shell</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                                                    <span class="n">patch_stdout</span><span class="o">=</span><span class="n">patch_stdout</span><span class="p">),</span>
+                            <span class="n">enable_history_search</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">enable_history_search</span><span class="p">,</span>
+                            <span class="n">style</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">,</span>
+                            <span class="n">mouse_support</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mouse_support</span><span class="p">,</span>
+                            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_layout_options</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_eventloop</span> <span class="o">=</span> <span class="n">create_eventloop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputhook</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pt_cli</span> <span class="o">=</span> <span class="n">CommandLineInterface</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pt_app</span><span class="p">,</span> <span class="n">eventloop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_eventloop</span><span class="p">,</span>
+            <span class="n">output</span><span class="o">=</span><span class="n">create_output</span><span class="p">(</span><span class="n">true_color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">true_color</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_make_style_from_name_or_cls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name_or_cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Small wrapper that make an IPython compatible style from a style name</span>
+
+<span class="sd">        We need that to add style for prompt ... etc.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">style_overrides</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">name_or_cls</span> <span class="o">==</span> <span class="s1">&#39;legacy&#39;</span><span class="p">:</span>
+            <span class="n">legacy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">legacy</span> <span class="o">==</span> <span class="s1">&#39;linux&#39;</span><span class="p">:</span>
+                <span class="n">style_cls</span> <span class="o">=</span> <span class="n">get_style_by_name</span><span class="p">(</span><span class="s1">&#39;monokai&#39;</span><span class="p">)</span>
+                <span class="n">style_overrides</span> <span class="o">=</span> <span class="n">_style_overrides_linux</span>
+            <span class="k">elif</span> <span class="n">legacy</span> <span class="o">==</span> <span class="s1">&#39;lightbg&#39;</span><span class="p">:</span>
+                <span class="n">style_overrides</span> <span class="o">=</span> <span class="n">_style_overrides_light_bg</span>
+                <span class="n">style_cls</span> <span class="o">=</span> <span class="n">get_style_by_name</span><span class="p">(</span><span class="s1">&#39;pastie&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">legacy</span> <span class="o">==</span> <span class="s1">&#39;neutral&#39;</span><span class="p">:</span>
+                <span class="c1"># The default theme needs to be visible on both a dark background</span>
+                <span class="c1"># and a light background, because we can&#39;t tell what the terminal</span>
+                <span class="c1"># looks like. These tweaks to the default theme help with that.</span>
+                <span class="n">style_cls</span> <span class="o">=</span> <span class="n">get_style_by_name</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">)</span>
+                <span class="n">style_overrides</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                    <span class="n">Token</span><span class="o">.</span><span class="n">Number</span><span class="p">:</span> <span class="s1">&#39;#007700&#39;</span><span class="p">,</span>
+                    <span class="n">Token</span><span class="o">.</span><span class="n">Operator</span><span class="p">:</span> <span class="s1">&#39;noinherit&#39;</span><span class="p">,</span>
+                    <span class="n">Token</span><span class="o">.</span><span class="n">String</span><span class="p">:</span> <span class="s1">&#39;#BB6622&#39;</span><span class="p">,</span>
+                    <span class="n">Token</span><span class="o">.</span><span class="n">Name</span><span class="o">.</span><span class="n">Function</span><span class="p">:</span> <span class="s1">&#39;#2080D0&#39;</span><span class="p">,</span>
+                    <span class="n">Token</span><span class="o">.</span><span class="n">Name</span><span class="o">.</span><span class="n">Class</span><span class="p">:</span> <span class="s1">&#39;bold #2080D0&#39;</span><span class="p">,</span>
+                    <span class="n">Token</span><span class="o">.</span><span class="n">Name</span><span class="o">.</span><span class="n">Namespace</span><span class="p">:</span> <span class="s1">&#39;bold #2080D0&#39;</span><span class="p">,</span>
+                    <span class="n">Token</span><span class="o">.</span><span class="n">Prompt</span><span class="p">:</span> <span class="s1">&#39;#009900&#39;</span><span class="p">,</span>
+                    <span class="n">Token</span><span class="o">.</span><span class="n">PromptNum</span><span class="p">:</span> <span class="s1">&#39;#00ff00 bold&#39;</span><span class="p">,</span>
+                    <span class="n">Token</span><span class="o">.</span><span class="n">OutPrompt</span><span class="p">:</span> <span class="s1">&#39;#990000&#39;</span><span class="p">,</span>
+                    <span class="n">Token</span><span class="o">.</span><span class="n">OutPromptNum</span><span class="p">:</span> <span class="s1">&#39;#ff0000 bold&#39;</span><span class="p">,</span>
+                <span class="p">})</span>
+
+                <span class="c1"># Hack: Due to limited color support on the Windows console</span>
+                <span class="c1"># the prompt colors will be wrong without this</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;nt&#39;</span><span class="p">:</span>
+                    <span class="n">style_overrides</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                        <span class="n">Token</span><span class="o">.</span><span class="n">Prompt</span><span class="p">:</span> <span class="s1">&#39;#ansidarkgreen&#39;</span><span class="p">,</span>
+                        <span class="n">Token</span><span class="o">.</span><span class="n">PromptNum</span><span class="p">:</span> <span class="s1">&#39;#ansigreen bold&#39;</span><span class="p">,</span>
+                        <span class="n">Token</span><span class="o">.</span><span class="n">OutPrompt</span><span class="p">:</span> <span class="s1">&#39;#ansidarkred&#39;</span><span class="p">,</span>
+                        <span class="n">Token</span><span class="o">.</span><span class="n">OutPromptNum</span><span class="p">:</span> <span class="s1">&#39;#ansired bold&#39;</span><span class="p">,</span>
+                    <span class="p">})</span>
+            <span class="k">elif</span> <span class="n">legacy</span> <span class="o">==</span><span class="s1">&#39;nocolor&#39;</span><span class="p">:</span>
+                <span class="n">style_cls</span><span class="o">=</span><span class="n">_NoStyle</span>
+                <span class="n">style_overrides</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">else</span> <span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Got unknown colors: &#39;</span><span class="p">,</span> <span class="n">legacy</span><span class="p">)</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name_or_cls</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">style_cls</span> <span class="o">=</span> <span class="n">get_style_by_name</span><span class="p">(</span><span class="n">name_or_cls</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">style_cls</span> <span class="o">=</span> <span class="n">name_or_cls</span>
+            <span class="n">style_overrides</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">Token</span><span class="o">.</span><span class="n">Prompt</span><span class="p">:</span> <span class="s1">&#39;#009900&#39;</span><span class="p">,</span>
+                <span class="n">Token</span><span class="o">.</span><span class="n">PromptNum</span><span class="p">:</span> <span class="s1">&#39;#00ff00 bold&#39;</span><span class="p">,</span>
+                <span class="n">Token</span><span class="o">.</span><span class="n">OutPrompt</span><span class="p">:</span> <span class="s1">&#39;#990000&#39;</span><span class="p">,</span>
+                <span class="n">Token</span><span class="o">.</span><span class="n">OutPromptNum</span><span class="p">:</span> <span class="s1">&#39;#ff0000 bold&#39;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="n">style_overrides</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">highlighting_style_overrides</span><span class="p">)</span>
+        <span class="n">style</span> <span class="o">=</span> <span class="n">PygmentsStyle</span><span class="o">.</span><span class="n">from_defaults</span><span class="p">(</span><span class="n">pygments_style_cls</span><span class="o">=</span><span class="n">style_cls</span><span class="p">,</span>
+                                            <span class="n">style_dict</span><span class="o">=</span><span class="n">style_overrides</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">style</span>
+
+    <span class="k">def</span> <span class="nf">_layout_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the current layout option for the current Terminal InteractiveShell</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+                <span class="s1">&#39;lexer&#39;</span><span class="p">:</span><span class="n">IPythonPTLexer</span><span class="p">(),</span>
+                <span class="s1">&#39;reserve_space_for_menu&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">space_for_menu</span><span class="p">,</span>
+                <span class="s1">&#39;get_prompt_tokens&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">prompts</span><span class="o">.</span><span class="n">in_prompt_tokens</span><span class="p">,</span>
+                <span class="s1">&#39;get_continuation_tokens&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">prompts</span><span class="o">.</span><span class="n">continuation_prompt_tokens</span><span class="p">,</span>
+                <span class="s1">&#39;multiline&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span>
+                <span class="s1">&#39;display_completions_in_columns&#39;</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">display_completions</span> <span class="o">==</span> <span class="s1">&#39;multicolumn&#39;</span><span class="p">),</span>
+
+                <span class="c1"># Highlight matching brackets, but only when this setting is</span>
+                <span class="c1"># enabled, and only when the DEFAULT_BUFFER has the focus.</span>
+                <span class="s1">&#39;extra_input_processors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ConditionalProcessor</span><span class="p">(</span>
+                        <span class="n">processor</span><span class="o">=</span><span class="n">HighlightMatchingBracketProcessor</span><span class="p">(</span><span class="n">chars</span><span class="o">=</span><span class="s1">&#39;[]()</span><span class="si">{}</span><span class="s1">&#39;</span><span class="p">),</span>
+                        <span class="nb">filter</span><span class="o">=</span><span class="n">HasFocus</span><span class="p">(</span><span class="n">DEFAULT_BUFFER</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">IsDone</span><span class="p">()</span> <span class="o">&amp;</span>
+                            <span class="n">Condition</span><span class="p">(</span><span class="k">lambda</span> <span class="n">cli</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">highlight_matching_brackets</span><span class="p">))],</span>
+                <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_update_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Ask for a re computation of the application layout, if for example ,</span>
+<span class="sd">        some configuration options have changed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pt_app</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pt_app</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">create_prompt_layout</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_layout_options</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">prompt_for_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">pt_cli</span><span class="o">.</span><span class="n">patch_stdout_context</span><span class="p">(</span><span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="n">document</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pt_cli</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="n">pre_run</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pre_prompt</span><span class="p">,</span> <span class="n">reset_current_buffer</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">document</span><span class="o">.</span><span class="n">text</span>
+
+    <span class="k">def</span> <span class="nf">enable_win_unicode_console</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
+            <span class="c1"># Since PEP 528, Python uses the unicode APIs for the Windows</span>
+            <span class="c1"># console by default, so WUC shouldn&#39;t be needed.</span>
+            <span class="k">return</span>
+
+        <span class="kn">import</span> <span class="nn">win_unicode_console</span>
+        <span class="n">win_unicode_console</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">init_io</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;win32&#39;</span><span class="p">,</span> <span class="s1">&#39;cli&#39;</span><span class="p">}:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">enable_win_unicode_console</span><span class="p">()</span>
+
+        <span class="kn">import</span> <span class="nn">colorama</span>
+        <span class="n">colorama</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+        <span class="c1"># For some reason we make these wrappers around stdout/stderr.</span>
+        <span class="c1"># For now, we need to reset them so all output gets coloured.</span>
+        <span class="c1"># https://github.com/ipython/ipython/issues/8669</span>
+        <span class="c1"># io.std* are deprecated, but don&#39;t show our own deprecation warnings</span>
+        <span class="c1"># during initialization of the deprecated API.</span>
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+            <span class="n">io</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">IOStream</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+            <span class="n">io</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">IOStream</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">init_magics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TerminalInteractiveShell</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">init_magics</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_magics</span><span class="p">(</span><span class="n">TerminalMagics</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">init_alias</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># The parent class defines aliases that can be safely used with any</span>
+        <span class="c1"># frontend.</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TerminalInteractiveShell</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">init_alias</span><span class="p">()</span>
+
+        <span class="c1"># Now define aliases that only make sense on the terminal, because they</span>
+        <span class="c1"># need direct access to the console in a way that we can&#39;t emulate in</span>
+        <span class="c1"># GUI or web frontend</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;posix&#39;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;clear&#39;</span><span class="p">,</span> <span class="s1">&#39;more&#39;</span><span class="p">,</span> <span class="s1">&#39;less&#39;</span><span class="p">,</span> <span class="s1">&#39;man&#39;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">alias_manager</span><span class="o">.</span><span class="n">soft_define_alias</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">cmd</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TerminalInteractiveShell</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_prompt_toolkit_cli</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_term_title</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep_running</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">debugger_history</span> <span class="o">=</span> <span class="n">InMemoryHistory</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">ask_exit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep_running</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="n">rl_next_input</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">pre_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rl_next_input</span><span class="p">:</span>
+            <span class="c1"># We can&#39;t set the buffer here, because it will be reset just after</span>
+            <span class="c1"># this. Adding a callable to pre_run_callables does what we need</span>
+            <span class="c1"># after the buffer is reset.</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rl_next_input</span>
+            <span class="k">def</span> <span class="nf">set_doc</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pt_cli</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">document</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pt_cli</span><span class="p">,</span> <span class="s1">&#39;pre_run_callables&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pt_cli</span><span class="o">.</span><span class="n">pre_run_callables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">set_doc</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Older version of prompt_toolkit; it&#39;s OK to set the document</span>
+                <span class="c1"># directly here.</span>
+                <span class="n">set_doc</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rl_next_input</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">interact</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">display_banner</span><span class="o">=</span><span class="n">DISPLAY_BANNER_DEPRECATED</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">display_banner</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">DISPLAY_BANNER_DEPRECATED</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;interact `display_banner` argument is deprecated since IPython 5.0. Call `show_banner()` if needed.&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep_running</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_running</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">separate_in</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt_for_code</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">EOFError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_exit</span><span class="p">)</span> \
+                        <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">ask_yes_no</span><span class="p">(</span><span class="s1">&#39;Do you really want to exit ([y]/n)?&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;n&#39;</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ask_exit</span><span class="p">()</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">code</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">run_cell</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">store_history</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">mainloop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">display_banner</span><span class="o">=</span><span class="n">DISPLAY_BANNER_DEPRECATED</span><span class="p">):</span>
+        <span class="c1"># An extra layer of protection in case someone mashing Ctrl-C breaks</span>
+        <span class="c1"># out of our internal code.</span>
+        <span class="k">if</span> <span class="n">display_banner</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">DISPLAY_BANNER_DEPRECATED</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;mainloop `display_banner` argument is deprecated since IPython 5.0. Call `show_banner()` if needed.&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+                <span class="k">break</span>
+            <span class="k">except</span> <span class="ne">KeyboardInterrupt</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">%s</span><span class="s2"> escaped interact()</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="c1"># An interrupt during the eventloop will mess up the</span>
+                <span class="c1"># internal state of the prompt_toolkit library.</span>
+                <span class="c1"># Stopping the eventloop fixes this, see</span>
+                <span class="c1"># https://github.com/ipython/ipython/pull/9867</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_eventloop&#39;</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_eventloop</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+    <span class="n">_inputhook</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">def</span> <span class="nf">inputhook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inputhook</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inputhook</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+
+    <span class="n">active_eventloop</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">def</span> <span class="nf">enable_gui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gui</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">gui</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_eventloop</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inputhook</span> <span class="o">=</span>\
+                <span class="n">get_inputhook_name_and_func</span><span class="p">(</span><span class="n">gui</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_eventloop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inputhook</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Run !system commands directly, not through pipes, so terminal programs</span>
+    <span class="c1"># work correctly.</span>
+    <span class="n">system</span> <span class="o">=</span> <span class="n">InteractiveShell</span><span class="o">.</span><span class="n">system_raw</span>
+
+    <span class="k">def</span> <span class="nf">auto_rewrite_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overridden from the parent class to use fancy rewriting prompt&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_rewritten_input</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span><span class="o">.</span><span class="n">rewrite_prompt_tokens</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pt_cli</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pt_cli</span><span class="o">.</span><span class="n">print_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">prompt</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span> <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="n">_prompts_before</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">def</span> <span class="nf">switch_doctest_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Switch prompts to classic for %doctest_mode&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">mode</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_prompts_before</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span> <span class="o">=</span> <span class="n">ClassicPrompts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prompts_before</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prompts_before</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_prompts_before</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_layout</span><span class="p">()</span>
+
+
+<span class="n">InteractiveShellABC</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">TerminalInteractiveShell</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">TerminalInteractiveShell</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

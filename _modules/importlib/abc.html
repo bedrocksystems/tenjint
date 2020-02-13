@@ -1,0 +1,586 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>importlib.abc &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rpi.html">tenjint Raspberry Pi 4 Image</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>importlib.abc</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for importlib.abc</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Abstract base classes related to import.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">_bootstrap</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">_bootstrap_external</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">machinery</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">_frozen_importlib</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">exc</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;_frozen_importlib&#39;</span><span class="p">:</span>
+        <span class="k">raise</span>
+    <span class="n">_frozen_importlib</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">_frozen_importlib_external</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+    <span class="n">_frozen_importlib_external</span> <span class="o">=</span> <span class="n">_bootstrap_external</span>
+<span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+
+<span class="k">def</span> <span class="nf">_register</span><span class="p">(</span><span class="n">abstract_cls</span><span class="p">,</span> <span class="o">*</span><span class="n">classes</span><span class="p">):</span>
+    <span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
+        <span class="n">abstract_cls</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_frozen_importlib</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">frozen_cls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">_frozen_importlib</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="n">frozen_cls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">_frozen_importlib_external</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+            <span class="n">abstract_cls</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">frozen_cls</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Finder</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Legacy abstract base class for import finders.</span>
+
+<span class="sd">    It may be subclassed for compatibility with legacy third party</span>
+<span class="sd">    reimplementations of the import system.  Otherwise, finder</span>
+<span class="sd">    implementations should derive from the more specific MetaPathFinder</span>
+<span class="sd">    or PathEntryFinder ABCs.</span>
+
+<span class="sd">    Deprecated since Python 3.3</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">find_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fullname</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;An abstract method that should find a module.</span>
+<span class="sd">        The fullname is a str and the optional path is a str or None.</span>
+<span class="sd">        Returns a Loader object or None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">MetaPathFinder</span><span class="p">(</span><span class="n">Finder</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Abstract base class for import finders on sys.meta_path.&quot;&quot;&quot;</span>
+
+    <span class="c1"># We don&#39;t define find_spec() here since that would break</span>
+    <span class="c1"># hasattr checks we do to support backward compatibility.</span>
+
+    <span class="k">def</span> <span class="nf">find_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fullname</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a loader for the module.</span>
+
+<span class="sd">        If no module is found, return None.  The fullname is a str and</span>
+<span class="sd">        the path is a list of strings or None.</span>
+
+<span class="sd">        This method is deprecated since Python 3.4 in favor of</span>
+<span class="sd">        finder.find_spec(). If find_spec() exists then backwards-compatible</span>
+<span class="sd">        functionality is provided for this method.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;MetaPathFinder.find_module() is deprecated since Python &quot;</span>
+                      <span class="s2">&quot;3.4 in favor of MetaPathFinder.find_spec() &quot;</span>
+                      <span class="s2">&quot;(available since 3.4)&quot;</span><span class="p">,</span>
+                      <span class="ne">DeprecationWarning</span><span class="p">,</span>
+                      <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;find_spec&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_spec</span><span class="p">(</span><span class="n">fullname</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">found</span><span class="o">.</span><span class="n">loader</span> <span class="k">if</span> <span class="n">found</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">invalidate_caches</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;An optional method for clearing the finder&#39;s cache, if any.</span>
+<span class="sd">        This method is used by importlib.invalidate_caches().</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<span class="n">_register</span><span class="p">(</span><span class="n">MetaPathFinder</span><span class="p">,</span> <span class="n">machinery</span><span class="o">.</span><span class="n">BuiltinImporter</span><span class="p">,</span> <span class="n">machinery</span><span class="o">.</span><span class="n">FrozenImporter</span><span class="p">,</span>
+          <span class="n">machinery</span><span class="o">.</span><span class="n">PathFinder</span><span class="p">,</span> <span class="n">machinery</span><span class="o">.</span><span class="n">WindowsRegistryFinder</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">PathEntryFinder</span><span class="p">(</span><span class="n">Finder</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Abstract base class for path entry finders used by PathFinder.&quot;&quot;&quot;</span>
+
+    <span class="c1"># We don&#39;t define find_spec() here since that would break</span>
+    <span class="c1"># hasattr checks we do to support backward compatibility.</span>
+
+    <span class="k">def</span> <span class="nf">find_loader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fullname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return (loader, namespace portion) for the path entry.</span>
+
+<span class="sd">        The fullname is a str.  The namespace portion is a sequence of</span>
+<span class="sd">        path entries contributing to part of a namespace package. The</span>
+<span class="sd">        sequence may be empty.  If loader is not None, the portion will</span>
+<span class="sd">        be ignored.</span>
+
+<span class="sd">        The portion will be discarded if another path entry finder</span>
+<span class="sd">        locates the module as a normal module or package.</span>
+
+<span class="sd">        This method is deprecated since Python 3.4 in favor of</span>
+<span class="sd">        finder.find_spec(). If find_spec() is provided than backwards-compatible</span>
+<span class="sd">        functionality is provided.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;PathEntryFinder.find_loader() is deprecated since Python &quot;</span>
+                      <span class="s2">&quot;3.4 in favor of PathEntryFinder.find_spec() &quot;</span>
+                      <span class="s2">&quot;(available since 3.4)&quot;</span><span class="p">,</span>
+                      <span class="ne">DeprecationWarning</span><span class="p">,</span>
+                      <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;find_spec&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[]</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_spec</span><span class="p">(</span><span class="n">fullname</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">found</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="o">.</span><span class="n">submodule_search_locations</span><span class="p">:</span>
+                <span class="n">portions</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">portions</span> <span class="o">=</span> <span class="n">found</span><span class="o">.</span><span class="n">submodule_search_locations</span>
+            <span class="k">return</span> <span class="n">found</span><span class="o">.</span><span class="n">loader</span><span class="p">,</span> <span class="n">portions</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[]</span>
+
+    <span class="n">find_module</span> <span class="o">=</span> <span class="n">_bootstrap_external</span><span class="o">.</span><span class="n">_find_module_shim</span>
+
+    <span class="k">def</span> <span class="nf">invalidate_caches</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;An optional method for clearing the finder&#39;s cache, if any.</span>
+<span class="sd">        This method is used by PathFinder.invalidate_caches().</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<span class="n">_register</span><span class="p">(</span><span class="n">PathEntryFinder</span><span class="p">,</span> <span class="n">machinery</span><span class="o">.</span><span class="n">FileFinder</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Loader</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Abstract base class for import loaders.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">create_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a module to initialize and into which to load.</span>
+
+<span class="sd">        This method should raise ImportError if anything prevents it</span>
+<span class="sd">        from creating a new module.  It may return None to indicate</span>
+<span class="sd">        that the spec should create the new module.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># By default, defer to default semantics for the new module.</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># We don&#39;t define exec_module() here since that would break</span>
+    <span class="c1"># hasattr checks we do to support backward compatibility.</span>
+
+    <span class="k">def</span> <span class="nf">load_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fullname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the loaded module.</span>
+
+<span class="sd">        The module must be added to sys.modules and have import-related</span>
+<span class="sd">        attributes set properly.  The fullname is a str.</span>
+
+<span class="sd">        ImportError is raised on failure.</span>
+
+<span class="sd">        This method is deprecated in favor of loader.exec_module(). If</span>
+<span class="sd">        exec_module() exists then it is used to provide a backwards-compatible</span>
+<span class="sd">        functionality for this method.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;exec_module&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span>
+        <span class="k">return</span> <span class="n">_bootstrap</span><span class="o">.</span><span class="n">_load_module_shim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fullname</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">module_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a module&#39;s repr.</span>
+
+<span class="sd">        Used by the module type when the method does not raise</span>
+<span class="sd">        NotImplementedError.</span>
+
+<span class="sd">        This method is deprecated.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># The exception will cause ModuleType.__repr__ to ignore this method.</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+
+<span class="k">class</span> <span class="nc">ResourceLoader</span><span class="p">(</span><span class="n">Loader</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Abstract base class for loaders which can return data from their</span>
+<span class="sd">    back-end storage.</span>
+
+<span class="sd">    This ABC represents one of the optional protocols specified by PEP 302.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Abstract method which when implemented should return the bytes for</span>
+<span class="sd">        the specified path.  The path must be a str.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">OSError</span>
+
+
+<span class="k">class</span> <span class="nc">InspectLoader</span><span class="p">(</span><span class="n">Loader</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Abstract base class for loaders which support inspection about the</span>
+<span class="sd">    modules they can load.</span>
+
+<span class="sd">    This ABC represents one of the optional protocols specified by PEP 302.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">is_package</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fullname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Optional method which when implemented should return whether the</span>
+<span class="sd">        module is a package.  The fullname is a str.  Returns a bool.</span>
+
+<span class="sd">        Raises ImportError if the module cannot be found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span>
+
+    <span class="k">def</span> <span class="nf">get_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fullname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method which returns the code object for the module.</span>
+
+<span class="sd">        The fullname is a str.  Returns a types.CodeType if possible, else</span>
+<span class="sd">        returns None if a code object does not make sense</span>
+<span class="sd">        (e.g. built-in module). Raises ImportError if the module cannot be</span>
+<span class="sd">        found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_source</span><span class="p">(</span><span class="n">fullname</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">source</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_to_code</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fullname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Abstract method which should return the source code for the</span>
+<span class="sd">        module.  The fullname is a str.  Returns a str.</span>
+
+<span class="sd">        Raises ImportError if the module cannot be found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">source_to_code</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&lt;string&gt;&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compile &#39;data&#39; into a code object.</span>
+
+<span class="sd">        The &#39;data&#39; argument can be anything that compile() can handle. The&#39;path&#39;</span>
+<span class="sd">        argument should be where the data was retrieved (when applicable).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">compile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="s1">&#39;exec&#39;</span><span class="p">,</span> <span class="n">dont_inherit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">exec_module</span> <span class="o">=</span> <span class="n">_bootstrap_external</span><span class="o">.</span><span class="n">_LoaderBasics</span><span class="o">.</span><span class="n">exec_module</span>
+    <span class="n">load_module</span> <span class="o">=</span> <span class="n">_bootstrap_external</span><span class="o">.</span><span class="n">_LoaderBasics</span><span class="o">.</span><span class="n">load_module</span>
+
+<span class="n">_register</span><span class="p">(</span><span class="n">InspectLoader</span><span class="p">,</span> <span class="n">machinery</span><span class="o">.</span><span class="n">BuiltinImporter</span><span class="p">,</span> <span class="n">machinery</span><span class="o">.</span><span class="n">FrozenImporter</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">ExecutionLoader</span><span class="p">(</span><span class="n">InspectLoader</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Abstract base class for loaders that wish to support the execution of</span>
+<span class="sd">    modules as scripts.</span>
+
+<span class="sd">    This ABC represents one of the optional protocols specified in PEP 302.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fullname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Abstract method which should return the value that __file__ is to be</span>
+<span class="sd">        set to.</span>
+
+<span class="sd">        Raises ImportError if the module cannot be found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span>
+
+    <span class="k">def</span> <span class="nf">get_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fullname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to return the code object for fullname.</span>
+
+<span class="sd">        Should return None if not applicable (e.g. built-in module).</span>
+<span class="sd">        Raise ImportError if the module cannot be found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_source</span><span class="p">(</span><span class="n">fullname</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">source</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_filename</span><span class="p">(</span><span class="n">fullname</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_to_code</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_to_code</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+<span class="n">_register</span><span class="p">(</span><span class="n">ExecutionLoader</span><span class="p">,</span> <span class="n">machinery</span><span class="o">.</span><span class="n">ExtensionFileLoader</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">FileLoader</span><span class="p">(</span><span class="n">_bootstrap_external</span><span class="o">.</span><span class="n">FileLoader</span><span class="p">,</span> <span class="n">ResourceLoader</span><span class="p">,</span> <span class="n">ExecutionLoader</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Abstract base class partially implementing the ResourceLoader and</span>
+<span class="sd">    ExecutionLoader ABCs.&quot;&quot;&quot;</span>
+
+<span class="n">_register</span><span class="p">(</span><span class="n">FileLoader</span><span class="p">,</span> <span class="n">machinery</span><span class="o">.</span><span class="n">SourceFileLoader</span><span class="p">,</span>
+            <span class="n">machinery</span><span class="o">.</span><span class="n">SourcelessFileLoader</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">SourceLoader</span><span class="p">(</span><span class="n">_bootstrap_external</span><span class="o">.</span><span class="n">SourceLoader</span><span class="p">,</span> <span class="n">ResourceLoader</span><span class="p">,</span> <span class="n">ExecutionLoader</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Abstract base class for loading source code (and optionally any</span>
+<span class="sd">    corresponding bytecode).</span>
+
+<span class="sd">    To support loading from source code, the abstractmethods inherited from</span>
+<span class="sd">    ResourceLoader and ExecutionLoader need to be implemented. To also support</span>
+<span class="sd">    loading from bytecode, the optional methods specified directly by this ABC</span>
+<span class="sd">    is required.</span>
+
+<span class="sd">    Inherited abstractmethods not implemented in this ABC:</span>
+
+<span class="sd">        * ResourceLoader.get_data</span>
+<span class="sd">        * ExecutionLoader.get_filename</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">path_mtime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the (int) modification time for the path (str).&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_stats</span><span class="o">.</span><span class="vm">__func__</span> <span class="ow">is</span> <span class="n">SourceLoader</span><span class="o">.</span><span class="n">path_stats</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">OSError</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_stats</span><span class="p">(</span><span class="n">path</span><span class="p">)[</span><span class="s1">&#39;mtime&#39;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">path_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a metadata dict for the source pointed to by the path (str).</span>
+<span class="sd">        Possible keys:</span>
+<span class="sd">        - &#39;mtime&#39; (mandatory) is the numeric timestamp of last source</span>
+<span class="sd">          code modification;</span>
+<span class="sd">        - &#39;size&#39; (optional) is the size in bytes of the source code.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_mtime</span><span class="o">.</span><span class="vm">__func__</span> <span class="ow">is</span> <span class="n">SourceLoader</span><span class="o">.</span><span class="n">path_mtime</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">OSError</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;mtime&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_mtime</span><span class="p">(</span><span class="n">path</span><span class="p">)}</span>
+
+    <span class="k">def</span> <span class="nf">set_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write the bytes to the path (if possible).</span>
+
+<span class="sd">        Accepts a str path and data as bytes.</span>
+
+<span class="sd">        Any needed intermediary directories are to be created. If for some</span>
+<span class="sd">        reason the file cannot be written because of permissions, fail</span>
+<span class="sd">        silently.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<span class="n">_register</span><span class="p">(</span><span class="n">SourceLoader</span><span class="p">,</span> <span class="n">machinery</span><span class="o">.</span><span class="n">SourceFileLoader</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">ResourceReader</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Abstract base class to provide resource-reading support.</span>
+
+<span class="sd">    Loaders that support resource reading are expected to implement</span>
+<span class="sd">    the ``get_resource_reader(fullname)`` method and have it either return None</span>
+<span class="sd">    or an object compatible with this ABC.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">open_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return an opened, file-like object for binary reading.</span>
+
+<span class="sd">        The &#39;resource&#39; argument is expected to represent only a file name</span>
+<span class="sd">        and thus not contain any subdirectory components.</span>
+
+<span class="sd">        If the resource cannot be found, FileNotFoundError is raised.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">resource_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the file system path to the specified resource.</span>
+
+<span class="sd">        The &#39;resource&#39; argument is expected to represent only a file name</span>
+<span class="sd">        and thus not contain any subdirectory components.</span>
+
+<span class="sd">        If the resource does not exist on the file system, raise</span>
+<span class="sd">        FileNotFoundError.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">is_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True if the named &#39;name&#39; is consider a resource.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">contents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return an iterable of strings over the contents of the package.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+
+<span class="n">_register</span><span class="p">(</span><span class="n">ResourceReader</span><span class="p">,</span> <span class="n">machinery</span><span class="o">.</span><span class="n">SourceFileLoader</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

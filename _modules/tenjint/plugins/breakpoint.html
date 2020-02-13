@@ -1,0 +1,389 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tenjint.plugins.breakpoint &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rpi.html">tenjint Raspberry Pi 4 Image</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>tenjint.plugins.breakpoint</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tenjint.plugins.breakpoint</h1><div class="highlight"><pre>
+<span></span><span class="c1"># tenjint - VMI Python Library</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2020 Bedrock Systems, Inc</span>
+<span class="c1"># Authors: Jonas Pfoh &lt;jonas@bedrocksystems.com&gt;</span>
+<span class="c1">#          Sebastian Vogl &lt;sebastian@bedrocksystems.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License version 2 as published</span>
+<span class="c1"># by the Free Software Foundation.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+
+<span class="sd">&quot;&quot;&quot;This module implements breakpoints.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">plugins</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">api</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">event</span>
+
+<div class="viewcode-block" id="Breakpoint"><a class="viewcode-back" href="../../../generated/tenjint.plugins.breakpoint.Breakpoint.html#tenjint.plugins.breakpoint.Breakpoint">[docs]</a><span class="k">class</span> <span class="nc">Breakpoint</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This class represents a breakpoint.</span>
+
+<span class="sd">    An object of this class represents a single requested BP.  It handles the</span>
+<span class="sd">    automatic removal and insertion of the underlying QEMU breakpoint if the</span>
+<span class="sd">    page is written/read?</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Breakpoint.__init__"><a class="viewcode-back" href="../../../generated/tenjint.plugins.breakpoint.Breakpoint.__init__.html#tenjint.plugins.breakpoint.Breakpoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gpa</span><span class="p">,</span> <span class="n">event_manager</span><span class="p">,</span> <span class="n">slp_service</span><span class="p">,</span> <span class="n">logger</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gpa</span> <span class="o">=</span> <span class="n">gpa</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span> <span class="o">=</span> <span class="n">event_manager</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slp_service</span> <span class="o">=</span> <span class="n">slp_service</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span> <span class="o">=</span> <span class="n">logger</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_set</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">gfn</span> <span class="o">=</span> <span class="n">gpa</span> <span class="o">&gt;&gt;</span> <span class="n">api</span><span class="o">.</span><span class="n">PAGE_SHIFT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slp_rw_cb</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">EventCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slp_rw_cb_func</span><span class="p">,</span>
+                                              <span class="s2">&quot;SystemEventSLP&quot;</span><span class="p">,</span>
+                                              <span class="p">{</span><span class="s2">&quot;gfn&quot;</span><span class="p">:</span> <span class="n">gfn</span><span class="p">,</span> <span class="s2">&quot;num_pages&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                                               <span class="s2">&quot;trap_r&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;trap_w&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                                               <span class="s2">&quot;trap_x&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slp_x_cb</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">EventCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slp_x_cb_func</span><span class="p">,</span>
+                                             <span class="s2">&quot;SystemEventSLP&quot;</span><span class="p">,</span>
+                                             <span class="p">{</span><span class="s2">&quot;gfn&quot;</span><span class="p">:</span> <span class="n">gfn</span><span class="p">,</span> <span class="s2">&quot;num_pages&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                                              <span class="s2">&quot;trap_r&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;trap_w&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                                              <span class="s2">&quot;trap_x&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span></div>
+
+    <span class="k">def</span> <span class="nf">_set_bp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_update_feature_debug</span><span class="p">(</span><span class="n">cpu_num</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                            <span class="n">enable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gpa</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gpa</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Breakpoint: bp set on 0x</span><span class="si">{:x}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gpa</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_set</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="Breakpoint.set_bp"><a class="viewcode-back" href="../../../generated/tenjint.plugins.breakpoint.Breakpoint.set_bp.html#tenjint.plugins.breakpoint.Breakpoint.set_bp">[docs]</a>    <span class="k">def</span> <span class="nf">set_bp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the breakpoint</span>
+
+<span class="sd">        This function is called to set the breakpoint.  This should be called</span>
+<span class="sd">        once.  Any subsequent insertions and removals of the underlying QEMU</span>
+<span class="sd">        breakpoint are handled internally.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_slp_service</span><span class="o">.</span><span class="n">update_permissions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gpa</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">api</span><span class="o">.</span><span class="n">UpdateSLPError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Breakpoint: slp update perm failed&quot;</span><span class="p">)</span>
+            <span class="c1"># this is safe as the kernel will default any new pages to</span>
+            <span class="c1"># X-only since we are requesting rw violations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">request_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slp_rw_cb</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bp</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_unset_bp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_update_feature_debug</span><span class="p">(</span><span class="n">cpu_num</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                            <span class="n">enable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">gpa</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gpa</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Breakpoint: bp removed on 0x</span><span class="si">{:x}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gpa</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_set</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="Breakpoint.unset_bp"><a class="viewcode-back" href="../../../generated/tenjint.plugins.breakpoint.Breakpoint.unset_bp.html#tenjint.plugins.breakpoint.Breakpoint.unset_bp">[docs]</a>    <span class="k">def</span> <span class="nf">unset_bp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Unset the breakpoint</span>
+
+<span class="sd">        This function is called to unset the breakpoint.  This should be called</span>
+<span class="sd">        once.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_set</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_unset_bp</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">cancel_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slp_rw_cb</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">cancel_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slp_x_cb</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_slp_rw_cb_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Breakpoint: rw callback ob 0x</span><span class="si">{:x}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">gva</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unset_bp</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slp_service</span><span class="o">.</span><span class="n">update_permissions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gpa</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">cancel_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slp_rw_cb</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">request_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slp_x_cb</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_slp_x_cb_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Breakpoint: x callback ob 0x</span><span class="si">{:x}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">gva</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">cancel_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slp_x_cb</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">request_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slp_rw_cb</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slp_service</span><span class="o">.</span><span class="n">update_permissions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gpa</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bp</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="BreakpointPlugin"><a class="viewcode-back" href="../../../generated/tenjint.plugins.breakpoint.BreakpointPlugin.html#tenjint.plugins.breakpoint.BreakpointPlugin">[docs]</a><span class="k">class</span> <span class="nc">BreakpointPlugin</span><span class="p">(</span><span class="n">plugins</span><span class="o">.</span><span class="n">EventPlugin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Breakpoint Service</span>
+
+<span class="sd">    This plugin implements the Breakpoint service and is responsible for setting</span>
+<span class="sd">    and removing breakpoints.  The breakpoints are set on a specificfied GPA and</span>
+<span class="sd">    are hidden by this service.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_abstract</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">produces</span> <span class="o">=</span> <span class="p">[</span><span class="n">api</span><span class="o">.</span><span class="n">SystemEventBreakpoint</span><span class="p">]</span>
+
+<div class="viewcode-block" id="BreakpointPlugin.__init__"><a class="viewcode-back" href="../../../generated/tenjint.plugins.breakpoint.BreakpointPlugin.__init__.html#tenjint.plugins.breakpoint.BreakpointPlugin.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request_id_cntr</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_requests</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ss_service</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_manager</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SingleStepPlugin&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slp_service</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_manager</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SLPPlugin&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cb_bp</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">EventCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cb_func_bp</span><span class="p">,</span> <span class="s2">&quot;SystemEventBreakpoint&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">request_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cb_bp</span><span class="p">,</span> <span class="n">send_request</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ss</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vm</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">EventCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cb_func_ss</span><span class="p">,</span>
+                                            <span class="n">event_name</span><span class="o">=</span><span class="s2">&quot;SystemEventSingleStep&quot;</span><span class="p">,</span>
+                                            <span class="n">event_params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;cpu_num&quot;</span><span class="p">:</span><span class="n">i</span><span class="p">}))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cb_ss</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">EventCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cb_func_ss</span><span class="p">,</span> <span class="s2">&quot;SystemEventSingleStep&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">request_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cb_ss</span><span class="p">,</span> <span class="n">send_request</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BreakpointPlugin.uninit"><a class="viewcode-back" href="../../../generated/tenjint.plugins.breakpoint.BreakpointPlugin.uninit.html#tenjint.plugins.breakpoint.BreakpointPlugin.uninit">[docs]</a>    <span class="k">def</span> <span class="nf">uninit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">uninit</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">bp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_requests</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">bp</span><span class="o">.</span><span class="n">unset_bp</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_requests</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">cancel_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cb_bp</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cb_bp</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">cancel_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cb_ss</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cb_ss</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="BreakpointPlugin.request_event"><a class="viewcode-back" href="../../../generated/tenjint.plugins.breakpoint.BreakpointPlugin.request_event.html#tenjint.plugins.breakpoint.BreakpointPlugin.request_event">[docs]</a>    <span class="k">def</span> <span class="nf">request_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Request Breakpoint event</span>
+
+<span class="sd">        This function is called by the event manager when a</span>
+<span class="sd">        (:py:class:`api.SystemEventBreakpoint`) is requested.  The event params</span>
+<span class="sd">        are specified in the (:py:class:`api.SystemEventBreakpoint`) class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="p">[</span><span class="n">gpa</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_cls</span><span class="o">.</span><span class="n">parse_request</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">request_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_id_cntr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request_id_cntr</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">bp</span> <span class="o">=</span> <span class="n">Breakpoint</span><span class="p">(</span><span class="n">gpa</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slp_service</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_requests</span><span class="p">[</span><span class="n">request_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">bp</span>
+        <span class="n">bp</span><span class="o">.</span><span class="n">set_bp</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">request_id</span></div>
+
+<div class="viewcode-block" id="BreakpointPlugin.cancel_event"><a class="viewcode-back" href="../../../generated/tenjint.plugins.breakpoint.BreakpointPlugin.cancel_event.html#tenjint.plugins.breakpoint.BreakpointPlugin.cancel_event">[docs]</a>    <span class="k">def</span> <span class="nf">cancel_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Cancel Breakpoint event</span>
+
+<span class="sd">        This function is called by the event manager when a</span>
+<span class="sd">        (:py:class:`api.SystemEventBreakpoint`) is canceled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_requests</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">request_id</span><span class="p">)</span>
+        <span class="n">bp</span><span class="o">.</span><span class="n">unset_bp</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_cb_func_bp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="c1"># Activate single stepping to step over the BP</span>
+        <span class="c1"># BPs will be automatically disabled by QEMU when we single step</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ss</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">cpu_num</span><span class="p">]</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">request_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ss</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">cpu_num</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_cb_func_ss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ss</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">cpu_num</span><span class="p">]</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">cancel_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ss</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">cpu_num</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">last_gva</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ss_service</span><span class="o">.</span><span class="n">last_ss_gva</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">cpu_num</span><span class="p">)</span>
+            <span class="n">last_gpa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vm</span><span class="o">.</span><span class="n">vtop</span><span class="p">(</span><span class="n">last_gva</span><span class="p">,</span> <span class="n">cpu_num</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">cpu_num</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">bp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_requests</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">bp</span><span class="o">.</span><span class="n">gpa</span> <span class="o">==</span> <span class="n">last_gpa</span><span class="p">:</span>
+                    <span class="n">evt</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">SystemEventBreakpoint</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">cpu_num</span><span class="p">,</span>
+                                                    <span class="n">last_gva</span><span class="p">,</span>
+                                                    <span class="n">last_gpa</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">put_event</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

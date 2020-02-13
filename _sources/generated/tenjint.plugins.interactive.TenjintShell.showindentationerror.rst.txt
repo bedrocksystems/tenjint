@@ -1,0 +1,6 @@
+TenjintShell.showindentationerror
+=================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.showindentationerror

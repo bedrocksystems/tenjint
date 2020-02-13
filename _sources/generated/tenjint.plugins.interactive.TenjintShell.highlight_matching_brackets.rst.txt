@@ -1,0 +1,6 @@
+TenjintShell.highlight\_matching\_brackets
+==========================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.highlight_matching_brackets

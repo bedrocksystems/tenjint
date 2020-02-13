@@ -1,0 +1,6 @@
+VirtualMachineBase.uninit
+=========================
+
+.. currentmodule:: tenjint.plugins.machine
+
+.. automethod:: VirtualMachineBase.uninit

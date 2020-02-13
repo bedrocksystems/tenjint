@@ -1,0 +1,379 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tenjint.plugins.taskswitch &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rpi.html">tenjint Raspberry Pi 4 Image</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>tenjint.plugins.taskswitch</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tenjint.plugins.taskswitch</h1><div class="highlight"><pre>
+<span></span><span class="c1"># tenjint - VMI Python Library</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2020 Bedrock Systems, Inc</span>
+<span class="c1"># Authors: Jonas Pfoh &lt;jonas@bedrocksystems.com&gt;</span>
+<span class="c1">#          Sebastian Vogl &lt;sebastian@bedrocksystems.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License version 2 as published</span>
+<span class="c1"># by the Free Software Foundation.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+
+<span class="sd">&quot;&quot;&quot;Contains all functionality related to task switch trapping.</span>
+
+<span class="sd">This module contains plugins that control the lower-level API to enable or</span>
+<span class="sd">disable the trapping of task switches.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">plugins</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">api</span>
+
+<div class="viewcode-block" id="TaskSwitchPluginBase"><a class="viewcode-back" href="../../../generated/tenjint.plugins.taskswitch.TaskSwitchPluginBase.html#tenjint.plugins.taskswitch.TaskSwitchPluginBase">[docs]</a><span class="k">class</span> <span class="nc">TaskSwitchPluginBase</span><span class="p">(</span><span class="n">plugins</span><span class="o">.</span><span class="n">EventPlugin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base task switch plugin.</span>
+
+<span class="sd">    This is the base plugin for all task switch plugins on the various</span>
+<span class="sd">    architectures.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_abstract</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;TaskSwitchPlugin&quot;</span>
+    <span class="n">produces</span> <span class="o">=</span> <span class="p">[</span><span class="n">api</span><span class="o">.</span><span class="n">SystemEventTaskSwitch</span><span class="p">]</span>
+
+<div class="viewcode-block" id="TaskSwitchPluginBase.__init__"><a class="viewcode-back" href="../../../generated/tenjint.plugins.taskswitch.TaskSwitchPluginBase.__init__.html#tenjint.plugins.taskswitch.TaskSwitchPluginBase.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request_id_cntr</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_requests</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TaskSwitchPluginBase.uninit"><a class="viewcode-back" href="../../../generated/tenjint.plugins.taskswitch.TaskSwitchPluginBase.uninit.html#tenjint.plugins.taskswitch.TaskSwitchPluginBase.uninit">[docs]</a>    <span class="k">def</span> <span class="nf">uninit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">uninit</span><span class="p">()</span>
+
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_requests</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">popitem</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_feature</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_update_feature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update the state of the task switch feature.</span>
+
+<span class="sd">        This function decides whether a feature update request should be</span>
+<span class="sd">        send to the kernel. It will consider the current state of the task</span>
+<span class="sd">        switch feature and the new request to decide whether a feature</span>
+<span class="sd">        request is necessary.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        request : dict</span>
+<span class="sd">            The parameters of the new request.</span>
+<span class="sd">        enable : bool</span>
+<span class="sd">            Whether this is a new event request or the cancelation of a</span>
+<span class="sd">            previous request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="TaskSwitchPluginBase.request_event"><a class="viewcode-back" href="../../../generated/tenjint.plugins.taskswitch.TaskSwitchPluginBase.request_event.html#tenjint.plugins.taskswitch.TaskSwitchPluginBase.request_event">[docs]</a>    <span class="k">def</span> <span class="nf">request_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Request task switch events.</span>
+
+<span class="sd">        This function is called by the EventManager when task switch events</span>
+<span class="sd">        are requested.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Parse request</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">event_cls</span><span class="o">.</span><span class="n">parse_request_to_dict</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Update feature</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_feature</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Store request</span>
+        <span class="n">request_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_id_cntr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request_id_cntr</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_requests</span><span class="p">[</span><span class="n">request_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span>
+
+        <span class="k">return</span> <span class="n">request_id</span></div>
+
+<div class="viewcode-block" id="TaskSwitchPluginBase.cancel_event"><a class="viewcode-back" href="../../../generated/tenjint.plugins.taskswitch.TaskSwitchPluginBase.cancel_event.html#tenjint.plugins.taskswitch.TaskSwitchPluginBase.cancel_event">[docs]</a>    <span class="k">def</span> <span class="nf">cancel_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Cancel a task switch event request.</span>
+
+<span class="sd">        This function is called by the EventManager when a task switch event</span>
+<span class="sd">        request is canceled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_requests</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">request_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_feature</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="TaskSwitchPluginX86_64"><a class="viewcode-back" href="../../../generated/tenjint.plugins.taskswitch.TaskSwitchPluginX86_64.html#tenjint.plugins.taskswitch.TaskSwitchPluginX86_64">[docs]</a><span class="k">class</span> <span class="nc">TaskSwitchPluginX86_64</span><span class="p">(</span><span class="n">TaskSwitchPluginBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Task switching plugin for x86-64.</span>
+
+<span class="sd">    This plugin allows to trap task switches on x86-64. Task switch trapping</span>
+<span class="sd">    will be enabled if a :py:class:`tenjint.api.api_x86_64.SystemEventTaskSwitch`</span>
+<span class="sd">    event is requested and disabled if all requests for</span>
+<span class="sd">    :py:class:`tenjint.api.api_x86_64.SystemEventTaskSwitch` have been</span>
+<span class="sd">    canceled.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_abstract</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">arch</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Arch</span><span class="o">.</span><span class="n">X86_64</span>
+
+    <span class="k">def</span> <span class="nf">_update_feature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="c1"># Check if this request is covered</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">incoming</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">outgoing</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;dtb&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">request</span><span class="p">[</span><span class="s2">&quot;dtb&quot;</span><span class="p">],</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">_requests</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+                <span class="c1"># At least</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;incoming&quot;</span><span class="p">]):</span>
+                <span class="n">incoming</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;outgoing&quot;</span><span class="p">]):</span>
+                <span class="n">outgoing</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">incoming</span> <span class="ow">and</span> <span class="n">outgoing</span><span class="p">):</span>
+                <span class="c1"># Request covered</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">enable</span><span class="p">:</span>
+            <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_update_feature_taskswitch</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span>
+                                                     <span class="n">request</span><span class="p">[</span><span class="s2">&quot;dtb&quot;</span><span class="p">],</span>
+                                                     <span class="n">incoming</span><span class="p">,</span>
+                                                     <span class="n">outgoing</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">found</span> <span class="ow">or</span>
+                <span class="p">(</span><span class="n">request</span><span class="p">[</span><span class="s2">&quot;incoming&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">incoming</span><span class="p">)</span> <span class="ow">or</span>
+                <span class="p">(</span><span class="n">request</span><span class="p">[</span><span class="s2">&quot;outgoing&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">outgoing</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">enable</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">incoming</span> <span class="ow">and</span> <span class="n">enable</span><span class="p">:</span>
+                        <span class="n">incoming</span> <span class="o">=</span> <span class="n">request</span><span class="p">[</span><span class="s2">&quot;incoming&quot;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">outgoing</span> <span class="ow">and</span> <span class="n">enable</span><span class="p">:</span>
+                        <span class="n">outgoing</span> <span class="o">=</span> <span class="n">request</span><span class="p">[</span><span class="s2">&quot;outgoing&quot;</span><span class="p">]</span>
+
+                <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_update_feature_taskswitch</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span>
+                                                         <span class="n">request</span><span class="p">[</span><span class="s2">&quot;dtb&quot;</span><span class="p">],</span>
+                                                         <span class="n">incoming</span><span class="p">,</span>
+                                                         <span class="n">outgoing</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TaskSwitchPluginAarch64"><a class="viewcode-back" href="../../../generated/tenjint.plugins.taskswitch.TaskSwitchPluginAarch64.html#tenjint.plugins.taskswitch.TaskSwitchPluginAarch64">[docs]</a><span class="k">class</span> <span class="nc">TaskSwitchPluginAarch64</span><span class="p">(</span><span class="n">TaskSwitchPluginBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Task switching plugin for aarch64.</span>
+
+<span class="sd">    This plugin allows to trap task switches on aarch64. Task switch trapping</span>
+<span class="sd">    will be enabled if a</span>
+<span class="sd">    :py:class:`tenjint.api.api_aarch64.SystemEventTaskSwitch`</span>
+<span class="sd">    event is requested and disabled if all requests for</span>
+<span class="sd">    :py:class:`tenjint.api.api_aarch64.SystemEventTaskSwitch` have been</span>
+<span class="sd">    canceled.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_abstract</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">arch</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Arch</span><span class="o">.</span><span class="n">AARCH64</span>
+
+    <span class="k">def</span> <span class="nf">_update_feature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="c1"># Check if this request is covered</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;reg&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">request</span><span class="p">[</span><span class="s2">&quot;reg&quot;</span><span class="p">],</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">_requests</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+                <span class="c1"># At least</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">enable</span><span class="p">:</span>
+            <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_update_feature_taskswitch</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">request</span><span class="p">[</span><span class="s2">&quot;reg&quot;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+            <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_update_feature_taskswitch</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">request</span><span class="p">[</span><span class="s2">&quot;reg&quot;</span><span class="p">])</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

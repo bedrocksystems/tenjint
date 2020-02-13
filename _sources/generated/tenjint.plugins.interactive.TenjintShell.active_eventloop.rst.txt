@@ -1,0 +1,6 @@
+TenjintShell.active\_eventloop
+==============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.active_eventloop

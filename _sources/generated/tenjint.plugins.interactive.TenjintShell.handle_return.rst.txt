@@ -1,0 +1,6 @@
+TenjintShell.handle\_return
+===========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.handle_return

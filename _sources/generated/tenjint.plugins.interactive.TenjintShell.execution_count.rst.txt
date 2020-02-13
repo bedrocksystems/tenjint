@@ -1,0 +1,6 @@
+TenjintShell.execution\_count
+=============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.execution_count

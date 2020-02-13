@@ -1,0 +1,6 @@
+init
+====
+
+.. currentmodule:: tenjint.event
+
+.. autofunction:: init

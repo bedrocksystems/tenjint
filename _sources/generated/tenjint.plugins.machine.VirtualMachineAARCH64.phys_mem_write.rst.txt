@@ -1,0 +1,6 @@
+VirtualMachineAARCH64.phys\_mem\_write
+======================================
+
+.. currentmodule:: tenjint.plugins.machine
+
+.. automethod:: VirtualMachineAARCH64.phys_mem_write

@@ -1,0 +1,6 @@
+TenjintShell.drop\_by\_id
+=========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.drop_by_id

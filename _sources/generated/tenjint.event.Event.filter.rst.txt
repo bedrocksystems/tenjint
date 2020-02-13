@@ -1,0 +1,6 @@
+Event.filter
+============
+
+.. currentmodule:: tenjint.event
+
+.. automethod:: Event.filter

@@ -1,0 +1,6 @@
+TenjintShell.prompt\_for\_code
+==============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.prompt_for_code

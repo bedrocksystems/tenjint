@@ -1,0 +1,6 @@
+ExceptionHandling.uninit
+========================
+
+.. currentmodule:: tenjint.debug
+
+.. automethod:: ExceptionHandling.uninit

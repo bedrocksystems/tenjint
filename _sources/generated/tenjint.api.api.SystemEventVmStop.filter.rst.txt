@@ -1,0 +1,6 @@
+SystemEventVmStop.filter
+========================
+
+.. currentmodule:: tenjint.api.api
+
+.. automethod:: SystemEventVmStop.filter

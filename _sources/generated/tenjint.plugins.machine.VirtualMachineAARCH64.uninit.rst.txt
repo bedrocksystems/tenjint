@@ -1,0 +1,6 @@
+VirtualMachineAARCH64.uninit
+============================
+
+.. currentmodule:: tenjint.plugins.machine
+
+.. automethod:: VirtualMachineAARCH64.uninit

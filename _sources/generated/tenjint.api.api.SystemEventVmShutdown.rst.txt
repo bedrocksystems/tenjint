@@ -1,0 +1,36 @@
+SystemEventVmShutdown
+=====================
+
+.. currentmodule:: tenjint.api.api
+
+.. autoclass:: SystemEventVmShutdown
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      SystemEventVmShutdown.params
+   
+      SystemEventVmShutdown.producer
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      SystemEventVmShutdown.__init__
+   
+      SystemEventVmShutdown.filter
+   
+      SystemEventVmShutdown.parse_request
+   
+      SystemEventVmShutdown.parse_request_to_dict
+   
+   
+   

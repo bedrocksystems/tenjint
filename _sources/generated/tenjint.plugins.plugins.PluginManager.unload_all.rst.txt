@@ -1,0 +1,6 @@
+PluginManager.unload\_all
+=========================
+
+.. currentmodule:: tenjint.plugins.plugins
+
+.. automethod:: PluginManager.unload_all

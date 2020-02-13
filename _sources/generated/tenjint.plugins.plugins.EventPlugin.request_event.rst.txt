@@ -1,0 +1,6 @@
+EventPlugin.request\_event
+==========================
+
+.. currentmodule:: tenjint.plugins.plugins
+
+.. automethod:: EventPlugin.request_event

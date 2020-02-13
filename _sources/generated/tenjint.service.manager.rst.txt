@@ -1,0 +1,6 @@
+manager
+=======
+
+.. currentmodule:: tenjint.service
+
+.. autofunction:: manager

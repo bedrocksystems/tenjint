@@ -1,0 +1,6 @@
+ServiceManager.unregister\_by\_object
+=====================================
+
+.. currentmodule:: tenjint.service
+
+.. automethod:: ServiceManager.unregister_by_object

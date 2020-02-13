@@ -1,0 +1,6 @@
+SingleStepPluginX86.load
+========================
+
+.. currentmodule:: tenjint.plugins.singlestep
+
+.. automethod:: SingleStepPluginX86.load

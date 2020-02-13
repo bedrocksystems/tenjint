@@ -1,0 +1,6 @@
+TenjintShell.init\_prompt\_toolkit\_cli
+=======================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.init_prompt_toolkit_cli

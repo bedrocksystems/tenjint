@@ -1,0 +1,6 @@
+EventManager.get\_registered\_events
+====================================
+
+.. currentmodule:: tenjint.event
+
+.. automethod:: EventManager.get_registered_events

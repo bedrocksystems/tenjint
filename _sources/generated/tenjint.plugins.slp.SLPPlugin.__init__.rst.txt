@@ -1,0 +1,6 @@
+SLPPlugin.\_\_init\_\_
+======================
+
+.. currentmodule:: tenjint.plugins.slp
+
+.. automethod:: SLPPlugin.__init__

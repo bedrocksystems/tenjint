@@ -1,0 +1,54 @@
+OperatingSystemLinux
+====================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. autoclass:: OperatingSystemLinux
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      OperatingSystemLinux.arch
+   
+      OperatingSystemLinux.name
+   
+      OperatingSystemLinux.os
+   
+      OperatingSystemLinux.per_cpu
+   
+      OperatingSystemLinux.pointer_width
+   
+      OperatingSystemLinux.session
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      OperatingSystemLinux.__init__
+   
+      OperatingSystemLinux.current_process
+   
+      OperatingSystemLinux.get_nearest_symbol_by_address
+   
+      OperatingSystemLinux.get_symbol_address
+   
+      OperatingSystemLinux.load
+   
+      OperatingSystemLinux.process
+   
+      OperatingSystemLinux.read_kernel_pointer
+   
+      OperatingSystemLinux.uninit
+   
+      OperatingSystemLinux.vtop
+   
+   
+   

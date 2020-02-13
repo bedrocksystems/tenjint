@@ -1,0 +1,491 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>TenjintShell.debugger_cls &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="TenjintShell.debugger_history" href="tenjint.plugins.interactive.TenjintShell.debugger_history.html" />
+    <link rel="prev" title="TenjintShell.debug" href="tenjint.plugins.interactive.TenjintShell.debug.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tenjint.event.html">tenjint.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.output.html">tenjint.output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.service.html">tenjint.service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.logger.html">tenjint.logger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.optimize.html">tenjint.optimize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.config.html">tenjint.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.debug.html">tenjint.debug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.tenjint.html">tenjint.tenjint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.machine.html">tenjint.plugins.machine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.operatingsystem.html">tenjint.plugins.operatingsystem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.singlestep.html">tenjint.plugins.singlestep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.breakpoint.html">tenjint.plugins.breakpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.slp.html">tenjint.plugins.slp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.taskswitch.html">tenjint.plugins.taskswitch</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="tenjint.plugins.interactive.html">tenjint.plugins.interactive</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tenjint.plugins.interactive.InteractiveShell.html">InteractiveShell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tenjint.plugins.interactive.TenjintPrompts.html">TenjintPrompts</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.html">TenjintShell</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.active_eventloop.html">TenjintShell.active_eventloop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.alias_manager.html">TenjintShell.alias_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.all_ns_refs.html">TenjintShell.all_ns_refs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ast_node_interactivity.html">TenjintShell.ast_node_interactivity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ast_transformers.html">TenjintShell.ast_transformers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.autocall.html">TenjintShell.autocall</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.autoindent.html">TenjintShell.autoindent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.automagic.html">TenjintShell.automagic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.banner.html">TenjintShell.banner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.banner1.html">TenjintShell.banner1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.banner2.html">TenjintShell.banner2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.builtin_trap.html">TenjintShell.builtin_trap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.cache_size.html">TenjintShell.cache_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.call_pdb.html">TenjintShell.call_pdb</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.color_info.html">TenjintShell.color_info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.colors.html">TenjintShell.colors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.config.html">TenjintShell.config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.confirm_exit.html">TenjintShell.confirm_exit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.cross_validation_lock.html">TenjintShell.cross_validation_lock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.debug.html">TenjintShell.debug</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">TenjintShell.debugger_cls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.debugger_history.html">TenjintShell.debugger_history</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.default_user_namespaces.html">TenjintShell.default_user_namespaces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.disable_failing_post_execute.html">TenjintShell.disable_failing_post_execute</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.display_banner.html">TenjintShell.display_banner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.display_completions.html">TenjintShell.display_completions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.display_formatter.html">TenjintShell.display_formatter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.display_page.html">TenjintShell.display_page</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.display_pub_class.html">TenjintShell.display_pub_class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.display_trap.html">TenjintShell.display_trap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.displayhook_class.html">TenjintShell.displayhook_class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.dummy_mode.html">TenjintShell.dummy_mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.editing_mode.html">TenjintShell.editing_mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.editor.html">TenjintShell.editor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.embedded.html">TenjintShell.embedded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.embedded_active.html">TenjintShell.embedded_active</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.enable_history_search.html">TenjintShell.enable_history_search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.enable_html_pager.html">TenjintShell.enable_html_pager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.execution_count.html">TenjintShell.execution_count</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.exit_msg.html">TenjintShell.exit_msg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.exit_now.html">TenjintShell.exit_now</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.exiter.html">TenjintShell.exiter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.extension_manager.html">TenjintShell.extension_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.extra_open_editor_shortcuts.html">TenjintShell.extra_open_editor_shortcuts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.filename.html">TenjintShell.filename</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.handle_return.html">TenjintShell.handle_return</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.highlight_matching_brackets.html">TenjintShell.highlight_matching_brackets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.highlighting_style.html">TenjintShell.highlighting_style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.highlighting_style_overrides.html">TenjintShell.highlighting_style_overrides</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.history_length.html">TenjintShell.history_length</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.history_load_length.html">TenjintShell.history_load_length</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.history_manager.html">TenjintShell.history_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_syntax_highlighting.html">TenjintShell.init_syntax_highlighting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_term_title.html">TenjintShell.init_term_title</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.input_splitter.html">TenjintShell.input_splitter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.input_transformer_manager.html">TenjintShell.input_transformer_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ipython_dir.html">TenjintShell.ipython_dir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.last_execution_result.html">TenjintShell.last_execution_result</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.last_execution_succeeded.html">TenjintShell.last_execution_succeeded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.log.html">TenjintShell.log</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.logappend.html">TenjintShell.logappend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.logfile.html">TenjintShell.logfile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.logstart.html">TenjintShell.logstart</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.magics_manager.html">TenjintShell.magics_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.mouse_support.html">TenjintShell.mouse_support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.object_info_string_level.html">TenjintShell.object_info_string_level</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.parent.html">TenjintShell.parent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.payload_manager.html">TenjintShell.payload_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.pdb.html">TenjintShell.pdb</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prefilter_manager.html">TenjintShell.prefilter_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.profile.html">TenjintShell.profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.profile_dir.html">TenjintShell.profile_dir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompt_in1.html">TenjintShell.prompt_in1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompt_in2.html">TenjintShell.prompt_in2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompt_out.html">TenjintShell.prompt_out</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompts.html">TenjintShell.prompts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompts_class.html">TenjintShell.prompts_class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompts_pad_left.html">TenjintShell.prompts_pad_left</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.pt_cli.html">TenjintShell.pt_cli</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.pylab_gui_select.html">TenjintShell.pylab_gui_select</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.quiet.html">TenjintShell.quiet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.rl_next_input.html">TenjintShell.rl_next_input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.separate_in.html">TenjintShell.separate_in</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.separate_out.html">TenjintShell.separate_out</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.separate_out2.html">TenjintShell.separate_out2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.should_raise.html">TenjintShell.should_raise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.show_rewritten_input.html">TenjintShell.show_rewritten_input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.simple_prompt.html">TenjintShell.simple_prompt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.space_for_menu.html">TenjintShell.space_for_menu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.sphinxify_docstring.html">TenjintShell.sphinxify_docstring</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.term_title.html">TenjintShell.term_title</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.term_title_format.html">TenjintShell.term_title_format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.true_color.html">TenjintShell.true_color</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.user_global_ns.html">TenjintShell.user_global_ns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.utf8_banner.html">TenjintShell.utf8_banner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.wildcards_case_sensitive.html">TenjintShell.wildcards_case_sensitive</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.xmode.html">TenjintShell.xmode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.__init__.html">TenjintShell.__init__</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.add_traits.html">TenjintShell.add_traits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ask_exit.html">TenjintShell.ask_exit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ask_yes_no.html">TenjintShell.ask_yes_no</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.atexit_operations.html">TenjintShell.atexit_operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.auto_rewrite_input.html">TenjintShell.auto_rewrite_input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.check_complete.html">TenjintShell.check_complete</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_config_rst_doc.html">TenjintShell.class_config_rst_doc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_config_section.html">TenjintShell.class_config_section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_get_help.html">TenjintShell.class_get_help</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_get_trait_help.html">TenjintShell.class_get_trait_help</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_own_trait_events.html">TenjintShell.class_own_trait_events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_own_traits.html">TenjintShell.class_own_traits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_print_help.html">TenjintShell.class_print_help</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_trait_names.html">TenjintShell.class_trait_names</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_traits.html">TenjintShell.class_traits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.cleanup.html">TenjintShell.cleanup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.clear_instance.html">TenjintShell.clear_instance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.clear_main_mod_cache.html">TenjintShell.clear_main_mod_cache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.complete.html">TenjintShell.complete</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.debugger.html">TenjintShell.debugger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.define_macro.html">TenjintShell.define_macro</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.del_var.html">TenjintShell.del_var</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.drop_by_id.html">TenjintShell.drop_by_id</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.enable_gui.html">TenjintShell.enable_gui</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.enable_matplotlib.html">TenjintShell.enable_matplotlib</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.enable_pylab.html">TenjintShell.enable_pylab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.enable_win_unicode_console.html">TenjintShell.enable_win_unicode_console</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ev.html">TenjintShell.ev</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ex.html">TenjintShell.ex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.excepthook.html">TenjintShell.excepthook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.extract_input_lines.html">TenjintShell.extract_input_lines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.find_cell_magic.html">TenjintShell.find_cell_magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.find_line_magic.html">TenjintShell.find_line_magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.find_magic.html">TenjintShell.find_magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.find_user_code.html">TenjintShell.find_user_code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.get_exception_only.html">TenjintShell.get_exception_only</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.get_ipython.html">TenjintShell.get_ipython</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.getoutput.html">TenjintShell.getoutput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.has_trait.html">TenjintShell.has_trait</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.hold_trait_notifications.html">TenjintShell.hold_trait_notifications</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_alias.html">TenjintShell.init_alias</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_builtins.html">TenjintShell.init_builtins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_completer.html">TenjintShell.init_completer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_create_namespaces.html">TenjintShell.init_create_namespaces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_deprecation_warnings.html">TenjintShell.init_deprecation_warnings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_display_formatter.html">TenjintShell.init_display_formatter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_display_pub.html">TenjintShell.init_display_pub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_displayhook.html">TenjintShell.init_displayhook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_encoding.html">TenjintShell.init_encoding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_environment.html">TenjintShell.init_environment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_events.html">TenjintShell.init_events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_extension_manager.html">TenjintShell.init_extension_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_history.html">TenjintShell.init_history</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_hooks.html">TenjintShell.init_hooks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_inspector.html">TenjintShell.init_inspector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_instance_attrs.html">TenjintShell.init_instance_attrs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_io.html">TenjintShell.init_io</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_ipython_dir.html">TenjintShell.init_ipython_dir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_logger.html">TenjintShell.init_logger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_logstart.html">TenjintShell.init_logstart</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_magics.html">TenjintShell.init_magics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_payload.html">TenjintShell.init_payload</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_pdb.html">TenjintShell.init_pdb</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_prefilter.html">TenjintShell.init_prefilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_profile_dir.html">TenjintShell.init_profile_dir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_prompt_toolkit_cli.html">TenjintShell.init_prompt_toolkit_cli</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_prompts.html">TenjintShell.init_prompts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_pushd_popd_magic.html">TenjintShell.init_pushd_popd_magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_readline.html">TenjintShell.init_readline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_sys_modules.html">TenjintShell.init_sys_modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_traceback_handlers.html">TenjintShell.init_traceback_handlers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_user_ns.html">TenjintShell.init_user_ns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_virtualenv.html">TenjintShell.init_virtualenv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.initialized.html">TenjintShell.initialized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.inputhook.html">TenjintShell.inputhook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.instance.html">TenjintShell.instance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.interact.html">TenjintShell.interact</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.magic.html">TenjintShell.magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.mainloop.html">TenjintShell.mainloop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.mktempfile.html">TenjintShell.mktempfile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.new_main_mod.html">TenjintShell.new_main_mod</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.notify_change.html">TenjintShell.notify_change</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.object_inspect.html">TenjintShell.object_inspect</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.object_inspect_mime.html">TenjintShell.object_inspect_mime</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.object_inspect_text.html">TenjintShell.object_inspect_text</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.observe.html">TenjintShell.observe</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.on_trait_change.html">TenjintShell.on_trait_change</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.pre_prompt.html">TenjintShell.pre_prompt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prepare_user_module.html">TenjintShell.prepare_user_module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompt_for_code.html">TenjintShell.prompt_for_code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.push.html">TenjintShell.push</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.refresh_style.html">TenjintShell.refresh_style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.register_magic_function.html">TenjintShell.register_magic_function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.register_post_execute.html">TenjintShell.register_post_execute</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.reset.html">TenjintShell.reset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.reset_selective.html">TenjintShell.reset_selective</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.restore_sys_module_state.html">TenjintShell.restore_sys_module_state</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.run_ast_nodes.html">TenjintShell.run_ast_nodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.run_cell.html">TenjintShell.run_cell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.run_cell_magic.html">TenjintShell.run_cell_magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.run_code.html">TenjintShell.run_code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.run_line_magic.html">TenjintShell.run_line_magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.runcode.html">TenjintShell.runcode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.safe_execfile.html">TenjintShell.safe_execfile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.safe_execfile_ipy.html">TenjintShell.safe_execfile_ipy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.safe_run_module.html">TenjintShell.safe_run_module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.save_sys_module_state.html">TenjintShell.save_sys_module_state</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.section_names.html">TenjintShell.section_names</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_autoindent.html">TenjintShell.set_autoindent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_completer_frame.html">TenjintShell.set_completer_frame</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_custom_completer.html">TenjintShell.set_custom_completer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_custom_exc.html">TenjintShell.set_custom_exc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_hook.html">TenjintShell.set_hook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_next_input.html">TenjintShell.set_next_input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_trait.html">TenjintShell.set_trait</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.show_banner.html">TenjintShell.show_banner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.show_usage.html">TenjintShell.show_usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.show_usage_error.html">TenjintShell.show_usage_error</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.showindentationerror.html">TenjintShell.showindentationerror</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.showsyntaxerror.html">TenjintShell.showsyntaxerror</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.showtraceback.html">TenjintShell.showtraceback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.switch_doctest_mode.html">TenjintShell.switch_doctest_mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.system.html">TenjintShell.system</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.system_piped.html">TenjintShell.system_piped</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.system_raw.html">TenjintShell.system_raw</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.trait_events.html">TenjintShell.trait_events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.trait_names.html">TenjintShell.trait_names</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.traits.html">TenjintShell.traits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.transform_ast.html">TenjintShell.transform_ast</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.unobserve.html">TenjintShell.unobserve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.unobserve_all.html">TenjintShell.unobserve_all</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.update_config.html">TenjintShell.update_config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.user_expressions.html">TenjintShell.user_expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.var_expand.html">TenjintShell.var_expand</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.write.html">TenjintShell.write</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.write_err.html">TenjintShell.write_err</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tenjint.plugins.interactive.tenjintInputTransformer.html">tenjintInputTransformer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.plugins.html">tenjint.plugins.plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.api.api_x86_64.html">tenjint.api.api_x86_64</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.api.api.html">tenjint.api.api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.api.api_aarch64.html">tenjint.api.api_aarch64</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rpi.html">tenjint Raspberry Pi 4 Image</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="tenjint.plugins.interactive.html">tenjint.plugins.interactive</a> &raquo;</li>
+        
+          <li><a href="tenjint.plugins.interactive.TenjintShell.html">TenjintShell</a> &raquo;</li>
+        
+      <li>TenjintShell.debugger_cls</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/generated/tenjint.plugins.interactive.TenjintShell.debugger_cls.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tenjintshell-debugger-cls">
+<h1>TenjintShell.debugger_cls<a class="headerlink" href="#tenjintshell-debugger-cls" title="Permalink to this headline">¶</a></h1>
+<dl class="method">
+<dt id="tenjint.plugins.interactive.TenjintShell.debugger_cls">
+<em class="property">property </em><code class="sig-prename descclassname">TenjintShell.</code><code class="sig-name descname">debugger_cls</code><a class="headerlink" href="#tenjint.plugins.interactive.TenjintShell.debugger_cls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modified Pdb class, does not load readline.</p>
+<p>for a standalone version that uses prompt_toolkit, see
+<cite>IPython.terminal.debugger.TerminalPdb</cite> and
+<cite>IPython.terminal.debugger.set_trace()</cite></p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tenjint.plugins.interactive.TenjintShell.debugger_history.html" class="btn btn-neutral float-right" title="TenjintShell.debugger_history" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tenjint.plugins.interactive.TenjintShell.debug.html" class="btn btn-neutral float-left" title="TenjintShell.debug" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

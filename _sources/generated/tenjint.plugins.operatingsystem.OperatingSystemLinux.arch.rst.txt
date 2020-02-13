@@ -1,0 +1,6 @@
+OperatingSystemLinux.arch
+=========================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. autoattribute:: OperatingSystemLinux.arch

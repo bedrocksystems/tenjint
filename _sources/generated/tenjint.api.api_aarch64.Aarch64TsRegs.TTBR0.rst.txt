@@ -1,0 +1,6 @@
+Aarch64TsRegs.TTBR0
+===================
+
+.. currentmodule:: tenjint.api.api_aarch64
+
+.. autoattribute:: Aarch64TsRegs.TTBR0

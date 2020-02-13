@@ -1,0 +1,21 @@
+LoggerMixin
+===========
+
+.. currentmodule:: tenjint.logger
+
+.. autoclass:: LoggerMixin
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      LoggerMixin.__init__
+   
+   
+   

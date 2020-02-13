@@ -1,0 +1,6 @@
+TenjintShell.logappend
+======================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.logappend

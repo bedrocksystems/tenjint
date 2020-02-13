@@ -1,0 +1,594 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>IPython.terminal.embed &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rpi.html">tenjint Raspberry Pi 4 Image</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>IPython.terminal.embed</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for IPython.terminal.embed</h1><div class="highlight"><pre>
+<span></span><span class="c1"># encoding: utf-8</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">An embedded IPython shell.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># Copyright (c) IPython Development Team.</span>
+<span class="c1"># Distributed under the terms of the Modified BSD License.</span>
+
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">IPython.core</span> <span class="k">import</span> <span class="n">ultratb</span><span class="p">,</span> <span class="n">compilerop</span>
+<span class="kn">from</span> <span class="nn">IPython.core</span> <span class="k">import</span> <span class="n">magic_arguments</span>
+<span class="kn">from</span> <span class="nn">IPython.core.magic</span> <span class="k">import</span> <span class="n">Magics</span><span class="p">,</span> <span class="n">magics_class</span><span class="p">,</span> <span class="n">line_magic</span>
+<span class="kn">from</span> <span class="nn">IPython.core.interactiveshell</span> <span class="k">import</span> <span class="n">DummyMod</span><span class="p">,</span> <span class="n">InteractiveShell</span>
+<span class="kn">from</span> <span class="nn">IPython.terminal.interactiveshell</span> <span class="k">import</span> <span class="n">TerminalInteractiveShell</span>
+<span class="kn">from</span> <span class="nn">IPython.terminal.ipapp</span> <span class="k">import</span> <span class="n">load_default_config</span>
+
+<span class="kn">from</span> <span class="nn">traitlets</span> <span class="k">import</span> <span class="n">Bool</span><span class="p">,</span> <span class="n">CBool</span><span class="p">,</span> <span class="n">Unicode</span>
+<span class="kn">from</span> <span class="nn">IPython.utils.io</span> <span class="k">import</span> <span class="n">ask_yes_no</span>
+
+<span class="k">class</span> <span class="nc">KillEmbedded</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span><span class="k">pass</span>
+
+<span class="c1"># kept for backward compatibility as IPython 6 was released with</span>
+<span class="c1"># the typo. See https://github.com/ipython/ipython/pull/10706</span>
+<span class="n">KillEmbeded</span> <span class="o">=</span> <span class="n">KillEmbedded</span>
+
+<span class="c1"># This is an additional magic that is exposed in embedded shells.</span>
+<span class="nd">@magics_class</span>
+<span class="k">class</span> <span class="nc">EmbeddedMagics</span><span class="p">(</span><span class="n">Magics</span><span class="p">):</span>
+
+    <span class="nd">@line_magic</span>
+    <span class="nd">@magic_arguments</span><span class="o">.</span><span class="n">magic_arguments</span><span class="p">()</span>
+    <span class="nd">@magic_arguments</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s1">&#39;-i&#39;</span><span class="p">,</span> <span class="s1">&#39;--instance&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                              <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Kill instance instead of call location&#39;</span><span class="p">)</span>
+    <span class="nd">@magic_arguments</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s1">&#39;-x&#39;</span><span class="p">,</span> <span class="s1">&#39;--exit&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                              <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Also exit the current session&#39;</span><span class="p">)</span>
+    <span class="nd">@magic_arguments</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s1">&#39;-y&#39;</span><span class="p">,</span> <span class="s1">&#39;--yes&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                              <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Do not ask confirmation&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">kill_embedded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_s</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;%kill_embedded : deactivate for good the current embedded IPython</span>
+
+<span class="sd">        This function (after asking for confirmation) sets an internal flag so</span>
+<span class="sd">        that an embedded IPython will never activate again for the given call</span>
+<span class="sd">        location. This is useful to permanently disable a shell that is being</span>
+<span class="sd">        called inside a loop: once you&#39;ve figured out what you needed from it,</span>
+<span class="sd">        you may then kill it and the program will then continue to run without</span>
+<span class="sd">        the interactive shell interfering again.</span>
+
+
+<span class="sd">        Kill Instance Option:</span>
+
+<span class="sd">            If for some reasons you need to kill the location where the instance</span>
+<span class="sd">            is created and not called, for example if you create a single</span>
+<span class="sd">            instance in one place and debug in many locations, you can use the</span>
+<span class="sd">            ``--instance`` option to kill this specific instance. Like for the</span>
+<span class="sd">            ``call location`` killing an &quot;instance&quot; should work even if it is</span>
+<span class="sd">            recreated within a loop.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            This was the default behavior before IPython 5.2</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="n">magic_arguments</span><span class="o">.</span><span class="n">parse_argstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kill_embedded</span><span class="p">,</span> <span class="n">parameter_s</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">instance</span><span class="p">:</span>
+            <span class="c1"># let no ask</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">yes</span><span class="p">:</span>
+                <span class="n">kill</span> <span class="o">=</span> <span class="n">ask_yes_no</span><span class="p">(</span>
+                    <span class="s2">&quot;Are you sure you want to kill this embedded instance? [y/N] &quot;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">kill</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">kill</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">_disable_init_location</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This embedded IPython instance will not reactivate anymore &quot;</span>
+                      <span class="s2">&quot;once you exit.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">yes</span><span class="p">:</span>
+                <span class="n">kill</span> <span class="o">=</span> <span class="n">ask_yes_no</span><span class="p">(</span>
+                    <span class="s2">&quot;Are you sure you want to kill this embedded call_location? [y/N] &quot;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">kill</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">kill</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">embedded_active</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This embedded IPython  call location will not reactivate anymore &quot;</span>
+                      <span class="s2">&quot;once you exit.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">exit</span><span class="p">:</span>
+            <span class="c1"># Ask-exit does not really ask, it just set internals flags to exit</span>
+            <span class="c1"># on next loop.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">ask_exit</span><span class="p">()</span>
+
+
+    <span class="nd">@line_magic</span>
+    <span class="k">def</span> <span class="nf">exit_raise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_s</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;%exit_raise Make the current embedded kernel exit and raise and exception.</span>
+
+<span class="sd">        This function sets an internal flag so that an embedded IPython will</span>
+<span class="sd">        raise a `IPython.terminal.embed.KillEmbedded` Exception on exit, and then exit the current I. This is</span>
+<span class="sd">        useful to permanently exit a loop that create IPython embed instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">should_raise</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">ask_exit</span><span class="p">()</span>
+
+
+
+<span class="k">class</span> <span class="nc">InteractiveShellEmbed</span><span class="p">(</span><span class="n">TerminalInteractiveShell</span><span class="p">):</span>
+
+    <span class="n">dummy_mode</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">exit_msg</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">embedded</span> <span class="o">=</span> <span class="n">CBool</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">should_raise</span> <span class="o">=</span> <span class="n">CBool</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># Like the base class display_banner is not configurable, but here it</span>
+    <span class="c1"># is True by default.</span>
+    <span class="n">display_banner</span> <span class="o">=</span> <span class="n">CBool</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">exit_msg</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">()</span>
+
+    <span class="c1"># When embedding, by default we don&#39;t change the terminal title</span>
+    <span class="n">term_title</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Automatically set the terminal title&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">_inactive_locations</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">embedded_active</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_location_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">InteractiveShellEmbed</span><span class="o">.</span><span class="n">_inactive_locations</span><span class="p">)</span>\
+            <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_location_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">InteractiveShellEmbed</span><span class="o">.</span><span class="n">_inactive_locations</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_disable_init_location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Disable the current Instance creation location&quot;&quot;&quot;</span>
+        <span class="n">InteractiveShellEmbed</span><span class="o">.</span><span class="n">_inactive_locations</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_location_id</span><span class="p">)</span>
+
+    <span class="nd">@embedded_active</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">embedded_active</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+            <span class="n">InteractiveShellEmbed</span><span class="o">.</span><span class="n">_inactive_locations</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_call_location_id</span><span class="p">)</span>
+            <span class="n">InteractiveShellEmbed</span><span class="o">.</span><span class="n">_inactive_locations</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_init_location_id</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">InteractiveShellEmbed</span><span class="o">.</span><span class="n">_inactive_locations</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_call_location_id</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user_global_ns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">DeprecationWarning</span><span class="p">(</span>
+                <span class="s2">&quot;Key word argument `user_global_ns` has been replaced by `user_module` since IPython 4.0.&quot;</span><span class="p">)</span>
+
+        <span class="n">clid</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;_init_location_id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">clid</span><span class="p">:</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">clid</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_filename</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_location_id</span> <span class="o">=</span> <span class="n">clid</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">InteractiveShellEmbed</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+
+        <span class="c1"># don&#39;t use the ipython crash handler so that user exceptions aren&#39;t</span>
+        <span class="c1"># trapped</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">excepthook</span> <span class="o">=</span> <span class="n">ultratb</span><span class="o">.</span><span class="n">FormattedTB</span><span class="p">(</span><span class="n">color_scheme</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">,</span>
+                                             <span class="n">mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xmode</span><span class="p">,</span>
+                                             <span class="n">call_pdb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pdb</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">init_sys_modules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Explicitly overwrite :mod:`IPython.core.interactiveshell` to do nothing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">init_magics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">InteractiveShellEmbed</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">init_magics</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_magics</span><span class="p">(</span><span class="n">EmbeddedMagics</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">local_ns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">module</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dummy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">stack_depth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">global_ns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compile_flags</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Activate the interactive interpreter.</span>
+
+<span class="sd">        __call__(self,header=&#39;&#39;,local_ns=None,module=None,dummy=None) -&gt; Start</span>
+<span class="sd">        the interpreter shell with the given local and global namespaces, and</span>
+<span class="sd">        optionally print a header string at startup.</span>
+
+<span class="sd">        The shell can be globally activated/deactivated using the</span>
+<span class="sd">        dummy_mode attribute. This allows you to turn off a shell used</span>
+<span class="sd">        for debugging globally.</span>
+
+<span class="sd">        However, *each* time you call the shell you can override the current</span>
+<span class="sd">        state of dummy_mode with the optional keyword parameter &#39;dummy&#39;. For</span>
+<span class="sd">        example, if you set dummy mode on with IPShell.dummy_mode = True, you</span>
+<span class="sd">        can still have a specific call work by making it as IPShell(dummy=False).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># we are called, set the underlying interactiveshell not to exit.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep_running</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># If the user has turned it off, go away</span>
+        <span class="n">clid</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;_call_location_id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">clid</span><span class="p">:</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">clid</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_filename</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_call_location_id</span> <span class="o">=</span> <span class="n">clid</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedded_active</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Normal exits from interactive mode set this flag, so the shell can&#39;t</span>
+        <span class="c1"># re-enter (it checks this variable at the start of interactive mode).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exit_now</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Allow the dummy parameter to override the global __dummy_mode</span>
+        <span class="k">if</span> <span class="n">dummy</span> <span class="ow">or</span> <span class="p">(</span><span class="n">dummy</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">dummy_mode</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="c1"># self.banner is auto computed</span>
+        <span class="k">if</span> <span class="n">header</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">old_banner2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">banner2</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">banner2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">banner2</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">header</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">old_banner2</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_banner</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_banner</span><span class="p">()</span>
+
+        <span class="c1"># Call the embedding code with a stack depth of 1 so it can skip over</span>
+        <span class="c1"># our call and get the original caller&#39;s namespaces.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainloop</span><span class="p">(</span><span class="n">local_ns</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">stack_depth</span><span class="o">=</span><span class="n">stack_depth</span><span class="p">,</span>
+                      <span class="n">global_ns</span><span class="o">=</span><span class="n">global_ns</span><span class="p">,</span> <span class="n">compile_flags</span><span class="o">=</span><span class="n">compile_flags</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">banner2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">old_banner2</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_msg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exit_msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_raise</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">KillEmbedded</span><span class="p">(</span><span class="s1">&#39;Embedded IPython raising error, as user requested.&#39;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">mainloop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_ns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">module</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stack_depth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                 <span class="n">display_banner</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">global_ns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compile_flags</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Embeds IPython into a running python program.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        local_ns, module</span>
+<span class="sd">          Working local namespace (a dict) and module (a module or similar</span>
+<span class="sd">          object). If given as None, they are automatically taken from the scope</span>
+<span class="sd">          where the shell was called, so that program variables become visible.</span>
+
+<span class="sd">        stack_depth : int</span>
+<span class="sd">          How many levels in the stack to go to looking for namespaces (when</span>
+<span class="sd">          local_ns or module is None). This allows an intermediate caller to</span>
+<span class="sd">          make sure that this function gets the namespace from the intended</span>
+<span class="sd">          level in the stack. By default (0) it will get its locals and globals</span>
+<span class="sd">          from the immediate caller.</span>
+
+<span class="sd">        compile_flags</span>
+<span class="sd">          A bit field identifying the __future__ features</span>
+<span class="sd">          that are enabled, as passed to the builtin :func:`compile` function.</span>
+<span class="sd">          If given as None, they are automatically taken from the scope where</span>
+<span class="sd">          the shell was called.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="n">global_ns</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">module</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">DeprecationWarning</span><span class="p">(</span><span class="s2">&quot;&#39;global_ns&#39; keyword argument is deprecated, and has been removed in IPython 5.0 use `module` keyword argument instead.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">display_banner</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The display_banner parameter is deprecated since IPython 4.0&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+
+        <span class="c1"># Get locals and globals from caller</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">local_ns</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">module</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">compile_flags</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_user_namespaces</span><span class="p">):</span>
+            <span class="n">call_frame</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="n">stack_depth</span><span class="p">)</span><span class="o">.</span><span class="n">f_back</span>
+
+            <span class="k">if</span> <span class="n">local_ns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">local_ns</span> <span class="o">=</span> <span class="n">call_frame</span><span class="o">.</span><span class="n">f_locals</span>
+            <span class="k">if</span> <span class="n">module</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">global_ns</span> <span class="o">=</span> <span class="n">call_frame</span><span class="o">.</span><span class="n">f_globals</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">module</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">global_ns</span><span class="p">[</span><span class="s1">&#39;__name__&#39;</span><span class="p">]]</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Failed to get module </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> \
+                        <span class="n">global_ns</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;__name__&#39;</span><span class="p">,</span> <span class="s1">&#39;unknown module&#39;</span><span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="n">module</span> <span class="o">=</span> <span class="n">DummyMod</span><span class="p">()</span>
+                    <span class="n">module</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">global_ns</span>
+            <span class="k">if</span> <span class="n">compile_flags</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">compile_flags</span> <span class="o">=</span> <span class="p">(</span><span class="n">call_frame</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_flags</span> <span class="o">&amp;</span>
+                                 <span class="n">compilerop</span><span class="o">.</span><span class="n">PyCF_MASK</span><span class="p">)</span>
+        
+        <span class="c1"># Save original namespace and module so we can restore them after </span>
+        <span class="c1"># embedding; otherwise the shell doesn&#39;t shut down correctly.</span>
+        <span class="n">orig_user_module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_module</span>
+        <span class="n">orig_user_ns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_ns</span>
+        <span class="n">orig_compile_flags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compile</span><span class="o">.</span><span class="n">flags</span>
+        
+        <span class="c1"># Update namespaces and fire up interpreter</span>
+        
+        <span class="c1"># The global one is easy, we can just throw it in</span>
+        <span class="k">if</span> <span class="n">module</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">user_module</span> <span class="o">=</span> <span class="n">module</span>
+
+        <span class="c1"># But the user/local one is tricky: ipython needs it to store internal</span>
+        <span class="c1"># data, but we also need the locals. We&#39;ll throw our hidden variables</span>
+        <span class="c1"># like _ih and get_ipython() into the local namespace, but delete them</span>
+        <span class="c1"># later.</span>
+        <span class="k">if</span> <span class="n">local_ns</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">reentrant_local_ns</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">local_ns</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_ns_hidden</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">user_ns</span> <span class="o">=</span> <span class="n">reentrant_local_ns</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">init_user_ns</span><span class="p">()</span>
+
+        <span class="c1"># Compiler flags</span>
+        <span class="k">if</span> <span class="n">compile_flags</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compile</span><span class="o">.</span><span class="n">flags</span> <span class="o">=</span> <span class="n">compile_flags</span>
+
+        <span class="c1"># make sure the tab-completer has the correct frame information, so it</span>
+        <span class="c1"># actually completes using the frame&#39;s locals/globals</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_completer_frame</span><span class="p">()</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">builtin_trap</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_trap</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+        
+        <span class="c1"># now, purge out the local namespace of IPython&#39;s hidden variables.</span>
+        <span class="k">if</span> <span class="n">local_ns</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">local_ns</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_ns</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_ns_hidden</span><span class="o">.</span><span class="n">keys</span><span class="p">()})</span>
+
+        
+        <span class="c1"># Restore original namespace so shell can shut down when we exit.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_module</span> <span class="o">=</span> <span class="n">orig_user_module</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_ns</span> <span class="o">=</span> <span class="n">orig_user_ns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compile</span><span class="o">.</span><span class="n">flags</span> <span class="o">=</span> <span class="n">orig_compile_flags</span>
+
+
+<span class="k">def</span> <span class="nf">embed</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Call this to embed IPython at the current point in your program.</span>
+
+<span class="sd">    The first invocation of this will create an :class:`InteractiveShellEmbed`</span>
+<span class="sd">    instance and then call it.  Consecutive calls just call the already</span>
+<span class="sd">    created instance.</span>
+
+<span class="sd">    If you don&#39;t want the kernel to initialize the namespace</span>
+<span class="sd">    from the scope of the surrounding function,</span>
+<span class="sd">    and/or you want to load full IPython configuration,</span>
+<span class="sd">    you probably want `IPython.start_ipython()` instead.</span>
+
+<span class="sd">    Here is a simple example::</span>
+
+<span class="sd">        from IPython import embed</span>
+<span class="sd">        a = 10</span>
+<span class="sd">        b = 20</span>
+<span class="sd">        embed(header=&#39;First time&#39;)</span>
+<span class="sd">        c = 30</span>
+<span class="sd">        d = 40</span>
+<span class="sd">        embed()</span>
+
+<span class="sd">    Full customization can be done by passing a :class:`Config` in as the</span>
+<span class="sd">    config argument.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">)</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;header&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">compile_flags</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;compile_flags&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">load_default_config</span><span class="p">()</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">InteractiveShellEmbed</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">TerminalInteractiveShell</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span>
+    <span class="c1">#save ps1/ps2 if defined</span>
+    <span class="n">ps1</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ps2</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ps1</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">ps1</span>
+        <span class="n">ps2</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">ps2</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="c1">#save previous instance</span>
+    <span class="n">saved_shell_instance</span> <span class="o">=</span> <span class="n">InteractiveShell</span><span class="o">.</span><span class="n">_instance</span>
+    <span class="k">if</span> <span class="n">saved_shell_instance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">saved_shell_instance</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">clear_instance</span><span class="p">()</span>
+    <span class="n">frame</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">shell</span> <span class="o">=</span> <span class="n">InteractiveShellEmbed</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">_init_location_id</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="n">frame</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_filename</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">shell</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">,</span> <span class="n">stack_depth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">compile_flags</span><span class="o">=</span><span class="n">compile_flags</span><span class="p">,</span>
+          <span class="n">_call_location_id</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_filename</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">))</span>
+    <span class="n">InteractiveShellEmbed</span><span class="o">.</span><span class="n">clear_instance</span><span class="p">()</span>
+    <span class="c1">#restore previous instance</span>
+    <span class="k">if</span> <span class="n">saved_shell_instance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">saved_shell_instance</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">clear_instance</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">subclass</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_walk_mro</span><span class="p">():</span>
+            <span class="n">subclass</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="n">saved_shell_instance</span>
+    <span class="k">if</span> <span class="n">ps1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">ps1</span> <span class="o">=</span> <span class="n">ps1</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">ps2</span> <span class="o">=</span> <span class="n">ps2</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

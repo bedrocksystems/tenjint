@@ -1,0 +1,21 @@
+ConfigMixin
+===========
+
+.. currentmodule:: tenjint.config
+
+.. autoclass:: ConfigMixin
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      ConfigMixin.__init__
+   
+   
+   

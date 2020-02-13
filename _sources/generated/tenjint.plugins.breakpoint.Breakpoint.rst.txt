@@ -1,0 +1,25 @@
+Breakpoint
+==========
+
+.. currentmodule:: tenjint.plugins.breakpoint
+
+.. autoclass:: Breakpoint
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      Breakpoint.__init__
+   
+      Breakpoint.set_bp
+   
+      Breakpoint.unset_bp
+   
+   
+   

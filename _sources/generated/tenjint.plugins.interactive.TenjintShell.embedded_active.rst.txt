@@ -1,0 +1,6 @@
+TenjintShell.embedded\_active
+=============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoproperty:: TenjintShell.embedded_active

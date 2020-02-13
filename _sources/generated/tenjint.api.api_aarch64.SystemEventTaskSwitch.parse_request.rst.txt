@@ -1,0 +1,6 @@
+SystemEventTaskSwitch.parse\_request
+====================================
+
+.. currentmodule:: tenjint.api.api_aarch64
+
+.. automethod:: SystemEventTaskSwitch.parse_request

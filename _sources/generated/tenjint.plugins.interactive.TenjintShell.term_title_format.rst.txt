@@ -1,0 +1,6 @@
+TenjintShell.term\_title\_format
+================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.term_title_format

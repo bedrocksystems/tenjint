@@ -1,0 +1,6 @@
+SystemEventVmShutdown.parse\_request
+====================================
+
+.. currentmodule:: tenjint.api.api
+
+.. automethod:: SystemEventVmShutdown.parse_request

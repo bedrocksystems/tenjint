@@ -1,0 +1,6 @@
+TenjintShell.banner1
+====================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.banner1

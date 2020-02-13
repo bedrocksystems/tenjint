@@ -1,0 +1,25 @@
+Aarch64TsRegs
+=============
+
+.. currentmodule:: tenjint.api.api_aarch64
+
+.. autoclass:: Aarch64TsRegs
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      Aarch64TsRegs.TCR
+   
+      Aarch64TsRegs.TTBR0
+   
+      Aarch64TsRegs.TTBR1
+   
+   
+   
+
+   
+   
+   

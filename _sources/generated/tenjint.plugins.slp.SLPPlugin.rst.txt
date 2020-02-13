@@ -1,0 +1,44 @@
+SLPPlugin
+=========
+
+.. currentmodule:: tenjint.plugins.slp
+
+.. autoclass:: SLPPlugin
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      SLPPlugin.arch
+   
+      SLPPlugin.name
+   
+      SLPPlugin.os
+   
+      SLPPlugin.produces
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      SLPPlugin.__init__
+   
+      SLPPlugin.cancel_event
+   
+      SLPPlugin.load
+   
+      SLPPlugin.request_event
+   
+      SLPPlugin.uninit
+   
+      SLPPlugin.update_permissions
+   
+   
+   

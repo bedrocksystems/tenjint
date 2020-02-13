@@ -1,0 +1,29 @@
+TenjintPrompts
+==============
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoclass:: TenjintPrompts
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      TenjintPrompts.__init__
+   
+      TenjintPrompts.continuation_prompt_tokens
+   
+      TenjintPrompts.in_prompt_tokens
+   
+      TenjintPrompts.out_prompt_tokens
+   
+      TenjintPrompts.rewrite_prompt_tokens
+   
+   
+   

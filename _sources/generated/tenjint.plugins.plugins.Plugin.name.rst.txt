@@ -1,0 +1,6 @@
+Plugin.name
+===========
+
+.. currentmodule:: tenjint.plugins.plugins
+
+.. autoattribute:: Plugin.name

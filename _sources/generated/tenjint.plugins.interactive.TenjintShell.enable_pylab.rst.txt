@@ -1,0 +1,6 @@
+TenjintShell.enable\_pylab
+==========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.enable_pylab

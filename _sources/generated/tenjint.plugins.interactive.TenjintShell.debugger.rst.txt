@@ -1,0 +1,6 @@
+TenjintShell.debugger
+=====================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.debugger

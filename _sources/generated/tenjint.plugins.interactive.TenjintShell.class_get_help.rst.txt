@@ -1,0 +1,6 @@
+TenjintShell.class\_get\_help
+=============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.class_get_help

@@ -1,0 +1,21 @@
+OperatingSystemConfig
+=====================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. autoclass:: OperatingSystemConfig
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      OperatingSystemConfig.__init__
+   
+   
+   

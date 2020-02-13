@@ -1,0 +1,6 @@
+OperatingSystemLinux.load
+=========================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. automethod:: OperatingSystemLinux.load

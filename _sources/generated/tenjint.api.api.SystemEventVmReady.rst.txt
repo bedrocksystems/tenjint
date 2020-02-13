@@ -1,0 +1,36 @@
+SystemEventVmReady
+==================
+
+.. currentmodule:: tenjint.api.api
+
+.. autoclass:: SystemEventVmReady
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      SystemEventVmReady.params
+   
+      SystemEventVmReady.producer
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      SystemEventVmReady.__init__
+   
+      SystemEventVmReady.filter
+   
+      SystemEventVmReady.parse_request
+   
+      SystemEventVmReady.parse_request_to_dict
+   
+   
+   

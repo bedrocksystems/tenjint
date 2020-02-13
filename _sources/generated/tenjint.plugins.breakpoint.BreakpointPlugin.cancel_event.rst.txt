@@ -1,0 +1,6 @@
+BreakpointPlugin.cancel\_event
+==============================
+
+.. currentmodule:: tenjint.plugins.breakpoint
+
+.. automethod:: BreakpointPlugin.cancel_event

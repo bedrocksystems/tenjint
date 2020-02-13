@@ -1,0 +1,6 @@
+EventManager.request\_event
+===========================
+
+.. currentmodule:: tenjint.event
+
+.. automethod:: EventManager.request_event

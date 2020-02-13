@@ -1,0 +1,6 @@
+TenjintShell.simple\_prompt
+===========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.simple_prompt

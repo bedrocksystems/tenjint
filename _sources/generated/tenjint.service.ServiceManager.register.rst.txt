@@ -1,0 +1,6 @@
+ServiceManager.register
+=======================
+
+.. currentmodule:: tenjint.service
+
+.. automethod:: ServiceManager.register

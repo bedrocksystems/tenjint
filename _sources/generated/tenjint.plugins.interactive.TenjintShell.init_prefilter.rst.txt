@@ -1,0 +1,6 @@
+TenjintShell.init\_prefilter
+============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.init_prefilter

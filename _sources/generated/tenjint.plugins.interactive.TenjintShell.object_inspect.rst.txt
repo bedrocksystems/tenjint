@@ -1,0 +1,6 @@
+TenjintShell.object\_inspect
+============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.object_inspect

@@ -1,0 +1,6 @@
+register
+========
+
+.. currentmodule:: tenjint.service
+
+.. autofunction:: register

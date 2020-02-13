@@ -1,0 +1,6 @@
+TenjintShell.extract\_input\_lines
+==================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.extract_input_lines

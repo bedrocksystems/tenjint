@@ -1,0 +1,6 @@
+SystemEventSLP.\_\_init\_\_
+===========================
+
+.. currentmodule:: tenjint.api.api_aarch64
+
+.. automethod:: SystemEventSLP.__init__

@@ -1,0 +1,6 @@
+OperatingSystemLinux.session
+============================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. autoattribute:: OperatingSystemLinux.session

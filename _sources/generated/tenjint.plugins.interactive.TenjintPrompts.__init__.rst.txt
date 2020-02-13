@@ -1,0 +1,6 @@
+TenjintPrompts.\_\_init\_\_
+===========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintPrompts.__init__

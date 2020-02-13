@@ -1,0 +1,6 @@
+TenjintShell.has\_trait
+=======================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.has_trait

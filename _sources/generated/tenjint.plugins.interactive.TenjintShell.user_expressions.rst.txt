@@ -1,0 +1,6 @@
+TenjintShell.user\_expressions
+==============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.user_expressions

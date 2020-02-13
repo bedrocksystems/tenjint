@@ -1,0 +1,6 @@
+TenjintShell.editor
+===================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.editor

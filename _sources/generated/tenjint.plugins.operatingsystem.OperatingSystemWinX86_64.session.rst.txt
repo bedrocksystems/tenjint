@@ -1,0 +1,6 @@
+OperatingSystemWinX86\_64.session
+=================================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. autoattribute:: OperatingSystemWinX86_64.session

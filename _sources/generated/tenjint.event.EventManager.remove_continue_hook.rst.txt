@@ -1,0 +1,6 @@
+EventManager.remove\_continue\_hook
+===================================
+
+.. currentmodule:: tenjint.event
+
+.. automethod:: EventManager.remove_continue_hook

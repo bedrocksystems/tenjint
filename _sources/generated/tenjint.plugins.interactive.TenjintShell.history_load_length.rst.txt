@@ -1,0 +1,6 @@
+TenjintShell.history\_load\_length
+==================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.history_load_length

@@ -1,0 +1,457 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tenjint.plugins.machine &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rpi.html">tenjint Raspberry Pi 4 Image</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>tenjint.plugins.machine</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tenjint.plugins.machine</h1><div class="highlight"><pre>
+<span></span><span class="c1"># tenjint - VMI Python Library</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2020 Bedrock Systems, Inc</span>
+<span class="c1"># Authors: Jonas Pfoh &lt;jonas@bedrocksystems.com&gt;</span>
+<span class="c1">#          Sebastian Vogl &lt;sebastian@bedrocksystems.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License version 2 as published</span>
+<span class="c1"># by the Free Software Foundation.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+
+<span class="sd">&quot;&quot;&quot;This module contains the virtual machine abstractions.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">plugins</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">api</span>
+
+<div class="viewcode-block" id="VirtualMachineBase"><a class="viewcode-back" href="../../../generated/tenjint.plugins.machine.VirtualMachineBase.html#tenjint.plugins.machine.VirtualMachineBase">[docs]</a><span class="k">class</span> <span class="nc">VirtualMachineBase</span><span class="p">(</span><span class="n">plugins</span><span class="o">.</span><span class="n">Plugin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for all virtual machines (VMs).&quot;&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">phys_mem_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the size of the physical memory of the VM.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The size of the physical memory of the VM.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_get_ram_size</span><span class="p">()</span>
+
+<div class="viewcode-block" id="VirtualMachineBase.phys_mem_read"><a class="viewcode-back" href="../../../generated/tenjint.plugins.machine.VirtualMachineBase.phys_mem_read.html#tenjint.plugins.machine.VirtualMachineBase.phys_mem_read">[docs]</a>    <span class="k">def</span> <span class="nf">phys_mem_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read from the VM&#39;s physical memory.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        addr : int</span>
+<span class="sd">            The physical address to read from.</span>
+<span class="sd">        size : int</span>
+<span class="sd">            The number of bytes to read.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bytes</span>
+<span class="sd">            The requested bytes.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        RuntimeError</span>
+<span class="sd">            If the requested physical memory cannot be read.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        phys_mem_size</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_read_phys_mem</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="VirtualMachineBase.phys_mem_write"><a class="viewcode-back" href="../../../generated/tenjint.plugins.machine.VirtualMachineBase.phys_mem_write.html#tenjint.plugins.machine.VirtualMachineBase.phys_mem_write">[docs]</a>    <span class="k">def</span> <span class="nf">phys_mem_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">buf</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write to the VM&#39;s physical mamory.</span>
+
+<span class="sd">        Paramaters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        addr : int</span>
+<span class="sd">            The physical address to write to.</span>
+<span class="sd">        buf : bytes</span>
+<span class="sd">            The data to write.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        RuntimeError</span>
+<span class="sd">            If the requested physical memory cannot be written.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_write_phys_mem</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">buf</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="VirtualMachineBase.vtop"><a class="viewcode-back" href="../../../generated/tenjint.plugins.machine.VirtualMachineBase.vtop.html#tenjint.plugins.machine.VirtualMachineBase.vtop">[docs]</a>    <span class="k">def</span> <span class="nf">vtop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">dtb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cpu_num</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Translate a guest virtual address to a guest physical address.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        addr : int</span>
+<span class="sd">            The virtual address to translate.</span>
+<span class="sd">        dtb : int, optional</span>
+<span class="sd">            The directory table base that should be used for the translation. If</span>
+<span class="sd">            no dtb is provided, the dtb on the given cpu (cpu_num) will be used.</span>
+<span class="sd">        cpu_num : int, optional</span>
+<span class="sd">            The number of the CPU that should be used for the translation. If no</span>
+<span class="sd">            dtb and cpu_num have been specified, cpu_num 0 will be used.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        tenjint.api.api.TranslationError</span>
+<span class="sd">            If the virtual address connot be translated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">dtb</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cpu_num</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">cpu_num</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">dtb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpu</span><span class="p">(</span><span class="n">cpu_num</span><span class="p">)</span><span class="o">.</span><span class="n">page_table_base</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_vtop</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">dtb</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cpu_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Obtain the number of vCPUs that the VM has.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_get_num_cpus</span><span class="p">()</span>
+
+<div class="viewcode-block" id="VirtualMachineBase.cpu"><a class="viewcode-back" href="../../../generated/tenjint.plugins.machine.VirtualMachineBase.cpu.html#tenjint.plugins.machine.VirtualMachineBase.cpu">[docs]</a>    <span class="k">def</span> <span class="nf">cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpu_num</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a virtual CPU (vCPU).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cpu_num : int</span>
+<span class="sd">            The number of the vCPU to get.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object</span>
+<span class="sd">            An object representing the vCPU for the current architecture of</span>
+<span class="sd">            the virtual machine.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the requested vCPU number does not exists.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        cpu_count</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cpu_num</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This machine only has </span><span class="si">{}</span><span class="s2"> cpu(s)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                                                <span class="bp">self</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">))</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">rv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cpus</span><span class="p">[</span><span class="n">cpu_num</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">rv</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_get_cpu_state</span><span class="p">(</span><span class="n">cpu_num</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cpus</span><span class="p">[</span><span class="n">cpu_num</span><span class="p">]</span> <span class="o">=</span> <span class="n">rv</span>
+        <span class="k">return</span> <span class="n">rv</span></div></div>
+
+<div class="viewcode-block" id="VirtualMachineX86_64"><a class="viewcode-back" href="../../../generated/tenjint.plugins.machine.VirtualMachineX86_64.html#tenjint.plugins.machine.VirtualMachineX86_64">[docs]</a><span class="k">class</span> <span class="nc">VirtualMachineX86_64</span><span class="p">(</span><span class="n">VirtualMachineBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Virtual machine class for x86-64.&quot;&quot;&quot;</span>
+
+    <span class="n">_abstract</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;VirtualMachine&quot;</span>
+    <span class="n">arch</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Arch</span><span class="o">.</span><span class="n">X86_64</span>
+
+<div class="viewcode-block" id="VirtualMachineX86_64.__init__"><a class="viewcode-back" href="../../../generated/tenjint.plugins.machine.VirtualMachineX86_64.__init__.html#tenjint.plugins.machine.VirtualMachineX86_64.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lbr_enabled</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cpus</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lbrs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">add_continue_hook</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cont_hook</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_cont_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cpus</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lbrs</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+<div class="viewcode-block" id="VirtualMachineX86_64.lbr_enable"><a class="viewcode-back" href="../../../generated/tenjint.plugins.machine.VirtualMachineX86_64.lbr_enable.html#tenjint.plugins.machine.VirtualMachineX86_64.lbr_enable">[docs]</a>    <span class="k">def</span> <span class="nf">lbr_enable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpu_num</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Enable the Last Branch Record Stack (LBR).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cpu_num : int, optional</span>
+<span class="sd">            The vCPU number to enable the LBR on. If no cpu number is provided,</span>
+<span class="sd">            the LBR will be enabled on all vCPUs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">enable</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">cpu_num</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lbr_enabled</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_lbr_enabled</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lbr_enabled</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">enable</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_lbr_enabled</span><span class="p">[</span><span class="n">cpu_num</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lbr_enabled</span><span class="p">[</span><span class="n">cpu_num</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">enable</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">enable</span><span class="p">:</span>
+            <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_update_feature_lbr</span><span class="p">(</span><span class="n">cpu_num</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="VirtualMachineX86_64.lbr_disable"><a class="viewcode-back" href="../../../generated/tenjint.plugins.machine.VirtualMachineX86_64.lbr_disable.html#tenjint.plugins.machine.VirtualMachineX86_64.lbr_disable">[docs]</a>    <span class="k">def</span> <span class="nf">lbr_disable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpu_num</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Disable the Last Branch Record Stack (LBR).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cpu_num : int, optional</span>
+<span class="sd">            The vCPU number to disable the LBR on. If no cpu number is provided,</span>
+<span class="sd">            the LBR will be disabled on all vCPUs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">disable</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">cpu_num</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lbr_enabled</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_lbr_enabled</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lbr_enabled</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">disable</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_lbr_enabled</span><span class="p">[</span><span class="n">cpu_num</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lbr_enabled</span><span class="p">[</span><span class="n">cpu_num</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">disable</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">disable</span><span class="p">:</span>
+            <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_update_feature_lbr</span><span class="p">(</span><span class="n">cpu_num</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="VirtualMachineX86_64.lbr"><a class="viewcode-back" href="../../../generated/tenjint.plugins.machine.VirtualMachineX86_64.lbr.html#tenjint.plugins.machine.VirtualMachineX86_64.lbr">[docs]</a>    <span class="k">def</span> <span class="nf">lbr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpu_num</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve the Last Branch Record Stack (LBR).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cpu_num : int</span>
+<span class="sd">            The number of the vCPU whose LBR we want to retrieve.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tenjint.api.api_x86_64.LBRState</span>
+<span class="sd">            The LBRState of the vCPU.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        RuntimeError</span>
+<span class="sd">            If the LBR has not been enabled to the requested vCPU.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lbr_enabled</span><span class="p">[</span><span class="n">cpu_num</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;LBR was never enabled for this CPU&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">rv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lbrs</span><span class="p">[</span><span class="n">cpu_num</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">rv</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_lbr_get</span><span class="p">(</span><span class="n">cpu_num</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_lbrs</span><span class="p">[</span><span class="n">cpu_num</span><span class="p">]</span> <span class="o">=</span> <span class="n">rv</span>
+        <span class="k">return</span> <span class="n">rv</span></div></div>
+
+
+<div class="viewcode-block" id="VirtualMachineAARCH64"><a class="viewcode-back" href="../../../generated/tenjint.plugins.machine.VirtualMachineAARCH64.html#tenjint.plugins.machine.VirtualMachineAARCH64">[docs]</a><span class="k">class</span> <span class="nc">VirtualMachineAARCH64</span><span class="p">(</span><span class="n">VirtualMachineBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Virtual machine class for aarch64.&quot;&quot;&quot;</span>
+
+    <span class="n">_abstract</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;VirtualMachine&quot;</span>
+    <span class="n">arch</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Arch</span><span class="o">.</span><span class="n">AARCH64</span>
+
+<div class="viewcode-block" id="VirtualMachineAARCH64.__init__"><a class="viewcode-back" href="../../../generated/tenjint.plugins.machine.VirtualMachineAARCH64.__init__.html#tenjint.plugins.machine.VirtualMachineAARCH64.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cpus</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">add_continue_hook</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cont_hook</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_cont_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cpus</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

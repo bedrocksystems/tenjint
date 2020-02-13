@@ -1,0 +1,6 @@
+TenjintShell.observe
+====================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.observe

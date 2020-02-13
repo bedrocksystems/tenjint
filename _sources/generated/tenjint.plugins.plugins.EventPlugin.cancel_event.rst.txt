@@ -1,0 +1,6 @@
+EventPlugin.cancel\_event
+=========================
+
+.. currentmodule:: tenjint.plugins.plugins
+
+.. automethod:: EventPlugin.cancel_event

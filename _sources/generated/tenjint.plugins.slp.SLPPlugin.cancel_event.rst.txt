@@ -1,0 +1,6 @@
+SLPPlugin.cancel\_event
+=======================
+
+.. currentmodule:: tenjint.plugins.slp
+
+.. automethod:: SLPPlugin.cancel_event

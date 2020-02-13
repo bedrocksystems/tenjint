@@ -1,0 +1,6 @@
+TenjintShell.\_\_init\_\_
+=========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.__init__

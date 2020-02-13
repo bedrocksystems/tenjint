@@ -1,0 +1,36 @@
+Event
+=====
+
+.. currentmodule:: tenjint.event
+
+.. autoclass:: Event
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      Event.params
+   
+      Event.producer
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      Event.__init__
+   
+      Event.filter
+   
+      Event.parse_request
+   
+      Event.parse_request_to_dict
+   
+   
+   

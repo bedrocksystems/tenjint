@@ -1,0 +1,6 @@
+CpuEvent.filter
+===============
+
+.. currentmodule:: tenjint.event
+
+.. automethod:: CpuEvent.filter

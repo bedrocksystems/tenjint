@@ -1,0 +1,6 @@
+TenjintShell.init\_user\_ns
+===========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.init_user_ns

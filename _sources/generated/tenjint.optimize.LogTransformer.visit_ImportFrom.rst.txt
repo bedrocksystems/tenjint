@@ -1,0 +1,6 @@
+LogTransformer.visit\_ImportFrom
+================================
+
+.. currentmodule:: tenjint.optimize
+
+.. automethod:: LogTransformer.visit_ImportFrom

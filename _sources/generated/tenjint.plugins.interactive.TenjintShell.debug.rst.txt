@@ -1,0 +1,6 @@
+TenjintShell.debug
+==================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.debug

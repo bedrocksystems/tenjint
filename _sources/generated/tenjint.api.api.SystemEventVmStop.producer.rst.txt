@@ -1,0 +1,6 @@
+SystemEventVmStop.producer
+==========================
+
+.. currentmodule:: tenjint.api.api
+
+.. autoattribute:: SystemEventVmStop.producer

@@ -1,0 +1,6 @@
+TenjintShell.define\_macro
+==========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.define_macro

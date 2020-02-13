@@ -1,0 +1,6 @@
+InteractiveShell.show\_events
+=============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoproperty:: InteractiveShell.show_events

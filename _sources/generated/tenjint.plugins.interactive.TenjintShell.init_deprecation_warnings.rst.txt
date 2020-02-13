@@ -1,0 +1,6 @@
+TenjintShell.init\_deprecation\_warnings
+========================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.init_deprecation_warnings

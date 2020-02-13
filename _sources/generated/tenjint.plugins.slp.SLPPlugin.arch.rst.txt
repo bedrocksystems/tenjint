@@ -1,0 +1,6 @@
+SLPPlugin.arch
+==============
+
+.. currentmodule:: tenjint.plugins.slp
+
+.. autoattribute:: SLPPlugin.arch

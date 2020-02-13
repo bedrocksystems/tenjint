@@ -1,0 +1,6 @@
+OperatingSystemLinux.read\_kernel\_pointer
+==========================================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. automethod:: OperatingSystemLinux.read_kernel_pointer

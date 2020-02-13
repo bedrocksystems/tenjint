@@ -1,0 +1,6 @@
+TenjintShell.mouse\_support
+===========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.mouse_support

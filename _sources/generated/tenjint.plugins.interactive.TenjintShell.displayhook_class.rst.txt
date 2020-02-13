@@ -1,0 +1,6 @@
+TenjintShell.displayhook\_class
+===============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.displayhook_class

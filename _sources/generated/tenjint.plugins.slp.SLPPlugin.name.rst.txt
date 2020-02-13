@@ -1,0 +1,6 @@
+SLPPlugin.name
+==============
+
+.. currentmodule:: tenjint.plugins.slp
+
+.. autoattribute:: SLPPlugin.name

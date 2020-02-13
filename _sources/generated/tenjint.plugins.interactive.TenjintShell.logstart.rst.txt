@@ -1,0 +1,6 @@
+TenjintShell.logstart
+=====================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.logstart

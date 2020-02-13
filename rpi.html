@@ -1,0 +1,249 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tenjint Raspberry Pi 4 Image &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="SystemEventTaskSwitch.parse_request_to_dict" href="generated/tenjint.api.api_aarch64.SystemEventTaskSwitch.parse_request_to_dict.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">tenjint Raspberry Pi 4 Image</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#applying-the-image">Applying the Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#booting-the-image">Booting the Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#starting-tenjint">Starting tenjint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#questions-or-issues">Questions or Issues</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>tenjint Raspberry Pi 4 Image</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/rpi.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tenjint-raspberry-pi-4-image">
+<h1>tenjint Raspberry Pi 4 Image<a class="headerlink" href="#tenjint-raspberry-pi-4-image" title="Permalink to this headline">¶</a></h1>
+<p>For your convenience, we have generated a Raspberry Pi 4 image with everything you need pre-installed.  This Ubuntu-based image will allow you to try tenjint on ARM without having to install or configure a thing.  The image even contains a simple linux VM.</p>
+<p>To get started download the image from the link below and unzip to obtain the image.</p>
+<p><a class="reference external" href="https://drive.google.com/uc?export=download&amp;id=14my428a7FvV7cBqeMhRxIEA6pkTMtLvX">tenjint RPI4 Image</a></p>
+<p>Please be aware that Google will warn you the file is too large for them to scan for viruses.  Please be assured the file is completely safe to download.</p>
+<div class="section" id="applying-the-image">
+<h2>Applying the Image<a class="headerlink" href="#applying-the-image" title="Permalink to this headline">¶</a></h2>
+<p>In order to use the image you will first need an SD-card with at least 32GB of capacity.</p>
+<p>Once unzipped, you will have an img file called <em>rpi_official.X.Y.img</em>.  You will have to apply this image to your SD-card.  On Linux, the easiest way to do this using the <code class="docutils literal notranslate"><span class="pre">dd</span></code> utility.  For example,</p>
+<blockquote>
+<div><p>$ dd if=/path/to/rpi_official.X.Y.img of=/dev/sdX bs=1K</p>
+</div></blockquote>
+<p><strong>WARNING:</strong> <em>Make sure you know what you are doing.  The</em> <code class="docutils literal notranslate"><span class="pre">/dev/sdX</span></code> <em>path must be a path to the SD-card device node.  If you choose the incorrect device node, you may overwrite data on other disks and destroy your installation.</em></p>
+<p>If you rather not use the <code class="docutils literal notranslate"><span class="pre">dd</span></code> utility or you are using Windows, please follow the instructions for applying an image from the here: <a class="reference external" href="https://www.raspberrypi.org/documentation/installation/installing-images/windows.md">https://www.raspberrypi.org/documentation/installation/installing-images/windows.md</a></p>
+</div>
+<div class="section" id="booting-the-image">
+<h2>Booting the Image<a class="headerlink" href="#booting-the-image" title="Permalink to this headline">¶</a></h2>
+<p>Once you have applied the image to an SD-card, insert the card into the RPI4’s SD-card slot and boot the device.  The image contains a simple desktop environment for your convenience.</p>
+<p><strong>The default username and password is:</strong> user/password</p>
+</div>
+<div class="section" id="starting-tenjint">
+<h2>Starting tenjint<a class="headerlink" href="#starting-tenjint" title="Permalink to this headline">¶</a></h2>
+<p>Once you are booted into the system, open a terminal and run the following command:</p>
+<blockquote>
+<div><p>$ start_tenjint.sh</p>
+</div></blockquote>
+<p>This will automatically start a tenjint instance with the default guest VM.</p>
+<p>All images and configuration files can be found in <code class="docutils literal notranslate"><span class="pre">/home/user/.tenjint</span></code>.  If you want to install custom plugins, you may add them to the <code class="docutils literal notranslate"><span class="pre">/home/user/.tenjint/plugins/</span></code> folder.</p>
+</div>
+<div class="section" id="questions-or-issues">
+<h2>Questions or Issues<a class="headerlink" href="#questions-or-issues" title="Permalink to this headline">¶</a></h2>
+<p>For any questions or issues, please email us at <a class="reference external" href="mailto:tenjint&#37;&#52;&#48;bedrocksystems&#46;com">tenjint<span>&#64;</span>bedrocksystems<span>&#46;</span>com</a></p>
+<p>Also, feel free to file a bug report in GitHub if you come across any issues.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="generated/tenjint.api.api_aarch64.SystemEventTaskSwitch.parse_request_to_dict.html" class="btn btn-neutral float-left" title="SystemEventTaskSwitch.parse_request_to_dict" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

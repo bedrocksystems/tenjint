@@ -1,0 +1,1217 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>TenjintShell &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="TenjintShell.active_eventloop" href="tenjint.plugins.interactive.TenjintShell.active_eventloop.html" />
+    <link rel="prev" title="TenjintPrompts.rewrite_prompt_tokens" href="tenjint.plugins.interactive.TenjintPrompts.rewrite_prompt_tokens.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tenjint.event.html">tenjint.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.output.html">tenjint.output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.service.html">tenjint.service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.logger.html">tenjint.logger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.optimize.html">tenjint.optimize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.config.html">tenjint.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.debug.html">tenjint.debug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.tenjint.html">tenjint.tenjint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.machine.html">tenjint.plugins.machine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.operatingsystem.html">tenjint.plugins.operatingsystem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.singlestep.html">tenjint.plugins.singlestep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.breakpoint.html">tenjint.plugins.breakpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.slp.html">tenjint.plugins.slp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.taskswitch.html">tenjint.plugins.taskswitch</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="tenjint.plugins.interactive.html">tenjint.plugins.interactive</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tenjint.plugins.interactive.InteractiveShell.html">InteractiveShell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tenjint.plugins.interactive.TenjintPrompts.html">TenjintPrompts</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">TenjintShell</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.active_eventloop.html">TenjintShell.active_eventloop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.alias_manager.html">TenjintShell.alias_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.all_ns_refs.html">TenjintShell.all_ns_refs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ast_node_interactivity.html">TenjintShell.ast_node_interactivity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ast_transformers.html">TenjintShell.ast_transformers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.autocall.html">TenjintShell.autocall</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.autoindent.html">TenjintShell.autoindent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.automagic.html">TenjintShell.automagic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.banner.html">TenjintShell.banner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.banner1.html">TenjintShell.banner1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.banner2.html">TenjintShell.banner2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.builtin_trap.html">TenjintShell.builtin_trap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.cache_size.html">TenjintShell.cache_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.call_pdb.html">TenjintShell.call_pdb</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.color_info.html">TenjintShell.color_info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.colors.html">TenjintShell.colors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.config.html">TenjintShell.config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.confirm_exit.html">TenjintShell.confirm_exit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.cross_validation_lock.html">TenjintShell.cross_validation_lock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.debug.html">TenjintShell.debug</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.debugger_cls.html">TenjintShell.debugger_cls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.debugger_history.html">TenjintShell.debugger_history</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.default_user_namespaces.html">TenjintShell.default_user_namespaces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.disable_failing_post_execute.html">TenjintShell.disable_failing_post_execute</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.display_banner.html">TenjintShell.display_banner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.display_completions.html">TenjintShell.display_completions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.display_formatter.html">TenjintShell.display_formatter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.display_page.html">TenjintShell.display_page</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.display_pub_class.html">TenjintShell.display_pub_class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.display_trap.html">TenjintShell.display_trap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.displayhook_class.html">TenjintShell.displayhook_class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.dummy_mode.html">TenjintShell.dummy_mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.editing_mode.html">TenjintShell.editing_mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.editor.html">TenjintShell.editor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.embedded.html">TenjintShell.embedded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.embedded_active.html">TenjintShell.embedded_active</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.enable_history_search.html">TenjintShell.enable_history_search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.enable_html_pager.html">TenjintShell.enable_html_pager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.execution_count.html">TenjintShell.execution_count</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.exit_msg.html">TenjintShell.exit_msg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.exit_now.html">TenjintShell.exit_now</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.exiter.html">TenjintShell.exiter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.extension_manager.html">TenjintShell.extension_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.extra_open_editor_shortcuts.html">TenjintShell.extra_open_editor_shortcuts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.filename.html">TenjintShell.filename</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.handle_return.html">TenjintShell.handle_return</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.highlight_matching_brackets.html">TenjintShell.highlight_matching_brackets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.highlighting_style.html">TenjintShell.highlighting_style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.highlighting_style_overrides.html">TenjintShell.highlighting_style_overrides</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.history_length.html">TenjintShell.history_length</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.history_load_length.html">TenjintShell.history_load_length</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.history_manager.html">TenjintShell.history_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_syntax_highlighting.html">TenjintShell.init_syntax_highlighting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_term_title.html">TenjintShell.init_term_title</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.input_splitter.html">TenjintShell.input_splitter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.input_transformer_manager.html">TenjintShell.input_transformer_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ipython_dir.html">TenjintShell.ipython_dir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.last_execution_result.html">TenjintShell.last_execution_result</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.last_execution_succeeded.html">TenjintShell.last_execution_succeeded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.log.html">TenjintShell.log</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.logappend.html">TenjintShell.logappend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.logfile.html">TenjintShell.logfile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.logstart.html">TenjintShell.logstart</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.magics_manager.html">TenjintShell.magics_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.mouse_support.html">TenjintShell.mouse_support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.object_info_string_level.html">TenjintShell.object_info_string_level</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.parent.html">TenjintShell.parent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.payload_manager.html">TenjintShell.payload_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.pdb.html">TenjintShell.pdb</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prefilter_manager.html">TenjintShell.prefilter_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.profile.html">TenjintShell.profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.profile_dir.html">TenjintShell.profile_dir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompt_in1.html">TenjintShell.prompt_in1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompt_in2.html">TenjintShell.prompt_in2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompt_out.html">TenjintShell.prompt_out</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompts.html">TenjintShell.prompts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompts_class.html">TenjintShell.prompts_class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompts_pad_left.html">TenjintShell.prompts_pad_left</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.pt_cli.html">TenjintShell.pt_cli</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.pylab_gui_select.html">TenjintShell.pylab_gui_select</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.quiet.html">TenjintShell.quiet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.rl_next_input.html">TenjintShell.rl_next_input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.separate_in.html">TenjintShell.separate_in</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.separate_out.html">TenjintShell.separate_out</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.separate_out2.html">TenjintShell.separate_out2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.should_raise.html">TenjintShell.should_raise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.show_rewritten_input.html">TenjintShell.show_rewritten_input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.simple_prompt.html">TenjintShell.simple_prompt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.space_for_menu.html">TenjintShell.space_for_menu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.sphinxify_docstring.html">TenjintShell.sphinxify_docstring</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.term_title.html">TenjintShell.term_title</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.term_title_format.html">TenjintShell.term_title_format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.true_color.html">TenjintShell.true_color</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.user_global_ns.html">TenjintShell.user_global_ns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.utf8_banner.html">TenjintShell.utf8_banner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.wildcards_case_sensitive.html">TenjintShell.wildcards_case_sensitive</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.xmode.html">TenjintShell.xmode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.__init__.html">TenjintShell.__init__</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.add_traits.html">TenjintShell.add_traits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ask_exit.html">TenjintShell.ask_exit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ask_yes_no.html">TenjintShell.ask_yes_no</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.atexit_operations.html">TenjintShell.atexit_operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.auto_rewrite_input.html">TenjintShell.auto_rewrite_input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.check_complete.html">TenjintShell.check_complete</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_config_rst_doc.html">TenjintShell.class_config_rst_doc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_config_section.html">TenjintShell.class_config_section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_get_help.html">TenjintShell.class_get_help</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_get_trait_help.html">TenjintShell.class_get_trait_help</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_own_trait_events.html">TenjintShell.class_own_trait_events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_own_traits.html">TenjintShell.class_own_traits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_print_help.html">TenjintShell.class_print_help</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_trait_names.html">TenjintShell.class_trait_names</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_traits.html">TenjintShell.class_traits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.cleanup.html">TenjintShell.cleanup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.clear_instance.html">TenjintShell.clear_instance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.clear_main_mod_cache.html">TenjintShell.clear_main_mod_cache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.complete.html">TenjintShell.complete</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.debugger.html">TenjintShell.debugger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.define_macro.html">TenjintShell.define_macro</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.del_var.html">TenjintShell.del_var</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.drop_by_id.html">TenjintShell.drop_by_id</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.enable_gui.html">TenjintShell.enable_gui</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.enable_matplotlib.html">TenjintShell.enable_matplotlib</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.enable_pylab.html">TenjintShell.enable_pylab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.enable_win_unicode_console.html">TenjintShell.enable_win_unicode_console</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ev.html">TenjintShell.ev</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ex.html">TenjintShell.ex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.excepthook.html">TenjintShell.excepthook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.extract_input_lines.html">TenjintShell.extract_input_lines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.find_cell_magic.html">TenjintShell.find_cell_magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.find_line_magic.html">TenjintShell.find_line_magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.find_magic.html">TenjintShell.find_magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.find_user_code.html">TenjintShell.find_user_code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.get_exception_only.html">TenjintShell.get_exception_only</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.get_ipython.html">TenjintShell.get_ipython</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.getoutput.html">TenjintShell.getoutput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.has_trait.html">TenjintShell.has_trait</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.hold_trait_notifications.html">TenjintShell.hold_trait_notifications</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_alias.html">TenjintShell.init_alias</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_builtins.html">TenjintShell.init_builtins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_completer.html">TenjintShell.init_completer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_create_namespaces.html">TenjintShell.init_create_namespaces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_deprecation_warnings.html">TenjintShell.init_deprecation_warnings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_display_formatter.html">TenjintShell.init_display_formatter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_display_pub.html">TenjintShell.init_display_pub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_displayhook.html">TenjintShell.init_displayhook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_encoding.html">TenjintShell.init_encoding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_environment.html">TenjintShell.init_environment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_events.html">TenjintShell.init_events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_extension_manager.html">TenjintShell.init_extension_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_history.html">TenjintShell.init_history</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_hooks.html">TenjintShell.init_hooks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_inspector.html">TenjintShell.init_inspector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_instance_attrs.html">TenjintShell.init_instance_attrs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_io.html">TenjintShell.init_io</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_ipython_dir.html">TenjintShell.init_ipython_dir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_logger.html">TenjintShell.init_logger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_logstart.html">TenjintShell.init_logstart</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_magics.html">TenjintShell.init_magics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_payload.html">TenjintShell.init_payload</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_pdb.html">TenjintShell.init_pdb</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_prefilter.html">TenjintShell.init_prefilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_profile_dir.html">TenjintShell.init_profile_dir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_prompt_toolkit_cli.html">TenjintShell.init_prompt_toolkit_cli</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_prompts.html">TenjintShell.init_prompts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_pushd_popd_magic.html">TenjintShell.init_pushd_popd_magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_readline.html">TenjintShell.init_readline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_sys_modules.html">TenjintShell.init_sys_modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_traceback_handlers.html">TenjintShell.init_traceback_handlers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_user_ns.html">TenjintShell.init_user_ns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_virtualenv.html">TenjintShell.init_virtualenv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.initialized.html">TenjintShell.initialized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.inputhook.html">TenjintShell.inputhook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.instance.html">TenjintShell.instance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.interact.html">TenjintShell.interact</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.magic.html">TenjintShell.magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.mainloop.html">TenjintShell.mainloop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.mktempfile.html">TenjintShell.mktempfile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.new_main_mod.html">TenjintShell.new_main_mod</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.notify_change.html">TenjintShell.notify_change</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.object_inspect.html">TenjintShell.object_inspect</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.object_inspect_mime.html">TenjintShell.object_inspect_mime</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.object_inspect_text.html">TenjintShell.object_inspect_text</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.observe.html">TenjintShell.observe</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.on_trait_change.html">TenjintShell.on_trait_change</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.pre_prompt.html">TenjintShell.pre_prompt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prepare_user_module.html">TenjintShell.prepare_user_module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompt_for_code.html">TenjintShell.prompt_for_code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.push.html">TenjintShell.push</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.refresh_style.html">TenjintShell.refresh_style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.register_magic_function.html">TenjintShell.register_magic_function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.register_post_execute.html">TenjintShell.register_post_execute</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.reset.html">TenjintShell.reset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.reset_selective.html">TenjintShell.reset_selective</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.restore_sys_module_state.html">TenjintShell.restore_sys_module_state</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.run_ast_nodes.html">TenjintShell.run_ast_nodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.run_cell.html">TenjintShell.run_cell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.run_cell_magic.html">TenjintShell.run_cell_magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.run_code.html">TenjintShell.run_code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.run_line_magic.html">TenjintShell.run_line_magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.runcode.html">TenjintShell.runcode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.safe_execfile.html">TenjintShell.safe_execfile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.safe_execfile_ipy.html">TenjintShell.safe_execfile_ipy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.safe_run_module.html">TenjintShell.safe_run_module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.save_sys_module_state.html">TenjintShell.save_sys_module_state</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.section_names.html">TenjintShell.section_names</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_autoindent.html">TenjintShell.set_autoindent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_completer_frame.html">TenjintShell.set_completer_frame</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_custom_completer.html">TenjintShell.set_custom_completer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_custom_exc.html">TenjintShell.set_custom_exc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_hook.html">TenjintShell.set_hook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_next_input.html">TenjintShell.set_next_input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_trait.html">TenjintShell.set_trait</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.show_banner.html">TenjintShell.show_banner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.show_usage.html">TenjintShell.show_usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.show_usage_error.html">TenjintShell.show_usage_error</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.showindentationerror.html">TenjintShell.showindentationerror</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.showsyntaxerror.html">TenjintShell.showsyntaxerror</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.showtraceback.html">TenjintShell.showtraceback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.switch_doctest_mode.html">TenjintShell.switch_doctest_mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.system.html">TenjintShell.system</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.system_piped.html">TenjintShell.system_piped</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.system_raw.html">TenjintShell.system_raw</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.trait_events.html">TenjintShell.trait_events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.trait_names.html">TenjintShell.trait_names</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.traits.html">TenjintShell.traits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.transform_ast.html">TenjintShell.transform_ast</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.unobserve.html">TenjintShell.unobserve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.unobserve_all.html">TenjintShell.unobserve_all</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.update_config.html">TenjintShell.update_config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.user_expressions.html">TenjintShell.user_expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.var_expand.html">TenjintShell.var_expand</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.write.html">TenjintShell.write</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.write_err.html">TenjintShell.write_err</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tenjint.plugins.interactive.tenjintInputTransformer.html">tenjintInputTransformer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.plugins.html">tenjint.plugins.plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.api.api_x86_64.html">tenjint.api.api_x86_64</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.api.api.html">tenjint.api.api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.api.api_aarch64.html">tenjint.api.api_aarch64</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rpi.html">tenjint Raspberry Pi 4 Image</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="tenjint.plugins.interactive.html">tenjint.plugins.interactive</a> &raquo;</li>
+        
+      <li>TenjintShell</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/generated/tenjint.plugins.interactive.TenjintShell.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tenjintshell">
+<h1>TenjintShell<a class="headerlink" href="#tenjintshell" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="tenjint.plugins.interactive.TenjintShell">
+<em class="property">class </em><code class="sig-prename descclassname">tenjint.plugins.interactive.</code><code class="sig-name descname">TenjintShell</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tenjint/plugins/interactive.html#TenjintShell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tenjint.plugins.interactive.TenjintShell" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.active_eventloop.html#tenjint.plugins.interactive.TenjintShell.active_eventloop" title="tenjint.plugins.interactive.TenjintShell.active_eventloop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.active_eventloop</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.alias_manager.html#tenjint.plugins.interactive.TenjintShell.alias_manager" title="tenjint.plugins.interactive.TenjintShell.alias_manager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.alias_manager</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.all_ns_refs.html#tenjint.plugins.interactive.TenjintShell.all_ns_refs" title="tenjint.plugins.interactive.TenjintShell.all_ns_refs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.all_ns_refs</span></code></a></p></td>
+<td><p>Get a list of references to all the namespace dictionaries in which IPython might store a user-created object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ast_node_interactivity.html#tenjint.plugins.interactive.TenjintShell.ast_node_interactivity" title="tenjint.plugins.interactive.TenjintShell.ast_node_interactivity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.ast_node_interactivity</span></code></a></p></td>
+<td><p>An enum whose value must be in a given sequence.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ast_transformers.html#tenjint.plugins.interactive.TenjintShell.ast_transformers" title="tenjint.plugins.interactive.TenjintShell.ast_transformers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.ast_transformers</span></code></a></p></td>
+<td><p>An instance of a Python list.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.autocall.html#tenjint.plugins.interactive.TenjintShell.autocall" title="tenjint.plugins.interactive.TenjintShell.autocall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.autocall</span></code></a></p></td>
+<td><p>An enum whose value must be in a given sequence.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.autoindent.html#tenjint.plugins.interactive.TenjintShell.autoindent" title="tenjint.plugins.interactive.TenjintShell.autoindent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.autoindent</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.automagic.html#tenjint.plugins.interactive.TenjintShell.automagic" title="tenjint.plugins.interactive.TenjintShell.automagic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.automagic</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.banner.html#tenjint.plugins.interactive.TenjintShell.banner" title="tenjint.plugins.interactive.TenjintShell.banner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.banner</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.banner1.html#tenjint.plugins.interactive.TenjintShell.banner1" title="tenjint.plugins.interactive.TenjintShell.banner1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.banner1</span></code></a></p></td>
+<td><p>A trait for unicode strings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.banner2.html#tenjint.plugins.interactive.TenjintShell.banner2" title="tenjint.plugins.interactive.TenjintShell.banner2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.banner2</span></code></a></p></td>
+<td><p>A trait for unicode strings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.builtin_trap.html#tenjint.plugins.interactive.TenjintShell.builtin_trap" title="tenjint.plugins.interactive.TenjintShell.builtin_trap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.builtin_trap</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.cache_size.html#tenjint.plugins.interactive.TenjintShell.cache_size" title="tenjint.plugins.interactive.TenjintShell.cache_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.cache_size</span></code></a></p></td>
+<td><p>An int trait.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.call_pdb.html#tenjint.plugins.interactive.TenjintShell.call_pdb" title="tenjint.plugins.interactive.TenjintShell.call_pdb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.call_pdb</span></code></a></p></td>
+<td><p>Control auto-activation of pdb at exceptions</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.color_info.html#tenjint.plugins.interactive.TenjintShell.color_info" title="tenjint.plugins.interactive.TenjintShell.color_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.color_info</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.colors.html#tenjint.plugins.interactive.TenjintShell.colors" title="tenjint.plugins.interactive.TenjintShell.colors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.colors</span></code></a></p></td>
+<td><p>An enum of strings where the case should be ignored.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.config.html#tenjint.plugins.interactive.TenjintShell.config" title="tenjint.plugins.interactive.TenjintShell.config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.config</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.confirm_exit.html#tenjint.plugins.interactive.TenjintShell.confirm_exit" title="tenjint.plugins.interactive.TenjintShell.confirm_exit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.confirm_exit</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.cross_validation_lock.html#tenjint.plugins.interactive.TenjintShell.cross_validation_lock" title="tenjint.plugins.interactive.TenjintShell.cross_validation_lock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.cross_validation_lock</span></code></a></p></td>
+<td><p>A contextmanager for running a block with our cross validation lock set to True.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.data_pub_class</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.debug.html#tenjint.plugins.interactive.TenjintShell.debug" title="tenjint.plugins.interactive.TenjintShell.debug"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.debug</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.debugger_cls.html#tenjint.plugins.interactive.TenjintShell.debugger_cls" title="tenjint.plugins.interactive.TenjintShell.debugger_cls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.debugger_cls</span></code></a></p></td>
+<td><p>Modified Pdb class, does not load readline.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.debugger_history.html#tenjint.plugins.interactive.TenjintShell.debugger_history" title="tenjint.plugins.interactive.TenjintShell.debugger_history"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.debugger_history</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.default_user_namespaces.html#tenjint.plugins.interactive.TenjintShell.default_user_namespaces" title="tenjint.plugins.interactive.TenjintShell.default_user_namespaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.default_user_namespaces</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.disable_failing_post_execute.html#tenjint.plugins.interactive.TenjintShell.disable_failing_post_execute" title="tenjint.plugins.interactive.TenjintShell.disable_failing_post_execute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.disable_failing_post_execute</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.display_banner.html#tenjint.plugins.interactive.TenjintShell.display_banner" title="tenjint.plugins.interactive.TenjintShell.display_banner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.display_banner</span></code></a></p></td>
+<td><p>A casting version of the boolean trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.display_completions.html#tenjint.plugins.interactive.TenjintShell.display_completions" title="tenjint.plugins.interactive.TenjintShell.display_completions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.display_completions</span></code></a></p></td>
+<td><p>An enum whose value must be in a given sequence.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.display_formatter.html#tenjint.plugins.interactive.TenjintShell.display_formatter" title="tenjint.plugins.interactive.TenjintShell.display_formatter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.display_formatter</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.display_page.html#tenjint.plugins.interactive.TenjintShell.display_page" title="tenjint.plugins.interactive.TenjintShell.display_page"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.display_page</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.display_pub_class.html#tenjint.plugins.interactive.TenjintShell.display_pub_class" title="tenjint.plugins.interactive.TenjintShell.display_pub_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.display_pub_class</span></code></a></p></td>
+<td><p>A trait whose value must be a subclass of a specified class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.display_trap.html#tenjint.plugins.interactive.TenjintShell.display_trap" title="tenjint.plugins.interactive.TenjintShell.display_trap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.display_trap</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.displayhook_class.html#tenjint.plugins.interactive.TenjintShell.displayhook_class" title="tenjint.plugins.interactive.TenjintShell.displayhook_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.displayhook_class</span></code></a></p></td>
+<td><p>A trait whose value must be a subclass of a specified class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.dummy_mode.html#tenjint.plugins.interactive.TenjintShell.dummy_mode" title="tenjint.plugins.interactive.TenjintShell.dummy_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.dummy_mode</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.editing_mode.html#tenjint.plugins.interactive.TenjintShell.editing_mode" title="tenjint.plugins.interactive.TenjintShell.editing_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.editing_mode</span></code></a></p></td>
+<td><p>A trait for unicode strings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.editor.html#tenjint.plugins.interactive.TenjintShell.editor" title="tenjint.plugins.interactive.TenjintShell.editor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.editor</span></code></a></p></td>
+<td><p>A trait for unicode strings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.embedded.html#tenjint.plugins.interactive.TenjintShell.embedded" title="tenjint.plugins.interactive.TenjintShell.embedded"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.embedded</span></code></a></p></td>
+<td><p>A casting version of the boolean trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.embedded_active.html#tenjint.plugins.interactive.TenjintShell.embedded_active" title="tenjint.plugins.interactive.TenjintShell.embedded_active"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.embedded_active</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.enable_history_search.html#tenjint.plugins.interactive.TenjintShell.enable_history_search" title="tenjint.plugins.interactive.TenjintShell.enable_history_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.enable_history_search</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.enable_html_pager.html#tenjint.plugins.interactive.TenjintShell.enable_html_pager" title="tenjint.plugins.interactive.TenjintShell.enable_html_pager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.enable_html_pager</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.execution_count.html#tenjint.plugins.interactive.TenjintShell.execution_count" title="tenjint.plugins.interactive.TenjintShell.execution_count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.execution_count</span></code></a></p></td>
+<td><p>An int trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.exit_msg.html#tenjint.plugins.interactive.TenjintShell.exit_msg" title="tenjint.plugins.interactive.TenjintShell.exit_msg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.exit_msg</span></code></a></p></td>
+<td><p>A trait for unicode strings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.exit_now.html#tenjint.plugins.interactive.TenjintShell.exit_now" title="tenjint.plugins.interactive.TenjintShell.exit_now"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.exit_now</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.exiter.html#tenjint.plugins.interactive.TenjintShell.exiter" title="tenjint.plugins.interactive.TenjintShell.exiter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.exiter</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.extension_manager.html#tenjint.plugins.interactive.TenjintShell.extension_manager" title="tenjint.plugins.interactive.TenjintShell.extension_manager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.extension_manager</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.extra_open_editor_shortcuts.html#tenjint.plugins.interactive.TenjintShell.extra_open_editor_shortcuts" title="tenjint.plugins.interactive.TenjintShell.extra_open_editor_shortcuts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.extra_open_editor_shortcuts</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.filename.html#tenjint.plugins.interactive.TenjintShell.filename" title="tenjint.plugins.interactive.TenjintShell.filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.filename</span></code></a></p></td>
+<td><p>A trait for unicode strings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.handle_return.html#tenjint.plugins.interactive.TenjintShell.handle_return" title="tenjint.plugins.interactive.TenjintShell.handle_return"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.handle_return</span></code></a></p></td>
+<td><p>A trait which allows any value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.highlight_matching_brackets.html#tenjint.plugins.interactive.TenjintShell.highlight_matching_brackets" title="tenjint.plugins.interactive.TenjintShell.highlight_matching_brackets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.highlight_matching_brackets</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.highlighting_style.html#tenjint.plugins.interactive.TenjintShell.highlighting_style" title="tenjint.plugins.interactive.TenjintShell.highlighting_style"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.highlighting_style</span></code></a></p></td>
+<td><p>A trait type representing a Union type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.highlighting_style_overrides.html#tenjint.plugins.interactive.TenjintShell.highlighting_style_overrides" title="tenjint.plugins.interactive.TenjintShell.highlighting_style_overrides"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.highlighting_style_overrides</span></code></a></p></td>
+<td><p>An instance of a Python dict.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.history_length.html#tenjint.plugins.interactive.TenjintShell.history_length" title="tenjint.plugins.interactive.TenjintShell.history_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.history_length</span></code></a></p></td>
+<td><p>An int trait.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.history_load_length.html#tenjint.plugins.interactive.TenjintShell.history_load_length" title="tenjint.plugins.interactive.TenjintShell.history_load_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.history_load_length</span></code></a></p></td>
+<td><p>An int trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.history_manager.html#tenjint.plugins.interactive.TenjintShell.history_manager" title="tenjint.plugins.interactive.TenjintShell.history_manager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.history_manager</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_syntax_highlighting.html#tenjint.plugins.interactive.TenjintShell.init_syntax_highlighting" title="tenjint.plugins.interactive.TenjintShell.init_syntax_highlighting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_syntax_highlighting</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_term_title.html#tenjint.plugins.interactive.TenjintShell.init_term_title" title="tenjint.plugins.interactive.TenjintShell.init_term_title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_term_title</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.input_splitter.html#tenjint.plugins.interactive.TenjintShell.input_splitter" title="tenjint.plugins.interactive.TenjintShell.input_splitter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.input_splitter</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.input_transformer_manager.html#tenjint.plugins.interactive.TenjintShell.input_transformer_manager" title="tenjint.plugins.interactive.TenjintShell.input_transformer_manager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.input_transformer_manager</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ipython_dir.html#tenjint.plugins.interactive.TenjintShell.ipython_dir" title="tenjint.plugins.interactive.TenjintShell.ipython_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.ipython_dir</span></code></a></p></td>
+<td><p>A trait for unicode strings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.last_execution_result.html#tenjint.plugins.interactive.TenjintShell.last_execution_result" title="tenjint.plugins.interactive.TenjintShell.last_execution_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.last_execution_result</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.last_execution_succeeded.html#tenjint.plugins.interactive.TenjintShell.last_execution_succeeded" title="tenjint.plugins.interactive.TenjintShell.last_execution_succeeded"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.last_execution_succeeded</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.log.html#tenjint.plugins.interactive.TenjintShell.log" title="tenjint.plugins.interactive.TenjintShell.log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.log</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.logappend.html#tenjint.plugins.interactive.TenjintShell.logappend" title="tenjint.plugins.interactive.TenjintShell.logappend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.logappend</span></code></a></p></td>
+<td><p>A trait for unicode strings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.logfile.html#tenjint.plugins.interactive.TenjintShell.logfile" title="tenjint.plugins.interactive.TenjintShell.logfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.logfile</span></code></a></p></td>
+<td><p>A trait for unicode strings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.logstart.html#tenjint.plugins.interactive.TenjintShell.logstart" title="tenjint.plugins.interactive.TenjintShell.logstart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.logstart</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.magics_manager.html#tenjint.plugins.interactive.TenjintShell.magics_manager" title="tenjint.plugins.interactive.TenjintShell.magics_manager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.magics_manager</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.mouse_support.html#tenjint.plugins.interactive.TenjintShell.mouse_support" title="tenjint.plugins.interactive.TenjintShell.mouse_support"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.mouse_support</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.object_info_string_level.html#tenjint.plugins.interactive.TenjintShell.object_info_string_level" title="tenjint.plugins.interactive.TenjintShell.object_info_string_level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.object_info_string_level</span></code></a></p></td>
+<td><p>An enum whose value must be in a given sequence.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.parent.html#tenjint.plugins.interactive.TenjintShell.parent" title="tenjint.plugins.interactive.TenjintShell.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.parent</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.payload_manager.html#tenjint.plugins.interactive.TenjintShell.payload_manager" title="tenjint.plugins.interactive.TenjintShell.payload_manager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.payload_manager</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.pdb.html#tenjint.plugins.interactive.TenjintShell.pdb" title="tenjint.plugins.interactive.TenjintShell.pdb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.pdb</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prefilter_manager.html#tenjint.plugins.interactive.TenjintShell.prefilter_manager" title="tenjint.plugins.interactive.TenjintShell.prefilter_manager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.prefilter_manager</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.profile.html#tenjint.plugins.interactive.TenjintShell.profile" title="tenjint.plugins.interactive.TenjintShell.profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.profile</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.profile_dir.html#tenjint.plugins.interactive.TenjintShell.profile_dir" title="tenjint.plugins.interactive.TenjintShell.profile_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.profile_dir</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompt_in1.html#tenjint.plugins.interactive.TenjintShell.prompt_in1" title="tenjint.plugins.interactive.TenjintShell.prompt_in1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.prompt_in1</span></code></a></p></td>
+<td><p>A trait for unicode strings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompt_in2.html#tenjint.plugins.interactive.TenjintShell.prompt_in2" title="tenjint.plugins.interactive.TenjintShell.prompt_in2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.prompt_in2</span></code></a></p></td>
+<td><p>A trait for unicode strings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompt_out.html#tenjint.plugins.interactive.TenjintShell.prompt_out" title="tenjint.plugins.interactive.TenjintShell.prompt_out"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.prompt_out</span></code></a></p></td>
+<td><p>A trait for unicode strings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompts.html#tenjint.plugins.interactive.TenjintShell.prompts" title="tenjint.plugins.interactive.TenjintShell.prompts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.prompts</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompts_class.html#tenjint.plugins.interactive.TenjintShell.prompts_class" title="tenjint.plugins.interactive.TenjintShell.prompts_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.prompts_class</span></code></a></p></td>
+<td><p>A trait whose value must be a subclass of a specified class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompts_pad_left.html#tenjint.plugins.interactive.TenjintShell.prompts_pad_left" title="tenjint.plugins.interactive.TenjintShell.prompts_pad_left"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.prompts_pad_left</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.pt_cli.html#tenjint.plugins.interactive.TenjintShell.pt_cli" title="tenjint.plugins.interactive.TenjintShell.pt_cli"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.pt_cli</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.pylab_gui_select.html#tenjint.plugins.interactive.TenjintShell.pylab_gui_select" title="tenjint.plugins.interactive.TenjintShell.pylab_gui_select"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.pylab_gui_select</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.quiet.html#tenjint.plugins.interactive.TenjintShell.quiet" title="tenjint.plugins.interactive.TenjintShell.quiet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.quiet</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.rl_next_input.html#tenjint.plugins.interactive.TenjintShell.rl_next_input" title="tenjint.plugins.interactive.TenjintShell.rl_next_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.rl_next_input</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.separate_in.html#tenjint.plugins.interactive.TenjintShell.separate_in" title="tenjint.plugins.interactive.TenjintShell.separate_in"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.separate_in</span></code></a></p></td>
+<td><p>A Unicode subclass to validate separate_in, separate_out, etc.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.separate_out.html#tenjint.plugins.interactive.TenjintShell.separate_out" title="tenjint.plugins.interactive.TenjintShell.separate_out"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.separate_out</span></code></a></p></td>
+<td><p>A Unicode subclass to validate separate_in, separate_out, etc.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.separate_out2.html#tenjint.plugins.interactive.TenjintShell.separate_out2" title="tenjint.plugins.interactive.TenjintShell.separate_out2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.separate_out2</span></code></a></p></td>
+<td><p>A Unicode subclass to validate separate_in, separate_out, etc.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.should_raise.html#tenjint.plugins.interactive.TenjintShell.should_raise" title="tenjint.plugins.interactive.TenjintShell.should_raise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.should_raise</span></code></a></p></td>
+<td><p>A casting version of the boolean trait.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.show_rewritten_input.html#tenjint.plugins.interactive.TenjintShell.show_rewritten_input" title="tenjint.plugins.interactive.TenjintShell.show_rewritten_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.show_rewritten_input</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.simple_prompt.html#tenjint.plugins.interactive.TenjintShell.simple_prompt" title="tenjint.plugins.interactive.TenjintShell.simple_prompt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.simple_prompt</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.space_for_menu.html#tenjint.plugins.interactive.TenjintShell.space_for_menu" title="tenjint.plugins.interactive.TenjintShell.space_for_menu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.space_for_menu</span></code></a></p></td>
+<td><p>An int trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.sphinxify_docstring.html#tenjint.plugins.interactive.TenjintShell.sphinxify_docstring" title="tenjint.plugins.interactive.TenjintShell.sphinxify_docstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.sphinxify_docstring</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.term_title.html#tenjint.plugins.interactive.TenjintShell.term_title" title="tenjint.plugins.interactive.TenjintShell.term_title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.term_title</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.term_title_format.html#tenjint.plugins.interactive.TenjintShell.term_title_format" title="tenjint.plugins.interactive.TenjintShell.term_title_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.term_title_format</span></code></a></p></td>
+<td><p>A trait for unicode strings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.true_color.html#tenjint.plugins.interactive.TenjintShell.true_color" title="tenjint.plugins.interactive.TenjintShell.true_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.true_color</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.user_global_ns.html#tenjint.plugins.interactive.TenjintShell.user_global_ns" title="tenjint.plugins.interactive.TenjintShell.user_global_ns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.user_global_ns</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.utf8_banner.html#tenjint.plugins.interactive.TenjintShell.utf8_banner" title="tenjint.plugins.interactive.TenjintShell.utf8_banner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.utf8_banner</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.wildcards_case_sensitive.html#tenjint.plugins.interactive.TenjintShell.wildcards_case_sensitive" title="tenjint.plugins.interactive.TenjintShell.wildcards_case_sensitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.wildcards_case_sensitive</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.xmode.html#tenjint.plugins.interactive.TenjintShell.xmode" title="tenjint.plugins.interactive.TenjintShell.xmode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.xmode</span></code></a></p></td>
+<td><p>An enum of strings where the case should be ignored.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.__init__.html#tenjint.plugins.interactive.TenjintShell.__init__" title="tenjint.plugins.interactive.TenjintShell.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.__init__</span></code></a>(**kwargs)</p></td>
+<td><p>Create a configurable given a config config.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.add_traits.html#tenjint.plugins.interactive.TenjintShell.add_traits" title="tenjint.plugins.interactive.TenjintShell.add_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.add_traits</span></code></a>(**traits)</p></td>
+<td><p>Dynamically add trait attributes to the HasTraits instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ask_exit.html#tenjint.plugins.interactive.TenjintShell.ask_exit" title="tenjint.plugins.interactive.TenjintShell.ask_exit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.ask_exit</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ask_yes_no.html#tenjint.plugins.interactive.TenjintShell.ask_yes_no" title="tenjint.plugins.interactive.TenjintShell.ask_yes_no"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.ask_yes_no</span></code></a>(prompt[, default, …])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.atexit_operations.html#tenjint.plugins.interactive.TenjintShell.atexit_operations" title="tenjint.plugins.interactive.TenjintShell.atexit_operations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.atexit_operations</span></code></a>()</p></td>
+<td><p>This will be executed at the time of exit.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.auto_rewrite_input.html#tenjint.plugins.interactive.TenjintShell.auto_rewrite_input" title="tenjint.plugins.interactive.TenjintShell.auto_rewrite_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.auto_rewrite_input</span></code></a>(cmd)</p></td>
+<td><p>Overridden from the parent class to use fancy rewriting prompt</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.check_complete.html#tenjint.plugins.interactive.TenjintShell.check_complete" title="tenjint.plugins.interactive.TenjintShell.check_complete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.check_complete</span></code></a>(code)</p></td>
+<td><p>Return whether a block of code is ready to execute, or should be continued</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_config_rst_doc.html#tenjint.plugins.interactive.TenjintShell.class_config_rst_doc" title="tenjint.plugins.interactive.TenjintShell.class_config_rst_doc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.class_config_rst_doc</span></code></a>()</p></td>
+<td><p>Generate rST documentation for this class’ config options.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_config_section.html#tenjint.plugins.interactive.TenjintShell.class_config_section" title="tenjint.plugins.interactive.TenjintShell.class_config_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.class_config_section</span></code></a>()</p></td>
+<td><p>Get the config class config section</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_get_help.html#tenjint.plugins.interactive.TenjintShell.class_get_help" title="tenjint.plugins.interactive.TenjintShell.class_get_help"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.class_get_help</span></code></a>([inst])</p></td>
+<td><p>Get the help string for this class in ReST format.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_get_trait_help.html#tenjint.plugins.interactive.TenjintShell.class_get_trait_help" title="tenjint.plugins.interactive.TenjintShell.class_get_trait_help"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.class_get_trait_help</span></code></a>(trait[, inst])</p></td>
+<td><p>Get the help string for a single trait.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_own_trait_events.html#tenjint.plugins.interactive.TenjintShell.class_own_trait_events" title="tenjint.plugins.interactive.TenjintShell.class_own_trait_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.class_own_trait_events</span></code></a>(name)</p></td>
+<td><p>Get a dict of all event handlers defined on this class, not a parent.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_own_traits.html#tenjint.plugins.interactive.TenjintShell.class_own_traits" title="tenjint.plugins.interactive.TenjintShell.class_own_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.class_own_traits</span></code></a>(**metadata)</p></td>
+<td><p>Get a dict of all the traitlets defined on this class, not a parent.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_print_help.html#tenjint.plugins.interactive.TenjintShell.class_print_help" title="tenjint.plugins.interactive.TenjintShell.class_print_help"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.class_print_help</span></code></a>([inst])</p></td>
+<td><p>Get the help string for a single trait and print it.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_trait_names.html#tenjint.plugins.interactive.TenjintShell.class_trait_names" title="tenjint.plugins.interactive.TenjintShell.class_trait_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.class_trait_names</span></code></a>(**metadata)</p></td>
+<td><p>Get a list of all the names of this class’ traits.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.class_traits.html#tenjint.plugins.interactive.TenjintShell.class_traits" title="tenjint.plugins.interactive.TenjintShell.class_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.class_traits</span></code></a>(**metadata)</p></td>
+<td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.cleanup.html#tenjint.plugins.interactive.TenjintShell.cleanup" title="tenjint.plugins.interactive.TenjintShell.cleanup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.cleanup</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.clear_instance.html#tenjint.plugins.interactive.TenjintShell.clear_instance" title="tenjint.plugins.interactive.TenjintShell.clear_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.clear_instance</span></code></a>()</p></td>
+<td><p>unset _instance for this class and singleton parents.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.clear_main_mod_cache.html#tenjint.plugins.interactive.TenjintShell.clear_main_mod_cache" title="tenjint.plugins.interactive.TenjintShell.clear_main_mod_cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.clear_main_mod_cache</span></code></a>()</p></td>
+<td><p>Clear the cache of main modules.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.complete.html#tenjint.plugins.interactive.TenjintShell.complete" title="tenjint.plugins.interactive.TenjintShell.complete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.complete</span></code></a>(text[, line, cursor_pos])</p></td>
+<td><p>Return the completed text and a list of completions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.debugger.html#tenjint.plugins.interactive.TenjintShell.debugger" title="tenjint.plugins.interactive.TenjintShell.debugger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.debugger</span></code></a>([force])</p></td>
+<td><p>Call the pdb debugger.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.define_macro.html#tenjint.plugins.interactive.TenjintShell.define_macro" title="tenjint.plugins.interactive.TenjintShell.define_macro"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.define_macro</span></code></a>(name, themacro)</p></td>
+<td><p>Define a new macro</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.del_var.html#tenjint.plugins.interactive.TenjintShell.del_var" title="tenjint.plugins.interactive.TenjintShell.del_var"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.del_var</span></code></a>(varname[, by_name])</p></td>
+<td><p>Delete a variable from the various namespaces, so that, as far as possible, we’re not keeping any hidden references to it.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.drop_by_id.html#tenjint.plugins.interactive.TenjintShell.drop_by_id" title="tenjint.plugins.interactive.TenjintShell.drop_by_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.drop_by_id</span></code></a>(variables)</p></td>
+<td><p>Remove a dict of variables from the user namespace, if they are the same as the values in the dictionary.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.enable_gui.html#tenjint.plugins.interactive.TenjintShell.enable_gui" title="tenjint.plugins.interactive.TenjintShell.enable_gui"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.enable_gui</span></code></a>([gui])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.enable_matplotlib.html#tenjint.plugins.interactive.TenjintShell.enable_matplotlib" title="tenjint.plugins.interactive.TenjintShell.enable_matplotlib"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.enable_matplotlib</span></code></a>([gui])</p></td>
+<td><p>Enable interactive matplotlib and inline figure support.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.enable_pylab.html#tenjint.plugins.interactive.TenjintShell.enable_pylab" title="tenjint.plugins.interactive.TenjintShell.enable_pylab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.enable_pylab</span></code></a>([gui, import_all, …])</p></td>
+<td><p>Activate pylab support at runtime.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.enable_win_unicode_console.html#tenjint.plugins.interactive.TenjintShell.enable_win_unicode_console" title="tenjint.plugins.interactive.TenjintShell.enable_win_unicode_console"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.enable_win_unicode_console</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ev.html#tenjint.plugins.interactive.TenjintShell.ev" title="tenjint.plugins.interactive.TenjintShell.ev"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.ev</span></code></a>(expr)</p></td>
+<td><p>Evaluate python expression expr in user namespace.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.ex.html#tenjint.plugins.interactive.TenjintShell.ex" title="tenjint.plugins.interactive.TenjintShell.ex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.ex</span></code></a>(cmd)</p></td>
+<td><p>Execute a normal python statement in user namespace.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.excepthook.html#tenjint.plugins.interactive.TenjintShell.excepthook" title="tenjint.plugins.interactive.TenjintShell.excepthook"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.excepthook</span></code></a>(etype, value, tb)</p></td>
+<td><p>One more defense for GUI apps that call sys.excepthook.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.extract_input_lines.html#tenjint.plugins.interactive.TenjintShell.extract_input_lines" title="tenjint.plugins.interactive.TenjintShell.extract_input_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.extract_input_lines</span></code></a>(range_str)</p></td>
+<td><p>Return as a string a set of input history slices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.find_cell_magic.html#tenjint.plugins.interactive.TenjintShell.find_cell_magic" title="tenjint.plugins.interactive.TenjintShell.find_cell_magic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.find_cell_magic</span></code></a>(magic_name)</p></td>
+<td><p>Find and return a cell magic by name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.find_line_magic.html#tenjint.plugins.interactive.TenjintShell.find_line_magic" title="tenjint.plugins.interactive.TenjintShell.find_line_magic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.find_line_magic</span></code></a>(magic_name)</p></td>
+<td><p>Find and return a line magic by name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.find_magic.html#tenjint.plugins.interactive.TenjintShell.find_magic" title="tenjint.plugins.interactive.TenjintShell.find_magic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.find_magic</span></code></a>(magic_name[, magic_kind])</p></td>
+<td><p>Find and return a magic of the given type by name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.find_user_code.html#tenjint.plugins.interactive.TenjintShell.find_user_code" title="tenjint.plugins.interactive.TenjintShell.find_user_code"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.find_user_code</span></code></a>(target[, raw, …])</p></td>
+<td><p>Get a code string from history, file, url, or a string or macro.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.get_exception_only.html#tenjint.plugins.interactive.TenjintShell.get_exception_only" title="tenjint.plugins.interactive.TenjintShell.get_exception_only"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.get_exception_only</span></code></a>([exc_tuple])</p></td>
+<td><p>Return as a string (ending with a newline) the exception that just occurred, without any traceback.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.get_ipython.html#tenjint.plugins.interactive.TenjintShell.get_ipython" title="tenjint.plugins.interactive.TenjintShell.get_ipython"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.get_ipython</span></code></a>()</p></td>
+<td><p>Return the currently running IPython instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.getoutput.html#tenjint.plugins.interactive.TenjintShell.getoutput" title="tenjint.plugins.interactive.TenjintShell.getoutput"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.getoutput</span></code></a>(cmd[, split, depth])</p></td>
+<td><p>Get output (possibly including stderr) from a subprocess.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.has_trait.html#tenjint.plugins.interactive.TenjintShell.has_trait" title="tenjint.plugins.interactive.TenjintShell.has_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.has_trait</span></code></a>(name)</p></td>
+<td><p>Returns True if the object has a trait with the specified name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.hold_trait_notifications.html#tenjint.plugins.interactive.TenjintShell.hold_trait_notifications" title="tenjint.plugins.interactive.TenjintShell.hold_trait_notifications"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.hold_trait_notifications</span></code></a>()</p></td>
+<td><p>Context manager for bundling trait change notifications and cross validation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_alias.html#tenjint.plugins.interactive.TenjintShell.init_alias" title="tenjint.plugins.interactive.TenjintShell.init_alias"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_alias</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_builtins.html#tenjint.plugins.interactive.TenjintShell.init_builtins" title="tenjint.plugins.interactive.TenjintShell.init_builtins"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_builtins</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_completer.html#tenjint.plugins.interactive.TenjintShell.init_completer" title="tenjint.plugins.interactive.TenjintShell.init_completer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_completer</span></code></a>()</p></td>
+<td><p>Initialize the completion machinery.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_create_namespaces.html#tenjint.plugins.interactive.TenjintShell.init_create_namespaces" title="tenjint.plugins.interactive.TenjintShell.init_create_namespaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_create_namespaces</span></code></a>([…])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_data_pub</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_deprecation_warnings.html#tenjint.plugins.interactive.TenjintShell.init_deprecation_warnings" title="tenjint.plugins.interactive.TenjintShell.init_deprecation_warnings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_deprecation_warnings</span></code></a>()</p></td>
+<td><p>register default filter for deprecation warning.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_display_formatter.html#tenjint.plugins.interactive.TenjintShell.init_display_formatter" title="tenjint.plugins.interactive.TenjintShell.init_display_formatter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_display_formatter</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_display_pub.html#tenjint.plugins.interactive.TenjintShell.init_display_pub" title="tenjint.plugins.interactive.TenjintShell.init_display_pub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_display_pub</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_displayhook.html#tenjint.plugins.interactive.TenjintShell.init_displayhook" title="tenjint.plugins.interactive.TenjintShell.init_displayhook"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_displayhook</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_encoding.html#tenjint.plugins.interactive.TenjintShell.init_encoding" title="tenjint.plugins.interactive.TenjintShell.init_encoding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_encoding</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_environment.html#tenjint.plugins.interactive.TenjintShell.init_environment" title="tenjint.plugins.interactive.TenjintShell.init_environment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_environment</span></code></a>()</p></td>
+<td><p>Any changes we need to make to the user’s environment.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_events.html#tenjint.plugins.interactive.TenjintShell.init_events" title="tenjint.plugins.interactive.TenjintShell.init_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_events</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_extension_manager.html#tenjint.plugins.interactive.TenjintShell.init_extension_manager" title="tenjint.plugins.interactive.TenjintShell.init_extension_manager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_extension_manager</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_history.html#tenjint.plugins.interactive.TenjintShell.init_history" title="tenjint.plugins.interactive.TenjintShell.init_history"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_history</span></code></a>()</p></td>
+<td><p>Sets up the command history, and starts regular autosaves.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_hooks.html#tenjint.plugins.interactive.TenjintShell.init_hooks" title="tenjint.plugins.interactive.TenjintShell.init_hooks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_hooks</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_inspector.html#tenjint.plugins.interactive.TenjintShell.init_inspector" title="tenjint.plugins.interactive.TenjintShell.init_inspector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_inspector</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_instance_attrs.html#tenjint.plugins.interactive.TenjintShell.init_instance_attrs" title="tenjint.plugins.interactive.TenjintShell.init_instance_attrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_instance_attrs</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_io.html#tenjint.plugins.interactive.TenjintShell.init_io" title="tenjint.plugins.interactive.TenjintShell.init_io"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_io</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_ipython_dir.html#tenjint.plugins.interactive.TenjintShell.init_ipython_dir" title="tenjint.plugins.interactive.TenjintShell.init_ipython_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_ipython_dir</span></code></a>(ipython_dir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_logger.html#tenjint.plugins.interactive.TenjintShell.init_logger" title="tenjint.plugins.interactive.TenjintShell.init_logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_logger</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_logstart.html#tenjint.plugins.interactive.TenjintShell.init_logstart" title="tenjint.plugins.interactive.TenjintShell.init_logstart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_logstart</span></code></a>()</p></td>
+<td><p>Initialize logging in case it was requested at the command line.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_magics.html#tenjint.plugins.interactive.TenjintShell.init_magics" title="tenjint.plugins.interactive.TenjintShell.init_magics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_magics</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_payload.html#tenjint.plugins.interactive.TenjintShell.init_payload" title="tenjint.plugins.interactive.TenjintShell.init_payload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_payload</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_pdb.html#tenjint.plugins.interactive.TenjintShell.init_pdb" title="tenjint.plugins.interactive.TenjintShell.init_pdb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_pdb</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_prefilter.html#tenjint.plugins.interactive.TenjintShell.init_prefilter" title="tenjint.plugins.interactive.TenjintShell.init_prefilter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_prefilter</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_profile_dir.html#tenjint.plugins.interactive.TenjintShell.init_profile_dir" title="tenjint.plugins.interactive.TenjintShell.init_profile_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_profile_dir</span></code></a>(profile_dir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_prompt_toolkit_cli.html#tenjint.plugins.interactive.TenjintShell.init_prompt_toolkit_cli" title="tenjint.plugins.interactive.TenjintShell.init_prompt_toolkit_cli"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_prompt_toolkit_cli</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_prompts.html#tenjint.plugins.interactive.TenjintShell.init_prompts" title="tenjint.plugins.interactive.TenjintShell.init_prompts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_prompts</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_pushd_popd_magic.html#tenjint.plugins.interactive.TenjintShell.init_pushd_popd_magic" title="tenjint.plugins.interactive.TenjintShell.init_pushd_popd_magic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_pushd_popd_magic</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_readline.html#tenjint.plugins.interactive.TenjintShell.init_readline" title="tenjint.plugins.interactive.TenjintShell.init_readline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_readline</span></code></a>()</p></td>
+<td><p>DEPRECATED</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_sys_modules.html#tenjint.plugins.interactive.TenjintShell.init_sys_modules" title="tenjint.plugins.interactive.TenjintShell.init_sys_modules"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_sys_modules</span></code></a>()</p></td>
+<td><p>Explicitly overwrite <code class="xref py py-mod docutils literal notranslate"><span class="pre">IPython.core.interactiveshell</span></code> to do nothing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_traceback_handlers.html#tenjint.plugins.interactive.TenjintShell.init_traceback_handlers" title="tenjint.plugins.interactive.TenjintShell.init_traceback_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_traceback_handlers</span></code></a>(…)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_user_ns.html#tenjint.plugins.interactive.TenjintShell.init_user_ns" title="tenjint.plugins.interactive.TenjintShell.init_user_ns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_user_ns</span></code></a>()</p></td>
+<td><p>Initialize all user-visible namespaces to their minimum defaults.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.init_virtualenv.html#tenjint.plugins.interactive.TenjintShell.init_virtualenv" title="tenjint.plugins.interactive.TenjintShell.init_virtualenv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.init_virtualenv</span></code></a>()</p></td>
+<td><p>Add a virtualenv to sys.path so the user can import modules from it.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.initialized.html#tenjint.plugins.interactive.TenjintShell.initialized" title="tenjint.plugins.interactive.TenjintShell.initialized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.initialized</span></code></a>()</p></td>
+<td><p>Has an instance been created?</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.inputhook.html#tenjint.plugins.interactive.TenjintShell.inputhook" title="tenjint.plugins.interactive.TenjintShell.inputhook"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.inputhook</span></code></a>(context)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.instance.html#tenjint.plugins.interactive.TenjintShell.instance" title="tenjint.plugins.interactive.TenjintShell.instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.instance</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Returns a global instance of this class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.interact.html#tenjint.plugins.interactive.TenjintShell.interact" title="tenjint.plugins.interactive.TenjintShell.interact"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.interact</span></code></a>([display_banner])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.magic.html#tenjint.plugins.interactive.TenjintShell.magic" title="tenjint.plugins.interactive.TenjintShell.magic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.magic</span></code></a>(arg_s)</p></td>
+<td><p>DEPRECATED.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.mainloop.html#tenjint.plugins.interactive.TenjintShell.mainloop" title="tenjint.plugins.interactive.TenjintShell.mainloop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.mainloop</span></code></a>([local_ns, module, …])</p></td>
+<td><p>Embeds IPython into a running python program.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.mktempfile.html#tenjint.plugins.interactive.TenjintShell.mktempfile" title="tenjint.plugins.interactive.TenjintShell.mktempfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.mktempfile</span></code></a>([data, prefix])</p></td>
+<td><p>Make a new tempfile and return its filename.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.new_main_mod.html#tenjint.plugins.interactive.TenjintShell.new_main_mod" title="tenjint.plugins.interactive.TenjintShell.new_main_mod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.new_main_mod</span></code></a>(filename, modname)</p></td>
+<td><p>Return a new ‘main’ module object for user code execution.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.notify_change.html#tenjint.plugins.interactive.TenjintShell.notify_change" title="tenjint.plugins.interactive.TenjintShell.notify_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.notify_change</span></code></a>(change)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.object_inspect.html#tenjint.plugins.interactive.TenjintShell.object_inspect" title="tenjint.plugins.interactive.TenjintShell.object_inspect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.object_inspect</span></code></a>(oname[, …])</p></td>
+<td><p>Get object info about oname</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.object_inspect_mime.html#tenjint.plugins.interactive.TenjintShell.object_inspect_mime" title="tenjint.plugins.interactive.TenjintShell.object_inspect_mime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.object_inspect_mime</span></code></a>(oname[, …])</p></td>
+<td><p>Get object info as a mimebundle of formatted representations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.object_inspect_text.html#tenjint.plugins.interactive.TenjintShell.object_inspect_text" title="tenjint.plugins.interactive.TenjintShell.object_inspect_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.object_inspect_text</span></code></a>(oname[, …])</p></td>
+<td><p>Get object info as formatted text</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.observe.html#tenjint.plugins.interactive.TenjintShell.observe" title="tenjint.plugins.interactive.TenjintShell.observe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.observe</span></code></a>(handler[, names, type])</p></td>
+<td><p>Setup a handler to be called when a trait changes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.on_trait_change.html#tenjint.plugins.interactive.TenjintShell.on_trait_change" title="tenjint.plugins.interactive.TenjintShell.on_trait_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.on_trait_change</span></code></a>([handler, …])</p></td>
+<td><p>DEPRECATED: Setup a handler to be called when a trait changes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.pre_prompt.html#tenjint.plugins.interactive.TenjintShell.pre_prompt" title="tenjint.plugins.interactive.TenjintShell.pre_prompt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.pre_prompt</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prepare_user_module.html#tenjint.plugins.interactive.TenjintShell.prepare_user_module" title="tenjint.plugins.interactive.TenjintShell.prepare_user_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.prepare_user_module</span></code></a>([…])</p></td>
+<td><p>Prepare the module and namespace in which user code will be run.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.prompt_for_code.html#tenjint.plugins.interactive.TenjintShell.prompt_for_code" title="tenjint.plugins.interactive.TenjintShell.prompt_for_code"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.prompt_for_code</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.push.html#tenjint.plugins.interactive.TenjintShell.push" title="tenjint.plugins.interactive.TenjintShell.push"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.push</span></code></a>(variables[, interactive])</p></td>
+<td><p>Inject a group of variables into the IPython user namespace.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.refresh_style.html#tenjint.plugins.interactive.TenjintShell.refresh_style" title="tenjint.plugins.interactive.TenjintShell.refresh_style"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.refresh_style</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.register_magic_function.html#tenjint.plugins.interactive.TenjintShell.register_magic_function" title="tenjint.plugins.interactive.TenjintShell.register_magic_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.register_magic_function</span></code></a>(func[, …])</p></td>
+<td><p>Expose a standalone function as magic function for IPython.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.register_post_execute.html#tenjint.plugins.interactive.TenjintShell.register_post_execute" title="tenjint.plugins.interactive.TenjintShell.register_post_execute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.register_post_execute</span></code></a>(func)</p></td>
+<td><p>DEPRECATED: Use ip.events.register(‘post_run_cell’, func)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.reset.html#tenjint.plugins.interactive.TenjintShell.reset" title="tenjint.plugins.interactive.TenjintShell.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.reset</span></code></a>([new_session])</p></td>
+<td><p>Clear all internal namespaces, and attempt to release references to user objects.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.reset_selective.html#tenjint.plugins.interactive.TenjintShell.reset_selective" title="tenjint.plugins.interactive.TenjintShell.reset_selective"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.reset_selective</span></code></a>([regex])</p></td>
+<td><p>Clear selective variables from internal namespaces based on a specified regular expression.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.restore_sys_module_state.html#tenjint.plugins.interactive.TenjintShell.restore_sys_module_state" title="tenjint.plugins.interactive.TenjintShell.restore_sys_module_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.restore_sys_module_state</span></code></a>()</p></td>
+<td><p>Restore the state of the sys module.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.run_ast_nodes.html#tenjint.plugins.interactive.TenjintShell.run_ast_nodes" title="tenjint.plugins.interactive.TenjintShell.run_ast_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.run_ast_nodes</span></code></a>(nodelist, cell_name)</p></td>
+<td><p>Run a sequence of AST nodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.run_cell.html#tenjint.plugins.interactive.TenjintShell.run_cell" title="tenjint.plugins.interactive.TenjintShell.run_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.run_cell</span></code></a>(raw_cell[, …])</p></td>
+<td><p>Run a complete IPython cell.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.run_cell_magic.html#tenjint.plugins.interactive.TenjintShell.run_cell_magic" title="tenjint.plugins.interactive.TenjintShell.run_cell_magic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.run_cell_magic</span></code></a>(magic_name, …)</p></td>
+<td><p>Execute the given cell magic.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.run_code.html#tenjint.plugins.interactive.TenjintShell.run_code" title="tenjint.plugins.interactive.TenjintShell.run_code"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.run_code</span></code></a>(code_obj[, result])</p></td>
+<td><p>Execute a code object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.run_line_magic.html#tenjint.plugins.interactive.TenjintShell.run_line_magic" title="tenjint.plugins.interactive.TenjintShell.run_line_magic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.run_line_magic</span></code></a>(magic_name, line)</p></td>
+<td><p>Execute the given line magic.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.runcode.html#tenjint.plugins.interactive.TenjintShell.runcode" title="tenjint.plugins.interactive.TenjintShell.runcode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.runcode</span></code></a>(code_obj[, result])</p></td>
+<td><p>Execute a code object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.safe_execfile.html#tenjint.plugins.interactive.TenjintShell.safe_execfile" title="tenjint.plugins.interactive.TenjintShell.safe_execfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.safe_execfile</span></code></a>(fname, *where[, …])</p></td>
+<td><p>A safe version of the builtin execfile().</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.safe_execfile_ipy.html#tenjint.plugins.interactive.TenjintShell.safe_execfile_ipy" title="tenjint.plugins.interactive.TenjintShell.safe_execfile_ipy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.safe_execfile_ipy</span></code></a>(fname[, …])</p></td>
+<td><p>Like safe_execfile, but for .ipy or .ipynb files with IPython syntax.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.safe_run_module.html#tenjint.plugins.interactive.TenjintShell.safe_run_module" title="tenjint.plugins.interactive.TenjintShell.safe_run_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.safe_run_module</span></code></a>(mod_name, where)</p></td>
+<td><p>A safe version of runpy.run_module().</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.save_sys_module_state.html#tenjint.plugins.interactive.TenjintShell.save_sys_module_state" title="tenjint.plugins.interactive.TenjintShell.save_sys_module_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.save_sys_module_state</span></code></a>()</p></td>
+<td><p>Save the state of hooks in the sys module.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.section_names.html#tenjint.plugins.interactive.TenjintShell.section_names" title="tenjint.plugins.interactive.TenjintShell.section_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.section_names</span></code></a>()</p></td>
+<td><p>return section names as a list</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_autoindent.html#tenjint.plugins.interactive.TenjintShell.set_autoindent" title="tenjint.plugins.interactive.TenjintShell.set_autoindent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.set_autoindent</span></code></a>([value])</p></td>
+<td><p>Set the autoindent flag.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_completer_frame.html#tenjint.plugins.interactive.TenjintShell.set_completer_frame" title="tenjint.plugins.interactive.TenjintShell.set_completer_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.set_completer_frame</span></code></a>([frame])</p></td>
+<td><p>Set the frame of the completer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_custom_completer.html#tenjint.plugins.interactive.TenjintShell.set_custom_completer" title="tenjint.plugins.interactive.TenjintShell.set_custom_completer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.set_custom_completer</span></code></a>(completer)</p></td>
+<td><p>Adds a new custom completer function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_custom_exc.html#tenjint.plugins.interactive.TenjintShell.set_custom_exc" title="tenjint.plugins.interactive.TenjintShell.set_custom_exc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.set_custom_exc</span></code></a>(exc_tuple, handler)</p></td>
+<td><p>Set a custom exception handler, which will be called if any of the exceptions in exc_tuple occur in the mainloop (specifically, in the run_code() method).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_hook.html#tenjint.plugins.interactive.TenjintShell.set_hook" title="tenjint.plugins.interactive.TenjintShell.set_hook"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.set_hook</span></code></a>(name,hook)</p></td>
+<td><p>IPython exposes some of its internal API as user-modifiable hooks.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_next_input.html#tenjint.plugins.interactive.TenjintShell.set_next_input" title="tenjint.plugins.interactive.TenjintShell.set_next_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.set_next_input</span></code></a>(s[, replace])</p></td>
+<td><p>Sets the ‘default’ input string for the next command line.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.set_trait.html#tenjint.plugins.interactive.TenjintShell.set_trait" title="tenjint.plugins.interactive.TenjintShell.set_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.set_trait</span></code></a>(name, value)</p></td>
+<td><p>Forcibly sets trait attribute, including read-only attributes.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.setup_instance</span></code>(*args, **kwargs)</p></td>
+<td><p>This is called <strong>before</strong> self.__init__ is called.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.show_banner.html#tenjint.plugins.interactive.TenjintShell.show_banner" title="tenjint.plugins.interactive.TenjintShell.show_banner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.show_banner</span></code></a>([banner])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.show_usage.html#tenjint.plugins.interactive.TenjintShell.show_usage" title="tenjint.plugins.interactive.TenjintShell.show_usage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.show_usage</span></code></a>()</p></td>
+<td><p>Show a usage message</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.show_usage_error.html#tenjint.plugins.interactive.TenjintShell.show_usage_error" title="tenjint.plugins.interactive.TenjintShell.show_usage_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.show_usage_error</span></code></a>(exc)</p></td>
+<td><p>Show a short message for UsageErrors</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.showindentationerror.html#tenjint.plugins.interactive.TenjintShell.showindentationerror" title="tenjint.plugins.interactive.TenjintShell.showindentationerror"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.showindentationerror</span></code></a>()</p></td>
+<td><p>Called by _run_cell when there’s an IndentationError in code entered at the prompt.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.showsyntaxerror.html#tenjint.plugins.interactive.TenjintShell.showsyntaxerror" title="tenjint.plugins.interactive.TenjintShell.showsyntaxerror"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.showsyntaxerror</span></code></a>([filename, …])</p></td>
+<td><p>Display the syntax error that just occurred.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.showtraceback.html#tenjint.plugins.interactive.TenjintShell.showtraceback" title="tenjint.plugins.interactive.TenjintShell.showtraceback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.showtraceback</span></code></a>([exc_tuple, …])</p></td>
+<td><p>Display the exception that just occurred.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.switch_doctest_mode.html#tenjint.plugins.interactive.TenjintShell.switch_doctest_mode" title="tenjint.plugins.interactive.TenjintShell.switch_doctest_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.switch_doctest_mode</span></code></a>(mode)</p></td>
+<td><p>Switch prompts to classic for %doctest_mode</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.system.html#tenjint.plugins.interactive.TenjintShell.system" title="tenjint.plugins.interactive.TenjintShell.system"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.system</span></code></a>(cmd)</p></td>
+<td><p>Call the given cmd in a subprocess using os.system on Windows or subprocess.call using the system shell on other platforms.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.system_piped.html#tenjint.plugins.interactive.TenjintShell.system_piped" title="tenjint.plugins.interactive.TenjintShell.system_piped"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.system_piped</span></code></a>(cmd)</p></td>
+<td><p>Call the given cmd in a subprocess, piping stdout/err</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.system_raw.html#tenjint.plugins.interactive.TenjintShell.system_raw" title="tenjint.plugins.interactive.TenjintShell.system_raw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.system_raw</span></code></a>(cmd)</p></td>
+<td><p>Call the given cmd in a subprocess using os.system on Windows or subprocess.call using the system shell on other platforms.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.trait_events.html#tenjint.plugins.interactive.TenjintShell.trait_events" title="tenjint.plugins.interactive.TenjintShell.trait_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.trait_events</span></code></a>([name])</p></td>
+<td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the event handlers of this class.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.trait_metadata</span></code>(traitname, key)</p></td>
+<td><p>Get metadata values for trait by key.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.trait_names.html#tenjint.plugins.interactive.TenjintShell.trait_names" title="tenjint.plugins.interactive.TenjintShell.trait_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.trait_names</span></code></a>(**metadata)</p></td>
+<td><p>Get a list of all the names of this class’ traits.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.traits.html#tenjint.plugins.interactive.TenjintShell.traits" title="tenjint.plugins.interactive.TenjintShell.traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.traits</span></code></a>(**metadata)</p></td>
+<td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.transform_ast.html#tenjint.plugins.interactive.TenjintShell.transform_ast" title="tenjint.plugins.interactive.TenjintShell.transform_ast"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.transform_ast</span></code></a>(node)</p></td>
+<td><p>Apply the AST transformations from self.ast_transformers</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.unobserve.html#tenjint.plugins.interactive.TenjintShell.unobserve" title="tenjint.plugins.interactive.TenjintShell.unobserve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.unobserve</span></code></a>(handler[, names, type])</p></td>
+<td><p>Remove a trait change handler.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.unobserve_all.html#tenjint.plugins.interactive.TenjintShell.unobserve_all" title="tenjint.plugins.interactive.TenjintShell.unobserve_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.unobserve_all</span></code></a>([name])</p></td>
+<td><p>Remove trait change handlers of any type for the specified name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.update_config.html#tenjint.plugins.interactive.TenjintShell.update_config" title="tenjint.plugins.interactive.TenjintShell.update_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.update_config</span></code></a>(config)</p></td>
+<td><p>Update config and load the new values</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.user_expressions.html#tenjint.plugins.interactive.TenjintShell.user_expressions" title="tenjint.plugins.interactive.TenjintShell.user_expressions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.user_expressions</span></code></a>(expressions)</p></td>
+<td><p>Evaluate a dict of expressions in the user’s namespace.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.var_expand.html#tenjint.plugins.interactive.TenjintShell.var_expand" title="tenjint.plugins.interactive.TenjintShell.var_expand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.var_expand</span></code></a>(cmd[, depth, formatter])</p></td>
+<td><p>Expand python variables in a string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.write.html#tenjint.plugins.interactive.TenjintShell.write" title="tenjint.plugins.interactive.TenjintShell.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.write</span></code></a>(data)</p></td>
+<td><p>DEPRECATED: Write a string to the default output</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.plugins.interactive.TenjintShell.write_err.html#tenjint.plugins.interactive.TenjintShell.write_err" title="tenjint.plugins.interactive.TenjintShell.write_err"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TenjintShell.write_err</span></code></a>(data)</p></td>
+<td><p>DEPRECATED: Write a string to the default error output</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tenjint.plugins.interactive.TenjintShell.active_eventloop.html" class="btn btn-neutral float-right" title="TenjintShell.active_eventloop" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tenjint.plugins.interactive.TenjintPrompts.rewrite_prompt_tokens.html" class="btn btn-neutral float-left" title="TenjintPrompts.rewrite_prompt_tokens" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

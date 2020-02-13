@@ -1,0 +1,6 @@
+TenjintShell.init\_pushd\_popd\_magic
+=====================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.init_pushd_popd_magic

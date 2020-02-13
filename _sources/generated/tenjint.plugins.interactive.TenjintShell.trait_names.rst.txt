@@ -1,0 +1,6 @@
+TenjintShell.trait\_names
+=========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.trait_names

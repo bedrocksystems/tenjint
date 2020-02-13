@@ -1,0 +1,6 @@
+Profiling.\_\_init\_\_
+======================
+
+.. currentmodule:: tenjint.debug
+
+.. automethod:: Profiling.__init__

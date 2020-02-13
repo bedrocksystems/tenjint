@@ -1,0 +1,6 @@
+TenjintShell.pdb
+================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.pdb

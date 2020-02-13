@@ -1,0 +1,41 @@
+PluginManager
+=============
+
+.. currentmodule:: tenjint.plugins.plugins
+
+.. autoclass:: PluginManager
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      PluginManager.__init__
+   
+      PluginManager.get_plugins_in_module
+   
+      PluginManager.import_and_load_directory
+   
+      PluginManager.import_and_load_file
+   
+      PluginManager.import_directory
+   
+      PluginManager.import_file
+   
+      PluginManager.load_module
+   
+      PluginManager.load_plugin
+   
+      PluginManager.load_user_plugins
+   
+      PluginManager.unload_all
+   
+      PluginManager.unload_plugin
+   
+   
+   

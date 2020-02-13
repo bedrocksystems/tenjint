@@ -1,0 +1,6 @@
+TenjintShell.hold\_trait\_notifications
+=======================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.hold_trait_notifications

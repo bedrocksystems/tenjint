@@ -1,0 +1,6 @@
+SingleStepPluginX86.produces
+============================
+
+.. currentmodule:: tenjint.plugins.singlestep
+
+.. autoattribute:: SingleStepPluginX86.produces

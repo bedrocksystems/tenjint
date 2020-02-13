@@ -1,0 +1,6 @@
+TenjintShell.set\_next\_input
+=============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.set_next_input

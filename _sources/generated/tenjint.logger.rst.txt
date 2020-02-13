@@ -1,0 +1,23 @@
+tenjint.logger
+==============
+
+.. rubric:: Description
+.. automodule:: tenjint.logger
+.. currentmodule:: tenjint.logger
+
+
+.. rubric:: Classes
+.. autosummary::
+    :toctree:
+    
+    LoggerMixin
+    
+
+
+
+.. rubric:: Functions
+.. autosummary::
+    :toctree:
+    
+    set_config
+    

@@ -1,0 +1,6 @@
+TenjintShell.register\_post\_execute
+====================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.register_post_execute

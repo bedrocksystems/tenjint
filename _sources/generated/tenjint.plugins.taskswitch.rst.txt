@@ -1,0 +1,20 @@
+tenjint.plugins.taskswitch
+==========================
+
+.. rubric:: Description
+.. automodule:: tenjint.plugins.taskswitch
+.. currentmodule:: tenjint.plugins.taskswitch
+
+
+.. rubric:: Classes
+.. autosummary::
+    :toctree:
+    
+    TaskSwitchPluginAarch64
+    
+    TaskSwitchPluginBase
+    
+    TaskSwitchPluginX86_64
+    
+
+

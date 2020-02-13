@@ -1,0 +1,6 @@
+Plugin.\_\_init\_\_
+===================
+
+.. currentmodule:: tenjint.plugins.plugins
+
+.. automethod:: Plugin.__init__

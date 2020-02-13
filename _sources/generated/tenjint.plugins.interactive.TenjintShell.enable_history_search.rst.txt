@@ -1,0 +1,6 @@
+TenjintShell.enable\_history\_search
+====================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.enable_history_search

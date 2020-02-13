@@ -1,0 +1,42 @@
+TaskSwitchPluginAarch64
+=======================
+
+.. currentmodule:: tenjint.plugins.taskswitch
+
+.. autoclass:: TaskSwitchPluginAarch64
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      TaskSwitchPluginAarch64.arch
+   
+      TaskSwitchPluginAarch64.name
+   
+      TaskSwitchPluginAarch64.os
+   
+      TaskSwitchPluginAarch64.produces
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      TaskSwitchPluginAarch64.__init__
+   
+      TaskSwitchPluginAarch64.cancel_event
+   
+      TaskSwitchPluginAarch64.load
+   
+      TaskSwitchPluginAarch64.request_event
+   
+      TaskSwitchPluginAarch64.uninit
+   
+   
+   

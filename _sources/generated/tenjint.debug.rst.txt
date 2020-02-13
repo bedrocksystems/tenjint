@@ -1,0 +1,27 @@
+tenjint.debug
+=============
+
+.. rubric:: Description
+.. automodule:: tenjint.debug
+.. currentmodule:: tenjint.debug
+
+
+.. rubric:: Classes
+.. autosummary::
+    :toctree:
+    
+    ExceptionHandling
+    
+    Profiling
+    
+
+
+
+.. rubric:: Functions
+.. autosummary::
+    :toctree:
+    
+    init
+    
+    uninit
+    

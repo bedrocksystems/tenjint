@@ -1,0 +1,6 @@
+EventPlugin.name
+================
+
+.. currentmodule:: tenjint.plugins.plugins
+
+.. autoattribute:: EventPlugin.name

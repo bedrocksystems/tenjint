@@ -1,0 +1,29 @@
+ServiceManager
+==============
+
+.. currentmodule:: tenjint.service
+
+.. autoclass:: ServiceManager
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      ServiceManager.__init__
+   
+      ServiceManager.get
+   
+      ServiceManager.register
+   
+      ServiceManager.unregister_by_name
+   
+      ServiceManager.unregister_by_object
+   
+   
+   

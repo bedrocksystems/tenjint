@@ -1,0 +1,6 @@
+TenjintShell.transform\_ast
+===========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.transform_ast

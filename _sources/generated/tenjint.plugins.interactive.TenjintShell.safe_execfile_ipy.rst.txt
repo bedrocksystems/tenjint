@@ -1,0 +1,6 @@
+TenjintShell.safe\_execfile\_ipy
+================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.safe_execfile_ipy

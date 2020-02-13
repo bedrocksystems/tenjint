@@ -1,0 +1,6 @@
+PathFinder.find\_spec
+=====================
+
+.. currentmodule:: tenjint.optimize
+
+.. automethod:: PathFinder.find_spec

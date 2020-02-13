@@ -1,0 +1,6 @@
+Event.producer
+==============
+
+.. currentmodule:: tenjint.event
+
+.. autoattribute:: Event.producer

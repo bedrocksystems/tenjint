@@ -1,0 +1,6 @@
+SystemEventBreakpoint.params
+============================
+
+.. currentmodule:: tenjint.api.api
+
+.. autoattribute:: SystemEventBreakpoint.params

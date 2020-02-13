@@ -1,0 +1,6 @@
+Event.params
+============
+
+.. currentmodule:: tenjint.event
+
+.. autoattribute:: Event.params

@@ -1,0 +1,6 @@
+TenjintShell.init\_logger
+=========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.init_logger

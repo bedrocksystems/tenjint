@@ -1,0 +1,6 @@
+PickleOutputManager.\_\_init\_\_
+================================
+
+.. currentmodule:: tenjint.output
+
+.. automethod:: PickleOutputManager.__init__

@@ -1,0 +1,6 @@
+LogTransformer.visit\_Expr
+==========================
+
+.. currentmodule:: tenjint.optimize
+
+.. automethod:: LogTransformer.visit_Expr

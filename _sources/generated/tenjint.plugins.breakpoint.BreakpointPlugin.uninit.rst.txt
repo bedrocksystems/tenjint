@@ -1,0 +1,6 @@
+BreakpointPlugin.uninit
+=======================
+
+.. currentmodule:: tenjint.plugins.breakpoint
+
+.. automethod:: BreakpointPlugin.uninit

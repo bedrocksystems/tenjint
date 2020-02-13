@@ -1,0 +1,6 @@
+InteractiveShell.load
+=====================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: InteractiveShell.load

@@ -1,0 +1,6 @@
+OperatingSystemWinX86\_64.get\_nearest\_symbol\_by\_address
+===========================================================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. automethod:: OperatingSystemWinX86_64.get_nearest_symbol_by_address

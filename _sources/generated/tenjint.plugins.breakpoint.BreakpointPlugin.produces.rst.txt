@@ -1,0 +1,6 @@
+BreakpointPlugin.produces
+=========================
+
+.. currentmodule:: tenjint.plugins.breakpoint
+
+.. autoattribute:: BreakpointPlugin.produces

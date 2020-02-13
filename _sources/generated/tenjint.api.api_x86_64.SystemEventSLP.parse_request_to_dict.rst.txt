@@ -1,0 +1,6 @@
+SystemEventSLP.parse\_request\_to\_dict
+=======================================
+
+.. currentmodule:: tenjint.api.api_x86_64
+
+.. automethod:: SystemEventSLP.parse_request_to_dict

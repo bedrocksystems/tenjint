@@ -1,0 +1,52 @@
+InteractiveShell
+================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoclass:: InteractiveShell
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      InteractiveShell.arch
+   
+      InteractiveShell.callbacks
+   
+      InteractiveShell.name
+   
+      InteractiveShell.os
+   
+      InteractiveShell.show_events
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      InteractiveShell.__init__
+   
+      InteractiveShell.cancel_callback
+   
+      InteractiveShell.cont
+   
+      InteractiveShell.get_context
+   
+      InteractiveShell.load
+   
+      InteractiveShell.request_callback
+   
+      InteractiveShell.request_shutdown
+   
+      InteractiveShell.shutdown
+   
+      InteractiveShell.uninit
+   
+   
+   

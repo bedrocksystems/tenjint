@@ -1,0 +1,6 @@
+TenjintShell.restore\_sys\_module\_state
+========================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.restore_sys_module_state

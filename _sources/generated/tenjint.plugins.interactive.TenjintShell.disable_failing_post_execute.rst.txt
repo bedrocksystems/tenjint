@@ -1,0 +1,6 @@
+TenjintShell.disable\_failing\_post\_execute
+============================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.disable_failing_post_execute

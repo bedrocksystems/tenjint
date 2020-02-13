@@ -1,0 +1,6 @@
+TenjintShell.set\_completer\_frame
+==================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.set_completer_frame

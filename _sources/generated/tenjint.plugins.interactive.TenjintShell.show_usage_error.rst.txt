@@ -1,0 +1,6 @@
+TenjintShell.show\_usage\_error
+===============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.show_usage_error

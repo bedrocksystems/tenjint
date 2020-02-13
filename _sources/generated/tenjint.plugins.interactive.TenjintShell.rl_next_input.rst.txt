@@ -1,0 +1,6 @@
+TenjintShell.rl\_next\_input
+============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.rl_next_input

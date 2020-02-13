@@ -1,0 +1,6 @@
+TenjintShell.ipython\_dir
+=========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.ipython_dir

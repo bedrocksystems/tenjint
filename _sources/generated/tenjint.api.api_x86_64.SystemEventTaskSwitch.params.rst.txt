@@ -1,0 +1,6 @@
+SystemEventTaskSwitch.params
+============================
+
+.. currentmodule:: tenjint.api.api_x86_64
+
+.. autoattribute:: SystemEventTaskSwitch.params

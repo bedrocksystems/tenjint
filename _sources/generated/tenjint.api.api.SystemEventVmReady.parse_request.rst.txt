@@ -1,0 +1,6 @@
+SystemEventVmReady.parse\_request
+=================================
+
+.. currentmodule:: tenjint.api.api
+
+.. automethod:: SystemEventVmReady.parse_request

@@ -1,0 +1,48 @@
+VirtualMachineAARCH64
+=====================
+
+.. currentmodule:: tenjint.plugins.machine
+
+.. autoclass:: VirtualMachineAARCH64
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      VirtualMachineAARCH64.arch
+   
+      VirtualMachineAARCH64.cpu_count
+   
+      VirtualMachineAARCH64.name
+   
+      VirtualMachineAARCH64.os
+   
+      VirtualMachineAARCH64.phys_mem_size
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      VirtualMachineAARCH64.__init__
+   
+      VirtualMachineAARCH64.cpu
+   
+      VirtualMachineAARCH64.load
+   
+      VirtualMachineAARCH64.phys_mem_read
+   
+      VirtualMachineAARCH64.phys_mem_write
+   
+      VirtualMachineAARCH64.uninit
+   
+      VirtualMachineAARCH64.vtop
+   
+   
+   

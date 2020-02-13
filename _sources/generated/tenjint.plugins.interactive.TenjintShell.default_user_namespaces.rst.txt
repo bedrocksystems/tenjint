@@ -1,0 +1,6 @@
+TenjintShell.default\_user\_namespaces
+======================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.default_user_namespaces

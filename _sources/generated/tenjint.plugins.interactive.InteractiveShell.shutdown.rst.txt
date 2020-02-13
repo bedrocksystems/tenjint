@@ -1,0 +1,6 @@
+InteractiveShell.shutdown
+=========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: InteractiveShell.shutdown

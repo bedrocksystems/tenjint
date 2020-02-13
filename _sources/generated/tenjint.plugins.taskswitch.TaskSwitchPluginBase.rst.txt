@@ -1,0 +1,42 @@
+TaskSwitchPluginBase
+====================
+
+.. currentmodule:: tenjint.plugins.taskswitch
+
+.. autoclass:: TaskSwitchPluginBase
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      TaskSwitchPluginBase.arch
+   
+      TaskSwitchPluginBase.name
+   
+      TaskSwitchPluginBase.os
+   
+      TaskSwitchPluginBase.produces
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      TaskSwitchPluginBase.__init__
+   
+      TaskSwitchPluginBase.cancel_event
+   
+      TaskSwitchPluginBase.load
+   
+      TaskSwitchPluginBase.request_event
+   
+      TaskSwitchPluginBase.uninit
+   
+   
+   

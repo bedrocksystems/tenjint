@@ -1,0 +1,6 @@
+SingleStepPluginBase.cancel\_event
+==================================
+
+.. currentmodule:: tenjint.plugins.singlestep
+
+.. automethod:: SingleStepPluginBase.cancel_event

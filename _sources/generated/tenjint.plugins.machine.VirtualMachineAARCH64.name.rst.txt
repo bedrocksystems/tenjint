@@ -1,0 +1,6 @@
+VirtualMachineAARCH64.name
+==========================
+
+.. currentmodule:: tenjint.plugins.machine
+
+.. autoattribute:: VirtualMachineAARCH64.name

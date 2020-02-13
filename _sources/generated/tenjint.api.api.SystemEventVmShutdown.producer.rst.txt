@@ -1,0 +1,6 @@
+SystemEventVmShutdown.producer
+==============================
+
+.. currentmodule:: tenjint.api.api
+
+.. autoattribute:: SystemEventVmShutdown.producer

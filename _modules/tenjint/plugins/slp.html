@@ -1,0 +1,387 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tenjint.plugins.slp &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rpi.html">tenjint Raspberry Pi 4 Image</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>tenjint.plugins.slp</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tenjint.plugins.slp</h1><div class="highlight"><pre>
+<span></span><span class="c1"># tenjint - VMI Python Library</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2020 Bedrock Systems, Inc</span>
+<span class="c1"># Authors: Jonas Pfoh &lt;jonas@bedrocksystems.com&gt;</span>
+<span class="c1">#          Sebastian Vogl &lt;sebastian@bedrocksystems.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License version 2 as published</span>
+<span class="c1"># by the Free Software Foundation.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+
+<span class="sd">&quot;&quot;&quot;Provides second level paging permission trapping and updating.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">plugins</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">api</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">event</span>
+
+<span class="k">class</span> <span class="nc">SLPPermUpdateViolation</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Emitted when invalid SLP permissions are used in an update request.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+<div class="viewcode-block" id="SLPPlugin"><a class="viewcode-back" href="../../../generated/tenjint.plugins.slp.SLPPlugin.html#tenjint.plugins.slp.SLPPlugin">[docs]</a><span class="k">class</span> <span class="nc">SLPPlugin</span><span class="p">(</span><span class="n">plugins</span><span class="o">.</span><span class="n">EventPlugin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;SLP Service</span>
+
+<span class="sd">    This plugin implements the SLP service and is responsible for handling</span>
+<span class="sd">    requests to update page permissions as well as requests for SLP permission</span>
+<span class="sd">    violations.</span>
+
+<span class="sd">    NOTE: This service does not concern itself with merging requests for</span>
+<span class="sd">    callbacks as this is done in the kernel.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_abstract</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">produces</span> <span class="o">=</span> <span class="p">[</span><span class="n">api</span><span class="o">.</span><span class="n">SystemEventSLP</span><span class="p">]</span>
+
+<div class="viewcode-block" id="SLPPlugin.__init__"><a class="viewcode-back" href="../../../generated/tenjint.plugins.slp.SLPPlugin.__init__.html#tenjint.plugins.slp.SLPPlugin.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request_id_cntr</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_requests</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slp_cb</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">EventCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slp_cb_func</span><span class="p">,</span> <span class="s2">&quot;SystemEventSLP&quot;</span><span class="p">,</span>
+                                           <span class="p">{</span><span class="s2">&quot;global_req&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;trap_r&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                                            <span class="s2">&quot;trap_w&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;trap_x&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">request_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slp_cb</span><span class="p">,</span> <span class="n">send_request</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">add_continue_hook</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cont_hook</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_perm_requests</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slp_events</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rwx_perm_request</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vm</span><span class="o">.</span><span class="n">cpu_count</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ss_cb</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vm</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ss_cb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">EventCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ss_cb_func</span><span class="p">,</span>
+                                                   <span class="s2">&quot;SystemEventSingleStep&quot;</span><span class="p">,</span>
+                                                   <span class="p">{</span><span class="s2">&quot;cpu_num&quot;</span><span class="p">:</span><span class="n">i</span><span class="p">}))</span></div>
+
+<div class="viewcode-block" id="SLPPlugin.uninit"><a class="viewcode-back" href="../../../generated/tenjint.plugins.slp.SLPPlugin.uninit.html#tenjint.plugins.slp.SLPPlugin.uninit">[docs]</a>    <span class="k">def</span> <span class="nf">uninit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">uninit</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_requests</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="p">(</span><span class="n">cpu_num</span><span class="p">,</span> <span class="n">global_req</span><span class="p">,</span> <span class="n">gfn</span><span class="p">,</span> <span class="n">num_pages</span><span class="p">,</span> <span class="n">trap_r</span><span class="p">,</span> <span class="n">trap_w</span><span class="p">,</span> <span class="n">trap_x</span><span class="p">)</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_update_feature_slp</span><span class="p">(</span><span class="n">cpu_num</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">global_req</span><span class="p">,</span> <span class="n">gfn</span><span class="p">,</span>
+                                              <span class="n">num_pages</span><span class="p">,</span> <span class="n">trap_r</span><span class="p">,</span> <span class="n">trap_w</span><span class="p">,</span> <span class="n">trap_x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_requests</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">cancel_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slp_cb</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slp_cb</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">remove_continue_hook</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cont_hook</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SLPPlugin.request_event"><a class="viewcode-back" href="../../../generated/tenjint.plugins.slp.SLPPlugin.request_event.html#tenjint.plugins.slp.SLPPlugin.request_event">[docs]</a>    <span class="k">def</span> <span class="nf">request_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Request SLP violation event</span>
+
+<span class="sd">        This function is called by the event manager when a</span>
+<span class="sd">        (:py:class:`api.SystemEventSLP`) is requested.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="p">[</span><span class="n">cpu_num</span><span class="p">,</span> <span class="n">global_req</span><span class="p">,</span> <span class="n">gfn</span><span class="p">,</span> <span class="n">num_pages</span><span class="p">,</span>
+         <span class="n">trap_r</span><span class="p">,</span> <span class="n">trap_w</span><span class="p">,</span> <span class="n">trap_x</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_cls</span><span class="o">.</span><span class="n">parse_request</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">request_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_id_cntr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request_id_cntr</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_update_feature_slp</span><span class="p">(</span><span class="n">cpu_num</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">global_req</span><span class="p">,</span> <span class="n">gfn</span><span class="p">,</span>
+                                          <span class="n">num_pages</span><span class="p">,</span> <span class="n">trap_r</span><span class="p">,</span> <span class="n">trap_w</span><span class="p">,</span> <span class="n">trap_x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_requests</span><span class="p">[</span><span class="n">request_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">cpu_num</span><span class="p">,</span> <span class="n">global_req</span><span class="p">,</span> <span class="n">gfn</span><span class="p">,</span> <span class="n">num_pages</span><span class="p">,</span>
+                                      <span class="n">trap_r</span><span class="p">,</span> <span class="n">trap_w</span><span class="p">,</span> <span class="n">trap_x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">request_id</span></div>
+
+<div class="viewcode-block" id="SLPPlugin.cancel_event"><a class="viewcode-back" href="../../../generated/tenjint.plugins.slp.SLPPlugin.cancel_event.html#tenjint.plugins.slp.SLPPlugin.cancel_event">[docs]</a>    <span class="k">def</span> <span class="nf">cancel_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Cancel SLP violation event</span>
+
+<span class="sd">        This function is called by the event manager when a</span>
+<span class="sd">        (:py:class:`api.SystemEventSLP`) is canceled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="p">(</span><span class="n">cpu_num</span><span class="p">,</span> <span class="n">global_req</span><span class="p">,</span> <span class="n">gfn</span><span class="p">,</span> <span class="n">num_pages</span><span class="p">,</span> <span class="n">trap_r</span><span class="p">,</span>
+            <span class="n">trap_w</span><span class="p">,</span> <span class="n">trap_x</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_requests</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">request_id</span><span class="p">)</span>
+        <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_update_feature_slp</span><span class="p">(</span><span class="n">cpu_num</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">global_req</span><span class="p">,</span> <span class="n">gfn</span><span class="p">,</span>
+                                          <span class="n">num_pages</span><span class="p">,</span> <span class="n">trap_r</span><span class="p">,</span> <span class="n">trap_w</span><span class="p">,</span> <span class="n">trap_x</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_slp_mutex_violation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prev_perms</span><span class="p">,</span> <span class="n">req_perms</span><span class="p">):</span>
+        <span class="n">merge</span> <span class="o">=</span> <span class="p">(</span><span class="n">req_perms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">prev_perms</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                 <span class="n">req_perms</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="n">prev_perms</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                 <span class="n">req_perms</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">or</span> <span class="n">prev_perms</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">merge</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">merge</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="SLPPlugin.update_permissions"><a class="viewcode-back" href="../../../generated/tenjint.plugins.slp.SLPPlugin.update_permissions.html#tenjint.plugins.slp.SLPPlugin.update_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">update_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gpa</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update page permissions for a given GPA</span>
+
+<span class="sd">        This function allows the caller to request page permissions to be</span>
+<span class="sd">        updated.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        gpa : int</span>
+<span class="sd">            The GPA for which permissions are requested</span>
+<span class="sd">        r : bool</span>
+<span class="sd">            Whether the page should be readable</span>
+<span class="sd">        w : bool</span>
+<span class="sd">            Whether the page should be writeable</span>
+<span class="sd">        x : bool</span>
+<span class="sd">            Whether the page should be executable</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        SLPPermUpdateViolation</span>
+<span class="sd">            If the call violates the W/X mutual exclusion rule</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gfn</span> <span class="o">=</span> <span class="n">gpa</span> <span class="o">&gt;&gt;</span> <span class="n">api</span><span class="o">.</span><span class="n">PAGE_SHIFT</span>
+        <span class="n">req_perms</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">gfn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perm_requests</span><span class="p">:</span>
+            <span class="n">prev_perms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perm_requests</span><span class="p">[</span><span class="n">gfn</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slp_mutex_violation</span><span class="p">(</span><span class="n">prev_perms</span><span class="p">,</span> <span class="n">req_perms</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">SLPPermUpdateViolation</span><span class="p">(</span><span class="s2">&quot;W/X mutual exclusion violated&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_perm_requests</span><span class="p">[</span><span class="n">gfn</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">req_perms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">prev_perms</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                        <span class="n">req_perms</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="n">prev_perms</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                        <span class="n">req_perms</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">or</span> <span class="n">prev_perms</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                                        <span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_slp_update</span><span class="p">(</span><span class="n">gpa</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">req_perms</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">w</span><span class="o">=</span><span class="n">req_perms</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="o">=</span><span class="n">req_perms</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;SLP: update_permissions: update 0x</span><span class="si">{:x}</span><span class="s2"> r=</span><span class="si">{}</span><span class="s2"> w=</span><span class="si">{}</span><span class="s2"> x=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gpa</span><span class="p">,</span> <span class="n">req_perms</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">req_perms</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">req_perms</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_perm_requests</span><span class="p">[</span><span class="n">gfn</span><span class="p">]</span> <span class="o">=</span> <span class="n">req_perms</span></div>
+
+    <span class="k">def</span> <span class="nf">_slp_cb_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slp_events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_ss_cb_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="p">(</span><span class="n">gfn</span><span class="p">,</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rwx_perm_request</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">cpu_num</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_permissions</span><span class="p">(</span><span class="n">gfn</span> <span class="o">&lt;&lt;</span> <span class="n">api</span><span class="o">.</span><span class="n">PAGE_SHIFT</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rwx_perm_request</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">cpu_num</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_disable_single_step</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">cpu_num</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_enable_single_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpu_num</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">request_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ss_cb</span><span class="p">[</span><span class="n">cpu_num</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_disable_single_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpu_num</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_manager</span><span class="o">.</span><span class="n">cancel_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ss_cb</span><span class="p">[</span><span class="n">cpu_num</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_merge_event_perms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slp_events</span><span class="p">:</span>
+            <span class="n">gfn</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">gpa</span> <span class="o">&gt;&gt;</span> <span class="n">api</span><span class="o">.</span><span class="n">PAGE_SHIFT</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">rwx</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rwx_perm_request</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">cpu_num</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Unexpected second RWX on same CPU&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">gfn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perm_requests</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_rwx_perm_request</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">cpu_num</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">gfn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perm_requests</span><span class="p">[</span><span class="n">gfn</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_rwx_perm_request</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">cpu_num</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">gfn</span><span class="p">,</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_perm_requests</span><span class="p">[</span><span class="n">gfn</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_enable_single_step</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">cpu_num</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">gfn</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perm_requests</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">r</span> <span class="ow">or</span> <span class="n">event</span><span class="o">.</span><span class="n">w</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_perm_requests</span><span class="p">[</span><span class="n">gfn</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_perm_requests</span><span class="p">[</span><span class="n">gfn</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_cont_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_merge_event_perms</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">gfn</span><span class="p">,</span> <span class="n">perms</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perm_requests</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">perms</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
+                <span class="n">gpa</span> <span class="o">=</span> <span class="n">gfn</span> <span class="o">&lt;&lt;</span> <span class="n">api</span><span class="o">.</span><span class="n">PAGE_SHIFT</span>
+                <span class="n">api</span><span class="o">.</span><span class="n">tenjint_api_slp_update</span><span class="p">(</span><span class="n">gpa</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">perms</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">w</span><span class="o">=</span><span class="n">perms</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="o">=</span><span class="n">perms</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;SLP: cont_hook: update 0x</span><span class="si">{:x}</span><span class="s2"> r=</span><span class="si">{}</span><span class="s2"> w=</span><span class="si">{}</span><span class="s2"> x=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gpa</span><span class="p">,</span> <span class="n">perms</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">perms</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">perms</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slp_events</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_perm_requests</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

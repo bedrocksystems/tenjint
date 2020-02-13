@@ -1,0 +1,6 @@
+TenjintShell.interact
+=====================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.interact

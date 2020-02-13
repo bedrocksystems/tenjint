@@ -1,0 +1,6 @@
+TenjintShell.ask\_exit
+======================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.ask_exit

@@ -1,0 +1,6 @@
+TaskSwitchPluginBase.name
+=========================
+
+.. currentmodule:: tenjint.plugins.taskswitch
+
+.. autoattribute:: TaskSwitchPluginBase.name

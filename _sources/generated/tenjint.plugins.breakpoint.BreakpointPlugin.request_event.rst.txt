@@ -1,0 +1,6 @@
+BreakpointPlugin.request\_event
+===============================
+
+.. currentmodule:: tenjint.plugins.breakpoint
+
+.. automethod:: BreakpointPlugin.request_event

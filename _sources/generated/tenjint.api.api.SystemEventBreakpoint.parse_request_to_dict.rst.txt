@@ -1,0 +1,6 @@
+SystemEventBreakpoint.parse\_request\_to\_dict
+==============================================
+
+.. currentmodule:: tenjint.api.api
+
+.. automethod:: SystemEventBreakpoint.parse_request_to_dict

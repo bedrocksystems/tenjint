@@ -1,0 +1,6 @@
+OperatingSystemBase.get\_nearest\_symbol\_by\_address
+=====================================================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. automethod:: OperatingSystemBase.get_nearest_symbol_by_address

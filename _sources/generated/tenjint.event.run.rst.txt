@@ -1,0 +1,6 @@
+run
+===
+
+.. currentmodule:: tenjint.event
+
+.. autofunction:: run

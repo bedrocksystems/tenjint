@@ -1,0 +1,293 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SystemEventSLP &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SystemEventSLP.params" href="tenjint.api.api_x86_64.SystemEventSLP.params.html" />
+    <link rel="prev" title="LBRState.__init__" href="tenjint.api.api_x86_64.LBRState.__init__.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tenjint.event.html">tenjint.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.output.html">tenjint.output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.service.html">tenjint.service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.logger.html">tenjint.logger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.optimize.html">tenjint.optimize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.config.html">tenjint.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.debug.html">tenjint.debug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.tenjint.html">tenjint.tenjint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.machine.html">tenjint.plugins.machine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.operatingsystem.html">tenjint.plugins.operatingsystem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.singlestep.html">tenjint.plugins.singlestep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.breakpoint.html">tenjint.plugins.breakpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.slp.html">tenjint.plugins.slp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.taskswitch.html">tenjint.plugins.taskswitch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.interactive.html">tenjint.plugins.interactive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.plugins.plugins.html">tenjint.plugins.plugins</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="tenjint.api.api_x86_64.html">tenjint.api.api_x86_64</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tenjint.api.api_x86_64.LBRState.html">LBRState</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">SystemEventSLP</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.api.api_x86_64.SystemEventSLP.params.html">SystemEventSLP.params</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.api.api_x86_64.SystemEventSLP.producer.html">SystemEventSLP.producer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.api.api_x86_64.SystemEventSLP.__init__.html">SystemEventSLP.__init__</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.api.api_x86_64.SystemEventSLP.filter.html">SystemEventSLP.filter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.api.api_x86_64.SystemEventSLP.parse_request.html">SystemEventSLP.parse_request</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenjint.api.api_x86_64.SystemEventSLP.parse_request_to_dict.html">SystemEventSLP.parse_request_to_dict</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tenjint.api.api_x86_64.SystemEventTaskSwitch.html">SystemEventTaskSwitch</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.api.api.html">tenjint.api.api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenjint.api.api_aarch64.html">tenjint.api.api_aarch64</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rpi.html">tenjint Raspberry Pi 4 Image</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="tenjint.api.api_x86_64.html">tenjint.api.api_x86_64</a> &raquo;</li>
+        
+      <li>SystemEventSLP</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/generated/tenjint.api.api_x86_64.SystemEventSLP.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="systemeventslp">
+<h1>SystemEventSLP<a class="headerlink" href="#systemeventslp" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="tenjint.api.api_x86_64.SystemEventSLP">
+<em class="property">class </em><code class="sig-prename descclassname">tenjint.api.api_x86_64.</code><code class="sig-name descname">SystemEventSLP</code><span class="sig-paren">(</span><em class="sig-param">cpu_num</em>, <em class="sig-param">gva</em>, <em class="sig-param">gpa</em>, <em class="sig-param">r</em>, <em class="sig-param">w</em>, <em class="sig-param">x</em>, <em class="sig-param">rwx</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tenjint/api/api_x86_64.html#SystemEventSLP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tenjint.api.api_x86_64.SystemEventSLP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Emitted when an second level pagaing violation occurs.</p>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.api.api_x86_64.SystemEventSLP.params.html#tenjint.api.api_x86_64.SystemEventSLP.params" title="tenjint.api.api_x86_64.SystemEventSLP.params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SystemEventSLP.params</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.api.api_x86_64.SystemEventSLP.producer.html#tenjint.api.api_x86_64.SystemEventSLP.producer" title="tenjint.api.api_x86_64.SystemEventSLP.producer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SystemEventSLP.producer</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.api.api_x86_64.SystemEventSLP.__init__.html#tenjint.api.api_x86_64.SystemEventSLP.__init__" title="tenjint.api.api_x86_64.SystemEventSLP.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SystemEventSLP.__init__</span></code></a>(cpu_num, gva, gpa, …)</p></td>
+<td><p>Initialize self.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.api.api_x86_64.SystemEventSLP.filter.html#tenjint.api.api_x86_64.SystemEventSLP.filter" title="tenjint.api.api_x86_64.SystemEventSLP.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SystemEventSLP.filter</span></code></a>(cb_params, event)</p></td>
+<td><p>Event filter function</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tenjint.api.api_x86_64.SystemEventSLP.parse_request.html#tenjint.api.api_x86_64.SystemEventSLP.parse_request" title="tenjint.api.api_x86_64.SystemEventSLP.parse_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SystemEventSLP.parse_request</span></code></a>(**kwargs)</p></td>
+<td><p>Parse an event request using the event request params.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tenjint.api.api_x86_64.SystemEventSLP.parse_request_to_dict.html#tenjint.api.api_x86_64.SystemEventSLP.parse_request_to_dict" title="tenjint.api.api_x86_64.SystemEventSLP.parse_request_to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SystemEventSLP.parse_request_to_dict</span></code></a>(**kwargs)</p></td>
+<td><p>Parse an event request using the event request params.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tenjint.api.api_x86_64.SystemEventSLP.params.html" class="btn btn-neutral float-right" title="SystemEventSLP.params" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tenjint.api.api_x86_64.LBRState.__init__.html" class="btn btn-neutral float-left" title="LBRState.__init__" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

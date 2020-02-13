@@ -1,0 +1,6 @@
+SystemEventVmReady.producer
+===========================
+
+.. currentmodule:: tenjint.api.api
+
+.. autoattribute:: SystemEventVmReady.producer

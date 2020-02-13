@@ -1,0 +1,6 @@
+Breakpoint.\_\_init\_\_
+=======================
+
+.. currentmodule:: tenjint.plugins.breakpoint
+
+.. automethod:: Breakpoint.__init__

@@ -1,0 +1,6 @@
+TenjintShell.run\_cell
+======================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.run_cell

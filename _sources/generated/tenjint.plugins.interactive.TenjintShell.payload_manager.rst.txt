@@ -1,0 +1,6 @@
+TenjintShell.payload\_manager
+=============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.payload_manager

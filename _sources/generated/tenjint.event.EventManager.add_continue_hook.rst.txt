@@ -1,0 +1,6 @@
+EventManager.add\_continue\_hook
+================================
+
+.. currentmodule:: tenjint.event
+
+.. automethod:: EventManager.add_continue_hook

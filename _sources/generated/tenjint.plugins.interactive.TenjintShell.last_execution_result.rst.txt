@@ -1,0 +1,6 @@
+TenjintShell.last\_execution\_result
+====================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.last_execution_result

@@ -1,0 +1,20 @@
+tenjint.plugins.machine
+=======================
+
+.. rubric:: Description
+.. automodule:: tenjint.plugins.machine
+.. currentmodule:: tenjint.plugins.machine
+
+
+.. rubric:: Classes
+.. autosummary::
+    :toctree:
+    
+    VirtualMachineAARCH64
+    
+    VirtualMachineBase
+    
+    VirtualMachineX86_64
+    
+
+

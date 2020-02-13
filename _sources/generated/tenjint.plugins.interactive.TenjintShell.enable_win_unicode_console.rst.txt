@@ -1,0 +1,6 @@
+TenjintShell.enable\_win\_unicode\_console
+==========================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.enable_win_unicode_console

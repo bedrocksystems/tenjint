@@ -1,0 +1,291 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tenjint &mdash; tenjint 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/logo.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#">
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rpi.html">tenjint Raspberry Pi 4 Image</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">tenjint</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>tenjint</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tenjint">
+<h1>tenjint<a class="headerlink" href="#tenjint" title="Permalink to this headline">¶</a></h1>
+<p>This is the tenjint python library that runs within QEMU.  You will need further components in order to get tenjint working on your system.  These are modified versions of tools you may be familiar with, but be aware you must install the versions found in this repository.  These are:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.kernel.org/">Linux</a> (<a class="reference external" href="https://github.com/bedrocksystems/tenjint-linux">tenjint repository</a>)</p></li>
+<li><p><a class="reference external" href="https://www.qemu.org/">Qemu</a> (<a class="reference external" href="https://github.com/bedrocksystems/tenjint-qemu">tenjint repository</a>)</p></li>
+<li><p><a class="reference external" href="https://github.com/google/rekall">Rekall</a> (<a class="reference external" href="https://github.com/bedrocksystems/tenjint-rekall">tenjint repository</a>)</p></li>
+</ul>
+<p>These repositories can all be found within the tenjint GitHub project.  tenjint requires that you run a Linux distribution with our Linux kernel on an Intel processor with VT-x (for x86_64) or an ARMv8+ (for ARM64).</p>
+<div class="section" id="id3">
+<h2>Linux<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>We modified the KVM component within the <a class="reference external" href="https://www.kernel.org/">Linux kernel</a> in order to facilitate VMI for both x86_64 and ARM64.  We currently maintain <a class="reference external" href="https://github.com/bedrocksystems/tenjint-linux">two versions</a>, the vanilla v5.2.6 as well as the rpi-5.2.y branch for the Raspberry Pi 4.</p>
+</div>
+<div class="section" id="id4">
+<h2>Qemu<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>tenjint runs within the <a class="reference external" href="https://www.qemu.org/">Qemu</a> address space with the help of Cython.  Qemu has been <a class="reference external" href="https://github.com/bedrocksystems/tenjint-qemu">modified</a> to expose the VMI features in KVM to an interface that can be accessed by Cython (or any other library).  Please see the “Getting Started” section below for instructions on starting Qemu with tenjint.</p>
+</div>
+<div class="section" id="id6">
+<h2>Rekall<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://github.com/google/rekall">Rekall</a> is framework for memory forensics.  We leverage Rekall to apply semantic knowledge about the guest operating system when inspecting guest memory.  Rekall is generally used with static memory dumps, however we added a <a class="reference external" href="https://github.com/bedrocksystems/tenjint-rekall">plugin</a> that allows rekall to access the guest memory directly.  This allows Rekall to operate directly on the guest’s memory.</p>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>You must have compiled and installed the Linux kernel provided in the linux repository within the tenjint project.  Currently, we maintain two branches, v5.2.6-tenjint and rpi-5.2.y-tenjint.  The v5.2.6-tenjint branch builds upon the v5.2.6 Linux kernel tag and the rpi-5.2.y-tenjint branch builds upon the Raspberry Pi rpi-5.2.y branch and runs on the Raspberry Pi 4.  Instructions for building the Linux kernel can be found elsewhere online, but be sure you enable KVM support when configuring your kernel.</p>
+<p>We modified Qemu to accept two new machine properties, “vmi” and “vmi-configs” (these are included in the Qemu help text).  The “vmi” property is only available when “kvm” is selected as the Qemu accelerator.  This property allows you to enable vmi by passing “vmi=on” as a machine property.  The “vmi-configs” property is only available when vmi is enabled and is used for passing configuration options to tenjint.  For an example config file as well as an example for starting Qemu with tenjint, please see below.  Instructions for building Qemu can be found in the Qemu README file.</p>
+<p>Rekall must also be installed from our repository as it has been updated to be able to access the guest’s memory.  To install Rekall, run <cite>sudo python3 ./setup.py install</cite> from within Rekall’s repo root directory.  Depending on the guest OS, you may need to generate a rekall profile.  This is nessecary for Linux guest OSs.  For instructions on generating Rekall profiles, see tools/linux/README within the Rekall repository.</p>
+<p>Finally, in order to install tenjint, run <cite>sudo python3 ./setup.py install</cite> from this repositories base directory.  tenjint will automatically be run when Qemu is started with vmi enabled.  For usage examples, see below.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Sample Configuration File:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logging</span><span class="p">:</span>
+    <span class="n">version</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="n">disable_existing_loggers</span><span class="p">:</span> <span class="kc">False</span>
+<span class="n">formatters</span><span class="p">:</span>
+    <span class="n">simple</span><span class="p">:</span>
+    <span class="nb">format</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(name)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
+<span class="n">handlers</span><span class="p">:</span>
+    <span class="n">console</span><span class="p">:</span>
+    <span class="n">class</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span>
+    <span class="n">level</span><span class="p">:</span> <span class="n">DEBUG</span>
+    <span class="n">formatter</span><span class="p">:</span> <span class="n">simple</span>
+    <span class="n">stream</span><span class="p">:</span> <span class="n">ext</span><span class="p">:</span><span class="o">//</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+<span class="n">loggers</span><span class="p">:</span>
+    <span class="n">tenjint</span><span class="p">:</span>
+    <span class="n">level</span><span class="p">:</span> <span class="n">DEBUG</span>
+    <span class="n">handlers</span><span class="p">:</span> <span class="p">[</span><span class="n">console</span><span class="p">]</span>
+    <span class="n">propagate</span><span class="p">:</span> <span class="n">no</span>
+<span class="n">root</span><span class="p">:</span>
+    <span class="n">level</span><span class="p">:</span> <span class="n">DEBUG</span>
+    <span class="n">handlers</span><span class="p">:</span> <span class="p">[</span><span class="n">console</span><span class="p">]</span>
+<span class="n">PluginManager</span><span class="p">:</span>
+    <span class="n">plugin_dir</span><span class="p">:</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">/</span><span class="n">tenjint_plugins</span><span class="o">/</span>
+<span class="n">OperatingSystemConfig</span><span class="p">:</span>
+    <span class="n">rekall_profile</span><span class="p">:</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">/</span><span class="n">images</span><span class="o">/</span><span class="n">ubuntu_19_04_x86_64_5</span><span class="o">.</span><span class="mf">0.0</span><span class="o">-</span><span class="mi">36</span><span class="o">-</span><span class="n">generic</span><span class="o">.</span><span class="n">json</span>
+<span class="n">InteractiveShell</span><span class="p">:</span>
+    <span class="n">enable</span><span class="p">:</span> <span class="n">true</span>
+    <span class="n">wait</span><span class="p">:</span> <span class="n">true</span>
+</pre></div>
+</div>
+<p>Notice the “plugin_dir” in the “PluginManager” section, this is used to specify the location of all third-party plugins you wish to load.  Additionally, the “enable” option within the “InteractiveShell” section is used to enable the shell for interactive introspection.</p>
+<p>Qemu with tenjint enabled on x86_64:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ qemu-system-x86_64 -machine accel=kvm,vmi=on,vmi-configs=/home/user/tenjint_config.yml -no-hpet -rtc base=utc,clock=vm,driftfix=none -global kvm-pit.lost_tick_policy=discard -smp 2 -m 2048 -net none -loadvm analysis -hda /home/user/images/ubuntu_19_04_x86_64.qcow2 -monitor telnet:127.0.0.1:5555,server,nowait
+</pre></div>
+</div>
+<p>Qemu with tenjint enabled on ARM64:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ qemu-system-aarch64 -M virt,gic_version=3,accel=kvm,vmi=on,vmi-configs=/home/user/tenjint_config.yml -cpu host -smp 2 -m 2048 -rtc base=utc,clock=vm -bios /usr/share/qemu-efi/QEMU_EFI.fd -drive if=none,file=/home/user/images/ubuntu_19_04_aarch64.qcow2,id=hd0 -device virtio-blk-device,drive=hd0 -device e1000,netdev=net0 -netdev user,id=net0,hostfwd=tcp:127.0.0.1:5555-:22 -monitor tcp:localhost:4444,server,nowait -loadvm analysis
+</pre></div>
+</div>
+<p>Notice the clock options, these are recommended for use with tenjint.  Additionally, for now tenjint will only work when the guest is started from a snapshot.  Notice both examples assume a snapshot with the name “analysis” has already been created.</p>
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<p>The API reference can be found in the menu.</p>
+<p>The API can be used to write third-party plugins.  These plugins simply need to be copied into the plugin directory as specified in the configuration file.  See above for an example.</p>
+</div>
+<div class="section" id="contact">
+<h2>Contact<a class="headerlink" href="#contact" title="Permalink to this headline">¶</a></h2>
+<p>The tenjint maintainers can be contacted by emailing</p>
+<p><a class="reference external" href="mailto:tenjint&#37;&#52;&#48;bedrocksystems&#46;com">tenjint<span>&#64;</span>bedrocksystems<span>&#46;</span>com</a></p>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, BedRock Systems, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

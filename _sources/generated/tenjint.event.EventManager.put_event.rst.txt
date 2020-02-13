@@ -1,0 +1,6 @@
+EventManager.put\_event
+=======================
+
+.. currentmodule:: tenjint.event
+
+.. automethod:: EventManager.put_event

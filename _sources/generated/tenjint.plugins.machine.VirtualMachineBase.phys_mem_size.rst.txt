@@ -1,0 +1,6 @@
+VirtualMachineBase.phys\_mem\_size
+==================================
+
+.. currentmodule:: tenjint.plugins.machine
+
+.. autoproperty:: VirtualMachineBase.phys_mem_size

@@ -1,0 +1,6 @@
+TenjintShell.init\_environment
+==============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.init_environment

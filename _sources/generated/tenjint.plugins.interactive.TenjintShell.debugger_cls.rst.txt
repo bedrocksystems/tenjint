@@ -1,0 +1,6 @@
+TenjintShell.debugger\_cls
+==========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoproperty:: TenjintShell.debugger_cls

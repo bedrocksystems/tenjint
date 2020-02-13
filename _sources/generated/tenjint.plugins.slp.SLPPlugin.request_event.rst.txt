@@ -1,0 +1,6 @@
+SLPPlugin.request\_event
+========================
+
+.. currentmodule:: tenjint.plugins.slp
+
+.. automethod:: SLPPlugin.request_event

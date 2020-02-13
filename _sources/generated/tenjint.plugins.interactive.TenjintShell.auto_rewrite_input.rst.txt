@@ -1,0 +1,6 @@
+TenjintShell.auto\_rewrite\_input
+=================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.auto_rewrite_input

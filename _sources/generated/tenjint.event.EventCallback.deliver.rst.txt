@@ -1,0 +1,6 @@
+EventCallback.deliver
+=====================
+
+.. currentmodule:: tenjint.event
+
+.. automethod:: EventCallback.deliver

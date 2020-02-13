@@ -1,0 +1,6 @@
+TenjintShell.class\_print\_help
+===============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.class_print_help

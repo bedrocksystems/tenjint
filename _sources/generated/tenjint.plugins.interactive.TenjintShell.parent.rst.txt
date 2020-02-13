@@ -1,0 +1,6 @@
+TenjintShell.parent
+===================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.parent

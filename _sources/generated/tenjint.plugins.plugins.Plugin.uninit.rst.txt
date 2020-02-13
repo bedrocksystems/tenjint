@@ -1,0 +1,6 @@
+Plugin.uninit
+=============
+
+.. currentmodule:: tenjint.plugins.plugins
+
+.. automethod:: Plugin.uninit

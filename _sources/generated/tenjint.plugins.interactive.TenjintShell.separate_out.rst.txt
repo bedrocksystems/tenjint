@@ -1,0 +1,6 @@
+TenjintShell.separate\_out
+==========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.separate_out

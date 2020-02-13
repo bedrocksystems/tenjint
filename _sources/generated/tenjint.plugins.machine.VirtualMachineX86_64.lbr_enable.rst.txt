@@ -1,0 +1,6 @@
+VirtualMachineX86\_64.lbr\_enable
+=================================
+
+.. currentmodule:: tenjint.plugins.machine
+
+.. automethod:: VirtualMachineX86_64.lbr_enable

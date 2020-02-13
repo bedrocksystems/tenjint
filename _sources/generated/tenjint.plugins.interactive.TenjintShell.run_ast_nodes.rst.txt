@@ -1,0 +1,6 @@
+TenjintShell.run\_ast\_nodes
+============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.run_ast_nodes

@@ -1,0 +1,6 @@
+TenjintShell.alias\_manager
+===========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.alias_manager

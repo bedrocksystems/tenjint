@@ -1,0 +1,6 @@
+TenjintShell.cache\_size
+========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.cache_size

@@ -1,0 +1,6 @@
+OperatingSystemLinux.uninit
+===========================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. automethod:: OperatingSystemLinux.uninit

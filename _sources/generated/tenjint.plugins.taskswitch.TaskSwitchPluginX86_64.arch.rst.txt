@@ -1,0 +1,6 @@
+TaskSwitchPluginX86\_64.arch
+============================
+
+.. currentmodule:: tenjint.plugins.taskswitch
+
+.. autoattribute:: TaskSwitchPluginX86_64.arch

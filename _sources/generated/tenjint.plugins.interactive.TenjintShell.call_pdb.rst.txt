@@ -1,0 +1,6 @@
+TenjintShell.call\_pdb
+======================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoproperty:: TenjintShell.call_pdb

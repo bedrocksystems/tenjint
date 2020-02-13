@@ -1,0 +1,6 @@
+TenjintShell.input\_splitter
+============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.input_splitter

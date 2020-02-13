@@ -1,0 +1,6 @@
+TenjintShell.switch\_doctest\_mode
+==================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.switch_doctest_mode

@@ -1,0 +1,46 @@
+OperatingSystemBase
+===================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. autoclass:: OperatingSystemBase
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      OperatingSystemBase.arch
+   
+      OperatingSystemBase.name
+   
+      OperatingSystemBase.os
+   
+      OperatingSystemBase.session
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      OperatingSystemBase.__init__
+   
+      OperatingSystemBase.get_nearest_symbol_by_address
+   
+      OperatingSystemBase.get_symbol_address
+   
+      OperatingSystemBase.load
+   
+      OperatingSystemBase.process
+   
+      OperatingSystemBase.uninit
+   
+      OperatingSystemBase.vtop
+   
+   
+   

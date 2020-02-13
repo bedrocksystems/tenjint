@@ -1,0 +1,6 @@
+TenjintShell.showsyntaxerror
+============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.showsyntaxerror

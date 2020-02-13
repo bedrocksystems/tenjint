@@ -1,0 +1,6 @@
+CpuEvent.params
+===============
+
+.. currentmodule:: tenjint.event
+
+.. autoattribute:: CpuEvent.params

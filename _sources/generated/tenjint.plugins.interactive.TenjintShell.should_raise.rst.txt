@@ -1,0 +1,6 @@
+TenjintShell.should\_raise
+==========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.should_raise

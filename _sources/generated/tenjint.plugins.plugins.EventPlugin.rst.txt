@@ -1,0 +1,42 @@
+EventPlugin
+===========
+
+.. currentmodule:: tenjint.plugins.plugins
+
+.. autoclass:: EventPlugin
+
+   
+   
+   .. rubric:: Attributes
+   .. autosummary::
+      :toctree:
+   
+      EventPlugin.arch
+   
+      EventPlugin.name
+   
+      EventPlugin.os
+   
+      EventPlugin.produces
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      EventPlugin.__init__
+   
+      EventPlugin.cancel_event
+   
+      EventPlugin.load
+   
+      EventPlugin.request_event
+   
+      EventPlugin.uninit
+   
+   
+   

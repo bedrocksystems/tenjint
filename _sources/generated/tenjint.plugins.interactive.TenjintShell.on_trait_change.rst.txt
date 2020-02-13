@@ -1,0 +1,6 @@
+TenjintShell.on\_trait\_change
+==============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.on_trait_change

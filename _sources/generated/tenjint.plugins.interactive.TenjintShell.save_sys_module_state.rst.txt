@@ -1,0 +1,6 @@
+TenjintShell.save\_sys\_module\_state
+=====================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.save_sys_module_state

@@ -1,0 +1,6 @@
+TenjintShell.init\_profile\_dir
+===============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.init_profile_dir

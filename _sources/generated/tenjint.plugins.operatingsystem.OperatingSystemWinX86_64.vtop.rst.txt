@@ -1,0 +1,6 @@
+OperatingSystemWinX86\_64.vtop
+==============================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. automethod:: OperatingSystemWinX86_64.vtop

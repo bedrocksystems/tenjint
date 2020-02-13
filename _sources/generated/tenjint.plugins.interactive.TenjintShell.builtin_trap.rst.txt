@@ -1,0 +1,6 @@
+TenjintShell.builtin\_trap
+==========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.builtin_trap

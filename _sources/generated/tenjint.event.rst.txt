@@ -1,0 +1,33 @@
+tenjint.event
+=============
+
+.. rubric:: Description
+.. automodule:: tenjint.event
+.. currentmodule:: tenjint.event
+
+
+.. rubric:: Classes
+.. autosummary::
+    :toctree:
+    
+    CpuEvent
+    
+    Event
+    
+    EventCallback
+    
+    EventManager
+    
+
+
+
+.. rubric:: Functions
+.. autosummary::
+    :toctree:
+    
+    init
+    
+    run
+    
+    uninit
+    

@@ -1,0 +1,6 @@
+TenjintShell.system\_raw
+========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.system_raw

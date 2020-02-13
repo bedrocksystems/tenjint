@@ -1,0 +1,6 @@
+VirtualMachineBase.arch
+=======================
+
+.. currentmodule:: tenjint.plugins.machine
+
+.. autoattribute:: VirtualMachineBase.arch

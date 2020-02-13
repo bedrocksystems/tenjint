@@ -1,0 +1,6 @@
+TenjintShell.runcode
+====================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.runcode

@@ -1,0 +1,20 @@
+tenjint.tenjint
+===============
+
+.. rubric:: Description
+.. automodule:: tenjint.tenjint
+.. currentmodule:: tenjint.tenjint
+
+
+
+
+.. rubric:: Functions
+.. autosummary::
+    :toctree:
+    
+    init
+    
+    run
+    
+    uninit
+    

@@ -1,0 +1,6 @@
+TenjintShell.run\_line\_magic
+=============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.run_line_magic

@@ -1,0 +1,6 @@
+TenjintShell.safe\_run\_module
+==============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.safe_run_module

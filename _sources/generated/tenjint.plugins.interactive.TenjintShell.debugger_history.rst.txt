@@ -1,0 +1,6 @@
+TenjintShell.debugger\_history
+==============================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.debugger_history

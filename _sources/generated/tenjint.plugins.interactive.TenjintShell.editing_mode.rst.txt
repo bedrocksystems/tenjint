@@ -1,0 +1,6 @@
+TenjintShell.editing\_mode
+==========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.editing_mode

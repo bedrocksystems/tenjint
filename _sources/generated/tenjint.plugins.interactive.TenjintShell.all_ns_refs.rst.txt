@@ -1,0 +1,6 @@
+TenjintShell.all\_ns\_refs
+==========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoproperty:: TenjintShell.all_ns_refs

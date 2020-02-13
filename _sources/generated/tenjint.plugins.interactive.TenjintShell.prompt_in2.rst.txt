@@ -1,0 +1,6 @@
+TenjintShell.prompt\_in2
+========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.prompt_in2

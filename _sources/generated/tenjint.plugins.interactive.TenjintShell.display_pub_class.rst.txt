@@ -1,0 +1,6 @@
+TenjintShell.display\_pub\_class
+================================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. autoattribute:: TenjintShell.display_pub_class

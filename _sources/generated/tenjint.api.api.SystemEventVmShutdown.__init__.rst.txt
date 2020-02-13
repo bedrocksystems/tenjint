@@ -1,0 +1,6 @@
+SystemEventVmShutdown.\_\_init\_\_
+==================================
+
+.. currentmodule:: tenjint.api.api
+
+.. automethod:: SystemEventVmShutdown.__init__

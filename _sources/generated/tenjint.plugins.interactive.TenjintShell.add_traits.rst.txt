@@ -1,0 +1,6 @@
+TenjintShell.add\_traits
+========================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.add_traits

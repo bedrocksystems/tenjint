@@ -1,0 +1,6 @@
+TenjintShell.run\_code
+======================
+
+.. currentmodule:: tenjint.plugins.interactive
+
+.. automethod:: TenjintShell.run_code

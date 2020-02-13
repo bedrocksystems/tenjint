@@ -1,0 +1,6 @@
+OperatingSystemBase.os
+======================
+
+.. currentmodule:: tenjint.plugins.operatingsystem
+
+.. autoattribute:: OperatingSystemBase.os

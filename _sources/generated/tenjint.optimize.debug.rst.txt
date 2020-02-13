@@ -1,0 +1,6 @@
+debug
+=====
+
+.. currentmodule:: tenjint.optimize
+
+.. autofunction:: debug

@@ -1,0 +1,27 @@
+PathFinder
+==========
+
+.. currentmodule:: tenjint.optimize
+
+.. autoclass:: PathFinder
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Methods
+   .. autosummary::
+      :toctree:
+   
+      PathFinder.__init__
+   
+      PathFinder.find_module
+   
+      PathFinder.find_spec
+   
+      PathFinder.invalidate_caches
+   
+   
+   
