@@ -40,6 +40,7 @@ from .plugins import breakpoint
 from .plugins import interactive
 from .plugins import operatingsystem
 from .plugins import fargs
+from .plugins import finject
 
 def run(configs=None):
     """Initialize tenjint, start the event loop, and uninitialize tenjint after
@@ -70,6 +71,8 @@ def init(configs):
     pm.load_module(singlestep)
     pm.load_module(breakpoint)
     pm.load_module(fargs)
+    logger.debug("loading finject")
+    pm.load_module(finject)
     pm.load_module(interactive)
 
     logger.debug("Loading user plugins...")

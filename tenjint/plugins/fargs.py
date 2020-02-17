@@ -61,7 +61,7 @@ class FunctionArguments(plugins.Plugin):
         """
         raise NotImplementedError()
 
-    def _get_stack_pointer(self, cpu_num):
+    def get_stack_pointer(self, cpu_num):
         """Get the stack pointer on the given vCPU.
 
         Parameters
@@ -80,6 +80,40 @@ class FunctionArguments(plugins.Plugin):
             If their is not vCPU with this number.
         """
         raise NotImplementedError()
+
+    def set_stack_pointer(self, cpu_num, x):
+        """Set the stack pointer on the given vCPU.
+
+        Parameters
+        ----------
+        cpu_num : int
+            The number of the vCPU to use.
+        x : int
+            The new value of the stack pointer.
+
+        Raises
+        ------
+        ValueError
+            If their is not vCPU with this number.
+        """
+        raise NotImplementedError()
+
+    def sub_stack_pointer(self, cpu_num, x):
+        """Substract a value from the stack pointer.
+
+        Parameters
+        ----------
+        cpu_num : int
+            The number of the vCPU to use.
+        x : int
+            The value to substract.
+
+        Raises
+        ------
+        ValueError
+            If their is not vCPU with this number.
+        """
+        self.set_stack_pointer(cpu_num, self.get_stack_pointer(cpu_num) - x)
 
     def _make_room_stack(self, cpu_num, size, alignment=16):
         """Make some room on the stack for an arbitrary value.
@@ -107,7 +141,7 @@ class FunctionArguments(plugins.Plugin):
         ValueError
             If their is not vCPU with this number.
         """
-        sp = self._get_stack_pointer(cpu_num=cpu_num)
+        sp = self.get_stack_pointer(cpu_num=cpu_num)
         sp -= size
         sp -= (sp % alignment)
 
@@ -146,11 +180,15 @@ class FunctionArguments(plugins.Plugin):
             raise TypeError("Argument must be str or bytes")
 
         # Add zero byte to strings
-        if (type(x) == str and x[-1] != "\x00"):
-            x += "\x00"
+        if (type(x) == str):
+            if (x[-1] != "\x00"):
+                x += "\x00"
+            x = bytes(x, encoding="ascii")
 
-        sp = self._make_room_stack(self, cpu_num, len(x), alignment=alignment)
+        sp = self._make_room_stack(cpu_num, len(x), alignment=alignment)
         self._vm.mem_write(sp, x, cpu_num=cpu_num)
+        self._logger.debug("Wrote {} to 0x{:x}".format(x, sp))
+        self.set_stack_pointer(cpu_num, sp)
         return sp
 
     def set_arg(self, cpu_num, nr, x):
@@ -189,7 +227,7 @@ class FunctionArguments(plugins.Plugin):
         """
         raise NotImplementedError()
 
-    def set_return_value(self, cpu_num, x):
+    def set_return_value(self, cpu_num, x, update_stack=False):
         """Set the return value of a function call.
 
         Parameters
@@ -198,6 +236,9 @@ class FunctionArguments(plugins.Plugin):
             The number of the vCPU to use.
         x : int
             The value to set.
+        update_stack : bool
+            Whether to update the stack pointer. This is useful if we do not
+            alter an existing return address, but write a new one.
 
         Raises
         ------
@@ -253,9 +294,9 @@ class FunctionArgumentsLinuxX86(FunctionArguments):
         elif (nr == 1):
             return cpu.rsi
         elif (nr == 2):
-            return cpu.rcx
-        elif (nr == 3):
             return cpu.rdx
+        elif (nr == 3):
+            return cpu.rcx
         elif (nr == 4):
             return cpu.r8
         elif (nr == 5):
@@ -282,8 +323,11 @@ class FunctionArgumentsLinuxX86(FunctionArguments):
 
         raise RuntimeError("Unsupported vCPU mode")
 
-    def _get_stack_pointer(self, cpu_num):
+    def get_stack_pointer(self, cpu_num):
         return self._vm.cpu(cpu_num).rsp
+
+    def set_stack_pointer(self, cpu_num, x):
+        self._vm.cpu(cpu_num).rsp = x
 
     def _set_arg_x64(self, cpu_num, nr, x):
         cpu = self._vm.cpu(cpu_num)
@@ -293,25 +337,26 @@ class FunctionArgumentsLinuxX86(FunctionArguments):
         elif (nr == 1):
             cpu.rsi = x
         elif (nr == 2):
-            cpu.rcx = x
-        elif (nr == 3):
             cpu.rdx = x
+        elif (nr == 3):
+            cpu.rcx = x
         elif (nr == 4):
             cpu.r8 = x
         elif (nr == 5):
             cpu.r9 = x
         else:
             data = struct.pack("<Q", x)
-            self._vm.mem_write(cpu.rsp - ((nr - 5) * pointer_width), data,
+            self._vm.mem_write(cpu.rsp - ((nr - 5) * cpu.pointer_width), data,
                                cpu_num=cpu_num)
+            self.sub_stack_pointer(cpu_num, 8)
 
     def _set_arg_x86(self, cpu_num, nr, x):
         cpu = self._vm.cpu(cpu_num)
 
         data = struct.pack("<I", x)
-        data = self._vm.mem_write(cpu.rsp - ((nr + 1) * pointer_width),
+        data = self._vm.mem_write(cpu.rsp - ((nr + 1) * cpu.pointer_width),
                                   data, cpu_num=cpu_num)
-        return struct.unpack("<I", data)[0]
+        self.sub_stack_pointer(cpu_num, 4)
 
     def set_arg(self, cpu_num, nr, x):
         cpu = self._vm.cpu(cpu_num)
@@ -341,13 +386,17 @@ class FunctionArgumentsLinuxX86(FunctionArguments):
 
         raise RuntimeError("Unsupported vCPU mode")
 
-    def set_return_address(self, cpu_num, x):
+    def set_return_address(self, cpu_num, x, update_stack=False):
         cpu = self._vm.cpu(cpu_num)
 
         if cpu.is_ia32e and cpu.is_code_64:
             data = struct.pack("<Q", x)
+            if update_stack:
+                self.sub_stack_pointer(cpu_num, 8)
         elif cpu.is_paging_set and cpu.is_code_32:
             data = struct.pack("<I", x)
+            if update_stack:
+                self.sub_stack_pointer(cpu_num, 4)
 
         self._vm.mem_write(cpu.rsp, data, cpu_num=cpu_num)
 
@@ -380,13 +429,23 @@ class FunctionArgumentsLinuxAarch64(FunctionArguments):
         else:
             raise RuntimeError("Unsupported arg number")
 
-    def _get_stack_pointer(self, cpu_num):
+    def get_stack_pointer(self, cpu_num):
         cpu = self._vm.cpu(cpu_num)
 
         if cpu.el == 0:
             return cpu.sp_el0
         elif cpu.el == 1:
             return cpu.sp_el1
+
+        raise RuntimeError("Unsupported EL ({})".format(cpu.el))
+
+    def set_stack_pointer(self, cpu_num, x):
+        cpu = self._vm.cpu(cpu_num)
+
+        if cpu.el == 0:
+            cpu.sp_el0 = x
+        elif cpu.el == 1:
+            cpu.sp_el1 = x
 
         raise RuntimeError("Unsupported EL ({})".format(cpu.el))
 
@@ -423,7 +482,7 @@ class FunctionArgumentsLinuxAarch64(FunctionArguments):
         cpu = self._vm.cpu(cpu_num)
         return cpu.r30
 
-    def set_return_address(self, cpu_num, x):
+    def set_return_address(self, cpu_num, x, update_stack=False):
         cpu = self._vm.cpu(cpu_num)
         cpu.r30 = x
 
