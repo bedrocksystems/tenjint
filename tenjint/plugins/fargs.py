@@ -444,10 +444,12 @@ class FunctionArgumentsLinuxAarch64(FunctionArguments):
 
         if cpu.el == 0:
             cpu.sp_el0 = x
+            cpu.r31 = x
         elif cpu.el == 1:
             cpu.sp_el1 = x
-
-        raise RuntimeError("Unsupported EL ({})".format(cpu.el))
+            cpu.r31 = x
+        else:
+            raise RuntimeError("Unsupported EL ({})".format(cpu.el))
 
     def set_arg(self, cpu_num, nr, x):
         cpu = self._vm.cpu(cpu_num)

@@ -200,7 +200,7 @@ class FunctionCallInjectionBase(plugins.EventPlugin):
         self._fargs.set_return_address(cpu_num, ip, update_stack=True)
 
         # Set rip
-        cpu.rip = gva
+        cpu.instruction_pointer = gva
         self._logger.debug("Set RIP to {:#x}".format(gva))
 
         # Set BP
@@ -259,7 +259,7 @@ class FunctionCallInjectionLinuxX86(FunctionCallInjectionBase):
         new_waiting = []
         for (symbol, gva, args, tid, kernel) in self._waiting_injections:
             if kernel:
-                self._logger.debug("Setting userspace BP for syscall {}"
+                self._logger.debug("Setting kernel BP for syscall {}"
                                    "".format(self._vm.cpu(e.cpu_num).rax))
                 # Install cb
                 vaddr = self._os.get_symbol_address("linux!do_syscall_64")
@@ -276,6 +276,57 @@ class FunctionCallInjectionLinuxX86(FunctionCallInjectionBase):
                                    "".format(self._vm.cpu(e.cpu_num).rax))
                 # Install cb
                 gpa = self._vm.vtop(self._vm.cpu(e.cpu_num).rcx,
+                                    cpu_num=e.cpu_num)
+                cb = event.EventCallback(self._armed_cb,
+                                         event_name="SystemEventBreakpoint",
+                                         event_params={"gpa": gpa})
+
+                self._armed_injections.append((symbol, gva, args, tid, gpa, cb,
+                                               kernel))
+                self._event_manager.request_event(cb)
+            else:
+                new_waiting.append((symbol, gva, args, tid, kernel))
+
+        self._waiting_injections = new_waiting
+
+        if not self._waiting_injections:
+            self._event_manager.cancel_event(self._syscall_cb)
+
+class FunctionCallInjectionLinuxAarch64(FunctionCallInjectionBase):
+    """Function call injection for Linux on aarch64"""
+
+    _abstract = False
+    arch = api.Arch.AARCH64
+    os = api.OsType.OS_LINUX
+
+    def _install_syscall_cb(self):
+        if self._syscall_cb is not None and self._syscall_cb.active:
+            return
+
+        if self._syscall_cb is None:
+            vaddr = self._os.get_symbol_address("linux!el0_svc")
+            paddr = self._os.vtop(vaddr, kernel_address_space=True)
+            self._syscall_cb = event.EventCallback(self._syscall_bp,
+                                 event_name="SystemEventBreakpoint",
+                                 event_params={"gpa": paddr})
+
+        if not self._syscall_cb.active:
+            # Request
+            self._event_manager.request_event(self._syscall_cb)
+
+    def _syscall_bp(self, e):
+        proc = self._os.current_process(cpu_num=e.cpu_num)
+        ctid = proc.tid if hasattr(proc, "tid") else proc.pid
+
+        new_waiting = []
+        for (symbol, gva, args, tid, kernel) in self._waiting_injections:
+            if kernel:
+                self._inject(e.cpu_num, symbol, gva, *args)
+            elif (tid is None or ctid == tid):
+                self._logger.debug("Setting userspace BP for syscall {}"
+                                   "".format(self._vm.cpu(e.cpu_num).rax))
+                # Install cb
+                gpa = self._vm.vtop(self._vm.cpu(e.cpu_num).r22,
                                     cpu_num=e.cpu_num)
                 cb = event.EventCallback(self._armed_cb,
                                          event_name="SystemEventBreakpoint",

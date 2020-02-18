@@ -26,6 +26,8 @@ from . cimport tenjintapi
 from . import api
 from . import api_aarch64
 
+from libc.string cimport memcpy
+
 ctypedef signed char __s8
 ctypedef signed short __s16
 ctypedef signed int __s32
@@ -150,6 +152,23 @@ cdef extern from "arm/cpu.h":
 cdef extern from "arm/vmi_api.h":
     CPUARMState* vmi_api_get_cpu_state(uint32_t)
 
+cdef class Aarch64SavedState:
+    cdef uint64_t xregs[32]
+    cdef uint64_t pc
+    cdef uint64_t sp_el[4];
+
+    def __cinit__(self, state):
+        cdef CPUARMState *_state = (<Aarch64CpuState>state).state()
+        self.pc = _state.pc
+        memcpy(self.xregs, _state.xregs, sizeof(self.xregs))
+        memcpy(self.sp_el, _state.sp_el, sizeof(self.sp_el))
+
+    def restore(self, state):
+        cdef CPUARMState *_state = (<Aarch64CpuState>state).state()
+        _state.pc = self.pc
+        memcpy(_state.xregs, self.xregs, sizeof(_state.xregs))
+        memcpy(_state.sp_el, self.sp_el, sizeof(_state.sp_el))
+
 cdef class Aarch64CpuState:
     cdef CPUARMState *_qemu_arm_cpu_state
     cdef int32_t _dirty
@@ -161,6 +180,37 @@ cdef class Aarch64CpuState:
     cdef reset(self, CPUARMState *state):
         self._dirty = 0
         self._qemu_arm_cpu_state = state
+
+    cdef CPUARMState *state(self):
+        return self._qemu_arm_cpu_state
+
+    def save_state(self):
+        """Save the current state of the vCPU.
+
+        This function will return the current state of the vCPU.
+        Not all parts of the state will be saved, but only the general purpose
+        registers, the eip, and the efer. A saved state can be restored using
+        `restore_state`.
+
+        Returns
+        -------
+        Aarch64SavedState
+            The current state of the vCPU
+        """
+        return Aarch64SavedState(self)
+
+    def restore_state(self, state):
+        """Restore a previous vCPU state.
+
+        This function will restore a previously saved vCPU state. See
+        `save_state` fore details.
+
+        Parameters
+        -------
+        Aarch64SavedState
+            The state of the vCPU to restore.
+        """
+        state.restore(self)
 
     # virtual registers
     @property
