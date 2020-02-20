@@ -24,6 +24,7 @@ definitions of the API) that are specific for x86-64.
 """
 from . import api
 from .. import event
+from .. import service
 
 class LBRState(object):
     """Represents the state of the LBR."""
@@ -35,13 +36,30 @@ class LBRState(object):
         self.size = min(len(self.lbr_from), len(self.lbr_to))
 
     def __repr__(self):
+        # Try to get the OS
+        os = None
+        try:
+            os = service.get("OperatingSystem")
+        except (KeyError, ValueError):
+            pass
+
         result = "LBR State - TOS: {}\n".format(self.tos)
         result += "{}\n".format("-" * 46)
         for i in range(0, self.size):
             cur = (self.tos - i) % self.size
-            result += "[{:2d}]  {:#18x} -> {:#18x}\n".format(cur,
+            # Resolve symbols
+            if os is not None:
+                fsym = os.get_nearest_symbol_by_address(self.lbr_from[cur])
+                tsym = os.get_nearest_symbol_by_address(self.lbr_to[cur])
+                symbols = "\n      ({} -> {})".format(fsym[0] if fsym else "",
+                                                      tsym[0] if tsym else "")
+            else:
+                symbols = ""
+            # Print
+            result += "[{:2d}]  {:#18x} -> {:#18x}  {}\n".format(cur,
                                                              self.lbr_from[cur],
-                                                             self.lbr_to[cur])
+                                                             self.lbr_to[cur],
+                                                             symbols)
         return result
 
 class SystemEventTaskSwitch(event.CpuEvent):
