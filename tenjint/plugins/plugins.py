@@ -29,6 +29,8 @@ import types
 import inspect
 import importlib.machinery
 
+from collections import OrderedDict
+
 from .. import base
 from .. import api
 from .. import config
@@ -68,20 +70,57 @@ class Plugin(logger.LoggerMixin):
     must be None or of type OsType.
     """
 
+    path = None
+    """The path of the module containing the plugin.
+
+    This variable will be populated when the plugin is loaded. If the path to
+    the module containing the plugin is known, the variable will be set.
+    """
+
+    @classmethod
+    def get_name(cls):
+        """Get the name of the plugin.
+
+        Returns
+        -------
+        str
+            The name of the plugin.
+        """
+        return cls.__name__ if cls.name is None else cls.name
+
+    @classmethod
+    def loadable(cls):
+        """Check whether the plugin can be loaded.
+
+        This function will check whether the plugin can be loaded given the
+        current environment. For example, some plugins may only work with a
+        certain operating system (e.g. Linux) or a certain architecture
+        (e.g. x86).
+
+        Returns
+        -------
+        bool
+            True if the plugin can be loaded, False otherwise.
+        """
+        if cls._abstract:
+            return False
+        if cls.arch is not None and cls.arch != api.arch:
+            return False
+        if cls.os is not None and cls.os != api.os:
+            return False
+
+        return True
+
     @classmethod
     def load(cls, **kwargs):
         """Load function
 
         This function is called by the plugin manager to load the plugin.
         """
-        if cls._abstract:
-            return None
-        if cls.arch is not None and cls.arch != api.arch:
-            return None
-        if cls.os is not None and cls.os != api.os:
+        if not cls.loadable():
             return None
 
-        name = cls.__name__ if cls.name is None else cls.name
+        name = cls.get_name()
         logger.logger.debug("Loading plugin: {}".format(name))
         return cls(**kwargs)
 
@@ -213,19 +252,27 @@ class PluginManager(config.ConfigMixin, logger.LoggerMixin):
 
     def __init__(self):
         super().__init__()
-        self._loaded_plugins = list()
+        self._loaded_plugins = OrderedDict()
 
-    def load_plugin(self, cls, **kwargs):
+    def load_plugin(self, cls, path=None, reload=True, **kwargs):
         """Load the given plugin class.
 
         Parameters
         ----------
         cls : class
             The plugin class to load.
+        path : str
+            The path to the module containing the plugin.
+        reload : bool
+            Whether to reload an already existing module.
         """
+        if reload and cls.get_name() in self._loaded_plugins and cls.loadable():
+            self.unload_plugin(self._loaded_plugins[cls.get_name()])
+
         plugin = cls.load(**kwargs)
         if plugin is not None:
-            self._loaded_plugins.append(plugin)
+            plugin.path = path
+            self._loaded_plugins[plugin.name] = plugin
 
     def unload_plugin(self, plugin):
         """Unload the given plugin.
@@ -235,7 +282,7 @@ class PluginManager(config.ConfigMixin, logger.LoggerMixin):
         plugin : Plugin
             The plugin to unload.
         """
-        self._loaded_plugins.remove(plugin)
+        self._loaded_plugins.pop(plugin.name)
         plugin.uninit()
 
     def get_plugins_in_module(self, mod):
@@ -260,7 +307,7 @@ class PluginManager(config.ConfigMixin, logger.LoggerMixin):
 
         return result
 
-    def load_module(self, mod, **kwargs):
+    def load_module(self, mod, path=None, **kwargs):
         """Load all plugins contained in a module.
 
         This function will find and load all plugins in a module.  Any
@@ -270,9 +317,14 @@ class PluginManager(config.ConfigMixin, logger.LoggerMixin):
         ----------
         mod :  types.ModuleType
             The module to search.
+        path : str
+            The path to the module.
         """
+        if path is None and hasattr(mod, "__file__"):
+            path = mod.__file__
+
         for plugin in self.get_plugins_in_module(mod):
-            self.load_plugin(plugin, **kwargs)
+            self.load_plugin(plugin, path=path, **kwargs)
 
     def import_file(self, path, module_name=None):
         """Import a python source file.
@@ -315,7 +367,7 @@ class PluginManager(config.ConfigMixin, logger.LoggerMixin):
             The module name that the loaded source file should use.
         """
         mod = self.import_file(path, module_name=module_name)
-        self.load_module(mod, **kwargs)
+        self.load_module(mod, path=path, **kwargs)
 
     def import_directory(self, path, module_prefix=None, recursive=False):
         """Import all python source files in a directory.
@@ -336,7 +388,7 @@ class PluginManager(config.ConfigMixin, logger.LoggerMixin):
         Returns
         -------
         list
-            A list of python modules.
+            A list of tuples (python module, path)
         """
         result = []
         glob_path = os.path.join(path, "*.py")
@@ -348,7 +400,8 @@ class PluginManager(config.ConfigMixin, logger.LoggerMixin):
             mod_dir = ".".join(os.path.dirname(src_file[len(path):]).split("/"))
             mod_name = "{}{}.{}".format(module_prefix, mod_dir,
                                         os.path.splitext(src_file)[0])
-            result.append(self.import_file(src_file, module_name=mod_name))
+            result.append((self.import_file(src_file, module_name=mod_name),
+                           src_file))
 
         return result
 
@@ -369,9 +422,9 @@ class PluginManager(config.ConfigMixin, logger.LoggerMixin):
         recursive : bool
             Whether to consider subdirectories.
         """
-        for mod in self.import_directory(path, module_prefix=module_prefix,
-                                         recursive=recursive):
-            self.load_module(mod, **kwargs)
+        for mod, src in self.import_directory(path, module_prefix=module_prefix,
+                                              recursive=recursive):
+            self.load_module(mod, path=src, **kwargs)
 
     def load_user_plugins(self):
         """Load all user plugins specified in the configuration."""
@@ -385,7 +438,7 @@ class PluginManager(config.ConfigMixin, logger.LoggerMixin):
     def unload_all(self):
         """Unload all plugins."""
         while self._loaded_plugins:
-            plugin = self._loaded_plugins.pop()
+            _, plugin = self._loaded_plugins.popitem()
             plugin.uninit()
 
 def init():
