@@ -159,6 +159,9 @@ class ServiceManager(logger.LoggerMixin):
     def get(self, name):
         return self._service_registry[name]
 
+    def services(self):
+        return self._service_registry.keys()
+
 def manager():
     """Get the service manager.
 
