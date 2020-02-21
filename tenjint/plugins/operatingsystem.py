@@ -177,6 +177,10 @@ class OperatingSystemBase(plugins.Plugin):
                              self.session.kernel_address_space.read(addr,
                                                          self.pointer_width))[0]
 
+    def pslist(self):
+        for proc in self.session.plugins.pslist().filter_processes():
+            yield proc
+
     def process(self, pid=None, dtb=None):
         """Get a process running in the guest.
 
