@@ -31,7 +31,6 @@ import importlib.machinery
 
 from collections import OrderedDict
 
-from .. import base
 from .. import api
 from .. import config
 from .. import logger
