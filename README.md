@@ -16,7 +16,7 @@ Further documentation can be found at https://bedrocksystems.github.io/tenjint
 
 ## Linux
 
-We modified the KVM component within the Linux kernel in order to facilitate VMI for both x86_64 and ARM64.  We currently maintain two versions, the vanilla v5.2.6 as well as the rpi-5.2.y branch for the Raspberry Pi 4.
+We modified the KVM component within the Linux kernel in order to facilitate VMI for both x86_64 and ARM64.  We currently maintain two versions, the vanilla v5.5.8 as well as the rpi-5.2.y branch for the Raspberry Pi 4.
 
 ## Qemu
 
@@ -28,11 +28,11 @@ Rekall is framework for memory forensics.  We leverage Rekall to apply semantic 
 
 # Getting Started
 
-You must have compiled and installed the Linux kernel provided in the linux repository within the tenjint project.  Currently, we maintain two branches, v5.2.6-tenjint and rpi-5.2.y-tenjint.  The v5.2.6-tenjint branch builds upon the v5.2.6 Linux kernel tag and the rpi-5.2.y-tenjint branch builds upon the Raspberry Pi rpi-5.2.y branch and runs on the Raspberry Pi 4.  Instructions for building the Linux kernel can be found elsewhere online, but be sure you enable KVM support when configuring your kernel.
+You must have compiled and installed the Linux kernel provided in the linux repository within the tenjint project.  Currently, we maintain two branches, v5.5.8-tenjint and rpi-5.2.y-tenjint.  The v5.5.8-tenjint branch builds upon the v5.5.8 Linux kernel tag and the rpi-5.2.y-tenjint branch builds upon the Raspberry Pi rpi-5.2.y branch and runs on the Raspberry Pi 4.  Instructions for building the Linux kernel can be found elsewhere online, but be sure you enable KVM support when configuring your kernel and export header files to user space.
 
 We modified Qemu to accept two new machine properties, "vmi" and "vmi-configs" (these are included in the Qemu help text).  The "vmi" property is only available when "kvm" is selected as the Qemu accelerator.  This property allows you to enable vmi by passing "vmi=on" as a machine property.  The "vmi-configs" property is only available when vmi is enabled and is used for passing configuration options to tenjint.  For an example config file as well as an example for starting Qemu with tenjint, please see below.  Instructions for building Qemu can be found in the Qemu README file.
 
-Rekall must also be installed from our repository as it has been updated to be able to access the guest's memory.  To install Rekall, run `sudo python3 ./setup.py install` from within Rekall's repo root directory.  Depending on the guest OS, you may need to generate a rekall profile.  This is nessecary for Linux guest OSs.  For instructions on generating Rekall profiles, see tools/linux/README within the Rekall repository.
+Rekall must also be installed from our repository as it has been updated to be able to access the guest's memory.  To install Rekall, run `sudo python3 ./setup.py install` from within Rekall's repo root directory.  Depending on the guest OS, you may need to generate a rekall profile.  This is nessecary for Linux guest OSs.  To generate rekall profile copy tools/linux from rekall repository to guest VM and generate profile.  For instructions on generating Rekall profiles, see tools/linux/README within the Rekall repository.  Move the json profile to the host VM and add path to profile in the tenjint configuration file.
 
 Finally, in order to install tenjint, run `sudo python3 ./setup.py install` from this repositories base directory.  tenjint will automatically be run when Qemu is started with vmi enabled.  For usage examples, see below.
 
